@@ -1,0 +1,11 @@
+@import 'reset';
+@import 'color';
+
+@font-face {
+  font-family: Montserrat;
+  src: url(./Font/Montserrat-Medium.otf);
+}
+
+body {
+  font-family: 'Montserrat';
+}

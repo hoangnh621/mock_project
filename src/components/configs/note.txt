@@ -1,0 +1,1 @@
+Chưa config chung cả project. Config là những thứ sẽ thay đổi được về sau
