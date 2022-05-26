@@ -10,7 +10,7 @@ const HomeScreen = () => {
       navigate('/login')
     }
   }, [])
-  return <div>HomeScreen</div>
+  return <div>HomeScreen Page</div>
 }
 
 export default HomeScreen
