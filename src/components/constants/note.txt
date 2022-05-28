@@ -1,1 +1,0 @@
-Chứa biến const của project. Là những biến dùng chung sẽ ko thể thay đổi về sau

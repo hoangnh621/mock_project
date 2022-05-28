@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeScreen />} />
           <Route path="login" element={<LoginScreen />} />
-          <Route path="editprofile" element={<ProfileScreen />} />
+          <Route path="edit-profile" element={<ProfileScreen />} />
           <Route path="worksheet" element={<WorkSheetScreen />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
