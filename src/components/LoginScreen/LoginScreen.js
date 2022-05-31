@@ -4,6 +4,18 @@ import LoginImage from './LoginImage.png'
 import './LoginScreen.scss'
 
 const LoginScreen = () => {
+  const { user } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const redirectPath = location.state?.path || '/'
+
+  const handleSubmit = () => {
+    dispatch(login('hien'))
+    navigate(redirectPath)
+  }
+
   return (
     <Row className="loginScreen">
       <Col span={16} className="loginImg">
