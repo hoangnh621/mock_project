@@ -5,9 +5,11 @@ $bgSuccess: rgba(44, 199, 112, 1);
 $bgDanger: rgba(234, 84, 85, 1);
 $bgWarning: rgba(255, 158, 68, 1);
 $bgInfo: rgba(13, 207, 231, 1);
+$bgLogin: rgba(248, 248, 248, 1);
 
 // blur color
 $blurPrimary: rgba(115, 103, 240, 0.5);
+$blurPrimaryInput: rgba(115, 103, 240, 0.2);
 $blurSecondary: rgba(130, 134, 138, 0.5);
 $blurSuccess: rgba(44, 199, 112, 0.5);
 $blurDanger: rgba(234, 84, 85, 0.5);
@@ -16,3 +18,4 @@ $blurInfo: rgba(13, 207, 231, 0.5);
 
 // text color
 $textPrimary: rgba(0, 0, 0, 1);
+$textSecondary: rgba(110, 107, 123, 1);

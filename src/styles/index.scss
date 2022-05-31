@@ -8,4 +8,57 @@
 
 body {
   font-family: 'Montserrat';
+
+  //Button
+  .primaryButton {
+    background-color: $bgPrimary;
+    color: #fff;
+    &:hover {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+    &:focus {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+    &:active {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+  }
+
+  .outlinePrimaryButton {
+    border-color: $bgPrimary;
+    color: $bgPrimary;
+    &:hover {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:active {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+  }
+
+  .outlineSecondaryButton {
+    &:hover {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:active {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+  }
 }

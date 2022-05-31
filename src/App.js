@@ -1,23 +1,23 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import HomeScreen from './components/HomeScreen/HomeScreen'
-import LoginScreen from './components/LoginScreen/LoginScreen'
-import PageNotFound from './components/PageNotFound/PageNotFound'
-import ProfileScreen from './components/ProfileScreen/ProfileScreen'
-import WorkSheetScreen from './components/WorkSheetScreen/WorkSheetScreen'
+import { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import './styles/index.scss'
+import getLocalStorageItem from './utils/helpers/handleLocalStorageItems/getLocalStorageItem'
 
 function App() {
+  const navigate = useNavigate()
+  // Check accessToken and redirect to LoginScreen
+  localStorage.setItem('accessToken', 'demoLogin')
+  useEffect(() => {
+    const accessToken = getLocalStorageItem('accessToken')
+    if (!accessToken) {
+      navigate('/login')
+    }
+  })
+
   return (
     <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<HomeScreen />} />
-          <Route path="login" element={<LoginScreen />} />
-          <Route path="edit-profile" element={<ProfileScreen />} />
-          <Route path="worksheet" element={<WorkSheetScreen />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-      </BrowserRouter>
+      App
+      <Outlet />
     </div>
   )
 }
