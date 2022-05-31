@@ -1,47 +1,67 @@
-import './grid.scss'
-import logo from './LoginImage.png'
+import { Button, Col, Form, Input, Row } from 'antd'
+import React from 'react'
+import LoginImage from './LoginImage.png'
 import './LoginScreen.scss'
 
 const LoginScreen = () => {
   return (
-    <div className="content">
-      <div className="grid wide">
-        <div className="row">
-          <div className="col l-6 m-6 c-12">
-            <div className="form_image">
-              <img src={logo} alt="logo" />
-            </div>
-          </div>
-          <div className="col l-6 m-6 c-12">
-            <div className="col-md-8 col-m6">
-              <div className="mb-4">
-                <h3>Sign In</h3>
-                <p className="mb-4">Welcome to Repila Portal !</p>
-              </div>
-              <div className="form_group">
-                <input
-                  type="text"
-                  placeholder="Email"
-                  className="form-control"
-                />
-              </div>
-              <div className="form_group mb-4">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="form-control"
-                />
-              </div>
-              <input
-                type="submit"
-                value="Log In"
-                className="btn btn-block btn-primary"
-              />
-            </div>
-          </div>
+    <Row className="loginScreen">
+      <Col span={16} className="loginImg">
+        <div>
+          <img src={LoginImage} alt="LoginImage" />
         </div>
-      </div>
-    </div>
+      </Col>
+      <Col span={8} className="loginFormArea">
+        <div className="wrapForm">
+          <h3>Welcome to Relipa Portal! &#128075;</h3>
+          <p>Please login to your account and get started</p>
+          <Form layout="vertical" labelAlign="left">
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your email!',
+                },
+                {
+                  type: 'email',
+                  message: 'Email is not valid',
+                },
+              ]}
+            >
+              <Input className="inputChangePass" size="large" />
+            </Form.Item>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+                {
+                  pattern: /(^\S*$)/g,
+                  message: 'Passwords do not contain spaces',
+                },
+              ]}
+            >
+              <Input.Password className="inputChangePass" size="large" />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                htmlType="submit"
+                block
+                className="primaryButton"
+                size="large"
+              >
+                Login
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+      </Col>
+    </Row>
   )
 }
 
