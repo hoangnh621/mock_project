@@ -8,4 +8,92 @@
 
 body {
   font-family: 'Montserrat';
+
+  //Button
+  .primaryButton {
+    background-color: $bgPrimary;
+    color: #fff;
+    &:hover {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+      box-shadow: 0 8px 25px -8px $bgPrimary;
+    }
+    &:focus {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+    &:active {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+  }
+
+  .outlinePrimaryButton {
+    border-color: $bgPrimary;
+    color: $bgPrimary;
+    &:hover {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:active {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+  }
+
+  .outlineSecondaryButton {
+    &:hover {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:active {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+  }
+
+  //Input
+  .inputPrimary {
+    &:hover {
+      border-color: $bgPrimary;
+      span {
+        color: $bgPrimary;
+      }
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      box-shadow: 0 0 0 2px $blurPrimaryInput;
+      border-right-width: 1px;
+      outline: 0;
+      span {
+        color: $bgPrimary;
+      }
+    }
+  }
+
+  .ant-input-affix-wrapper-focused,
+  .ant-input-affix-wrapper:focus {
+    border-color: $bgPrimary;
+    box-shadow: 0 0 0 2px $blurPrimaryInput;
+    border-right-width: 1px;
+    outline: 0;
+    span {
+      color: $bgPrimary;
+    }
+  }
+
+  .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+    border-color: $bgPrimary;
+  }
 }

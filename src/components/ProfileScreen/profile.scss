@@ -1,0 +1,166 @@
+@import '../../styles/responsive.scss';
+
+.edit-profile-pop-up {
+  width: 1100px !important;
+  .ant-modal-title {
+    font-size: 20px;
+  }
+}
+
+.ant-modal-body .user-info {
+  display: flex;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #f0f0f0;
+  .user-info-avatar {
+    display: flex;
+  }
+  .user-info-avatar-official {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 16px;
+  }
+  .user-info-sub-avatar {
+    align-self: end;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ant-btn {
+    margin-top: 16px;
+  }
+  .user-info-detail {
+    font-size: 16px;
+    margin-left: 32px;
+    align-self: end;
+    label {
+      display: inline-block;
+      min-width: 180px;
+    }
+    span {
+      display: inline-block;
+    }
+  }
+  .ant-upload-list {
+    display: none;
+  }
+}
+
+.user-info-form {
+  .user-info-form-first {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 24px;
+    .ant-col .ant-form-item-label {
+      width: 185px;
+      text-align: left;
+      &::before {
+        display: none;
+      }
+    }
+  }
+  .user-info-form-second {
+    margin-top: -24px;
+    .ant-col .ant-form-item-label {
+      width: 185px;
+      text-align: left;
+    }
+  }
+  .user-info-form-third {
+    display: flex;
+    justify-content: space-between;
+    .ant-col .ant-form-item-label {
+      width: 260px;
+      text-align: left;
+    }
+  }
+  .btn-submit {
+    display: flex;
+    justify-content: flex-end;
+    .ant-btn-default {
+      margin-right: 16px;
+    }
+  }
+}
+
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional):before {
+  display: none;
+}
+
+.ant-form-item-label
+  > label.ant-form-item-required:not(.ant-form-item-required-mark-optional):after {
+  display: inline-block;
+  margin-right: 4px;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+  content: '*';
+}
+
+.ant-form-item-label > label:after {
+  display: none;
+}
+
+//Responsive
+
+@include Responsive(XS) {
+  .user-info {
+    flex-wrap: wrap;
+    .user-info-detail {
+      margin-top: 16px;
+      margin-left: 0 !important;
+      label {
+        min-width: 150px !important;
+      }
+    }
+  }
+
+  .user-info .user-info-sub-avatar {
+    align-self: flex-start;
+  }
+  .user-info-form {
+    .user-info-form-first {
+      display: block;
+    }
+    .user-info-form-third {
+      display: block;
+    }
+  }
+}
+
+@include Responsive(SM) {
+  .user-info-form {
+    .user-info-form-first {
+      display: block;
+      .ant-col .ant-form-item-label {
+        width: 180px;
+      }
+    }
+    .user-info-form-third {
+      display: block;
+    }
+  }
+}
+@include Responsive(SM-2) {
+  .user-info-form {
+    .user-info-form-first {
+      display: block;
+    }
+    .user-info-form-third {
+      display: block;
+    }
+  }
+}
+
+@include Responsive(MD) {
+  .user-info-form {
+    .user-info-form-first {
+      justify-content: space-between;
+    }
+    .user-info-form-third {
+      display: block;
+    }
+  }
+}
