@@ -1,0 +1,87 @@
+@import '../../../styles/color';
+
+.container {
+  margin: 0 6px;
+
+  .item {
+    margin-bottom: 10px;
+  }
+
+  .d-flex {
+    display: flex;
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  .w-140 {
+    width: 140px;
+  }
+  .mr-15 {
+    margin-bottom: auto;
+  }
+  .mr-20 {
+    margin-right: 15px;
+  }
+  .ml-20 {
+    margin-bottom: auto;
+    margin-left: 20px;
+  }
+  .mt-20 {
+    margin-top: 20px;
+  }
+  .mr-25 {
+    margin-right: 25px;
+  }
+
+  .col-order-2 {
+    width: 100px;
+  }
+}
+
+.check_time {
+  display: flex;
+  width: 50%;
+}
+
+.time {
+  display: flex;
+  width: 50%;
+  color: $bgInfo;
+}
+
+.reason {
+  display: flex;
+}
+
+@media (min-width: 992px) {
+  .col-order-2 {
+    width: 80px;
+  }
+}
+
+@media (max-width: 767px) {
+  .reason {
+    display: block;
+  }
+
+  .ant-modal-body {
+    padding: 12px 24px 24px;
+  }
+}
+
+@media (min-width: 576px) {
+  .time {
+    display: flex;
+    padding-right: 8px;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 575px) {
+  .time {
+    display: block;
+    border-right: none;
+  }
+}
