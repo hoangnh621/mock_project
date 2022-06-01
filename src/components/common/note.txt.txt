@@ -1,1 +1,0 @@
-Chứa component chung cả ptoject

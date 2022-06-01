@@ -1,0 +1,7 @@
+@import '../../../../styles/color';
+
+.xIcon {
+  &:hover {
+    color: $bgPrimary;
+  }
+}

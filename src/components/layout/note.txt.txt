@@ -1,1 +1,0 @@
-Chứa layout chung của project. Ví dụ: header, footer, sidebar
