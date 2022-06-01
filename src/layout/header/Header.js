@@ -1,10 +1,18 @@
 import { CloseOutlined, MoreOutlined } from '@ant-design/icons'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { logout } from '../../store/reducer/loginSlice'
 import './Header.scss'
 import logo from './logo.png'
 
 const Header = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    dispatch(logout())
+    navigate('/login')
+  }
   const [showSideBar, setShowSideBar] = useState(false)
   return (
     <div className="header">
@@ -33,7 +41,7 @@ const Header = () => {
               Change phase
             </Link>
           </li>
-          <li>Log out</li>
+          <li onClick={handleLogout}>Log out</li>
         </ul>
         <MoreOutlined className="more" onClick={() => setShowSideBar(true)} />
         <ul

@@ -1,32 +1,55 @@
 import { Button, Col, Form, Input, Row } from 'antd'
-import React from 'react'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import {
+  getLoginError,
+  getLoginLoading,
+  getLoginReplace,
+  login,
+} from '../../store/reducer/loginSlice'
 import LoginImage from './LoginImage.png'
 import './LoginScreen.scss'
 
 const LoginScreen = () => {
-  const { user } = useSelector((state) => state.auth)
-  const dispatch = useDispatch()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
-  const location = useLocation()
-
-  const redirectPath = location.state?.path || '/'
-
-  const handleSubmit = () => {
-    dispatch(login('hien'))
-    navigate(redirectPath)
+  const dispatch = useDispatch()
+  const loading = useSelector(getLoginLoading)
+  const error = useSelector(getLoginError)
+  const replace = useSelector(getLoginReplace)
+  const handleLogin = () => {
+    dispatch(login({ email, password }))
   }
 
+  useEffect(() => {
+    if (replace) {
+      navigate('/')
+    }
+  }, [navigate, replace])
   return (
     <Row className="loginScreen">
-      <Col span={16} className="loginImg">
+      <Col
+        xs={{ span: 0 }}
+        md={{ span: 14 }}
+        lg={{ span: 16 }}
+        className="loginImg"
+      >
         <div>
           <img src={LoginImage} alt="LoginImage" />
         </div>
       </Col>
-      <Col span={8} className="loginFormArea">
+      <Col
+        xs={{ span: 24 }}
+        md={{ span: 10 }}
+        lg={{ span: 8 }}
+        className="loginFormArea"
+      >
         <div className="wrapForm">
           <h3>Welcome to Relipa Portal! &#128075;</h3>
           <p>Please login to your account and get started</p>
+          {error && <p>Incorrect email or password</p>}
           <Form layout="vertical" labelAlign="left">
             <Form.Item
               label="Email"
@@ -42,7 +65,12 @@ const LoginScreen = () => {
                 },
               ]}
             >
-              <Input className="inputChangePass" size="large" />
+              <Input
+                className="inputPrimary"
+                size="large"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Form.Item>
             <Form.Item
               label="Password"
@@ -58,7 +86,12 @@ const LoginScreen = () => {
                 },
               ]}
             >
-              <Input.Password className="inputChangePass" size="large" />
+              <Input.Password
+                className="inputPrimary"
+                size="large"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Form.Item>
             <Form.Item>
               <Button
@@ -66,6 +99,8 @@ const LoginScreen = () => {
                 block
                 className="primaryButton"
                 size="large"
+                loading={loading}
+                onClick={handleLogin}
               >
                 Login
               </Button>

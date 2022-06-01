@@ -1,4 +1,4 @@
-import { Button, Form, Modal, Select } from 'antd'
+import { Button, Form, Modal } from 'antd'
 import React from 'react'
 import FormFirstLeft from './FormFirstLeft/FormFirstLeft'
 import FormFirstRight from './FormFirstRight/FormFirstRight'
@@ -7,8 +7,6 @@ import FormThirdLeft from './FormThirdLeft/FormThirdLeft'
 import FormThirdRight from './FormThirdRight/FormThirdRight'
 import './profile.scss'
 import UserInfo from './UserInfo/UserInfo'
-
-const { Option } = Select
 
 const Profile = () => {
   const handleSubmit = (values) => {

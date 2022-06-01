@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Modal, Row } from 'antd'
 import PropTypes from 'prop-types'
+import XIcon from '../../../common/XIcon/XIcon'
 import './ChangePassPopup.scss'
-import XIcon from './XIcon/XIcon'
 
 const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
   const handleOk = () => {
@@ -52,7 +52,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             },
           ]}
         >
-          <Input.Password className="inputChangePass" />
+          <Input.Password className="inputPrimary" />
         </Form.Item>
         <Form.Item
           label="New password"
@@ -79,7 +79,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             },
           ]}
         >
-          <Input.Password className="inputChangePass" />
+          <Input.Password className="inputPrimary" />
         </Form.Item>
         <Form.Item
           label="Confirm new password"
@@ -117,7 +117,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             }),
           ]}
         >
-          <Input.Password className="inputChangePass" />
+          <Input.Password className="inputPrimary" />
         </Form.Item>
         <Row>
           <Col lg={{ span: 3, offset: 13 }} xs={{ span: 3, offset: 6 }}>
