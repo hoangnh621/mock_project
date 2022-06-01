@@ -1,65 +1,63 @@
-import { CloseOutlined, MoreOutlined } from '@ant-design/icons'
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import './Header.scss'
-import logo from './logo.png'
-
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Header.scss";
+import logo from "./logo.png";
+import avatar from "./avatar.png";
+import {
+  CaretDownOutlined,
+  FormOutlined,
+  LogoutOutlined,
+} from "@ant-design/icons";
 const Header = () => {
-  const [showSideBar, setShowSideBar] = useState(false)
+  const [showSubMenu, setShowSubMenu] = useState(false);
   return (
-    <div className="header">
-      <div className="logo">
-        <img src={logo} alt="Loading"></img>
-        <div className="logo-name">Relica Portal</div>
-      </div>
-      <div className="header-function">
-        <ul className="header-navbar">
-          <li>
-            <Link className="link" to="/home">
+    <div className="navbar">
+      <div className="navbar-left">
+        <div className="logo">
+          <img src={logo} alt="logo" className="logo-image"></img>
+          <div className="logo-name">Portal Relipa</div>
+        </div>
+        <div className="nav-links">
+          <div className="wrap-link">
+            <Link className="link" to="/">
               Home
             </Link>
-          </li>
-          <li>
-            <Link className="link" to="/timesheet">
+            <div className="underline-link"></div>
+          </div>
+          <div className="wrap-link">
+            <Link className="link" to="/">
               Timesheet
             </Link>
-          </li>
-          <li>My Leave</li>
-        </ul>
-        <ul className="user-action">
-          <li className="header-welcome">Welcome Vũ Văn Tịnh</li>
-          <li>
-            <Link className="link" to="/changephase">
-              Change phase
-            </Link>
-          </li>
-          <li>Log out</li>
-        </ul>
-        <MoreOutlined className="more" onClick={() => setShowSideBar(true)} />
-        <ul
-          className={
-            showSideBar
-              ? 'user-action-sidebar show'
-              : 'user-action-sidebar hide'
-          }
-        >
-          <CloseOutlined
-            className="sidebar-close"
-            onClick={() => setShowSideBar(false)}
-          />
-          <li className="header-welcome">Welcome Vũ Văn Tịnh</li>
-          <li>
-            <Link className="link" to="/changephase">
-              Change phase
-            </Link>
-          </li>
-          <li>
-            Log out <span className="logout-icon"></span>
-          </li>
-        </ul>
+            <div className="underline-link"></div>
+          </div>
+        </div>
+      </div>
+      <div className="navbar-right">
+        <div className="navbar-right-item">
+          <div className="user-function">
+            <div className="user-avatar">
+              <img className="avatar" alt="avatar" src={avatar}></img>
+            </div>
+            <div className="down-arrow" onClick={()=> setShowSubMenu(!showSubMenu)}>
+              <CaretDownOutlined />
+            </div>
+          </div>
+          <div className={showSubMenu ? "sub-menu show" : "sub-menu hide"}>
+            <div className="sub-menu-items">
+              <div className="sub-menu-item">
+                <FormOutlined className="icon" />
+                Change pass
+              </div>
+              <div className="sub-menu-item">
+                <LogoutOutlined className="icon" />
+                Log out
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
