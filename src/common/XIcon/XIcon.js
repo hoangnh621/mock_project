@@ -1,4 +1,4 @@
-import '../XIcon/XIcon.scss'
+import './XIcon.scss'
 
 const XIcon = () => {
   return <span className="xIcon">X</span>
