@@ -1,13 +1,23 @@
 import { Col, Form, Input, Row, Space, TimePicker } from 'antd'
 import 'antd/dist/antd.min.css'
 import moment from 'moment'
-import React from 'react'
+import React, { useState } from 'react'
 import './OverTime.scss'
 
 function OverTime() {
   const registerForDate = '2022-2-19'
   const checkInTime = '08:00'
   const checkOutTime = '18:40'
+  const [overTime, setOverTime] = useState('')
+  const [reason, setReason] = useState('')
+
+  const hanldeCheckOverTime = (value) => {
+    value && setOverTime(value.format('HH:mm'))
+  }
+
+  const hanldeReeasonChange = (e) => {
+    setReason(e.target.value)
+  }
   // const [overTime, setOverTime] = useState('')
   // const [actualOverTime, setActualOverTime] = useState('')
 
@@ -90,7 +100,8 @@ function OverTime() {
               <Space direction="vertical" size={12}>
                 <Form.Item name="time-picker" {...config}>
                   <TimePicker
-                    initialValues={moment('00:00', timeFormat)}
+                    onChange={hanldeCheckOverTime}
+                    value={moment(overTime, timeFormat)}
                     format={timeFormat}
                   />
                 </Form.Item>
@@ -137,7 +148,13 @@ function OverTime() {
                 },
               ]}
             >
-              <Input.TextArea rows={4} showCount maxLength={100} />
+              <Input.TextArea
+                value={reason}
+                onChange={hanldeReeasonChange}
+                rows={4}
+                showCount
+                maxLength={100}
+              />
             </Form.Item>
           </Col>
         </div>

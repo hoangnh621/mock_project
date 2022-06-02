@@ -5,14 +5,14 @@ import OverTime from '../../common/popup/OverTime/OverTime'
 import './WorkSheetScreen.scss'
 
 const WorkSheet = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isModalVisible, setIsModalVisible] = useState(true)
 
   const showModal = () => {
     setIsModalVisible(true)
   }
 
   const handleOk = () => {
-    setIsModalVisible(true)
+    setIsModalVisible(false)
   }
 
   const handleCancel = () => {
@@ -34,6 +34,7 @@ const WorkSheet = () => {
         okText="Register"
         okButtonProps={{ style: { marginRight: '20px' } }}
         className="modal_ot"
+        cancelText="Cancel"
       >
         <OverTime />
       </Modal>
