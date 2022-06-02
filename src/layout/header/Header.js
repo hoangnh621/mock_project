@@ -4,12 +4,23 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
+import { logout } from '../../store/reducer/loginSlice'
 import avatar from './avatar.png'
 import './Header.scss'
 import logo from './logo.png'
 const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const handleLogOut = () => {
+    console.log('log out')
+    localStorage.clear()
+    dispatch(logout())
+    navigate('/login')
+  }
   return (
     <div className="navbar">
       <div className="navbar-left">
@@ -53,7 +64,7 @@ const Header = () => {
                 <FormOutlined className="icon" />
                 Change pass
               </div>
-              <div className="sub-menu-item">
+              <div className="sub-menu-item" onClick={handleLogOut}>
                 <LogoutOutlined className="icon" />
                 Log out
               </div>
