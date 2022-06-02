@@ -1,22 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./Header.scss";
-import logo from "./logo.png";
-import avatar from "./avatar.png";
 import {
   CaretDownOutlined,
   FormOutlined,
   LogoutOutlined,
-} from "@ant-design/icons";
+} from '@ant-design/icons'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import avatar from './avatar.png'
+import './Header.scss'
+import logo from './logo.png'
 const Header = () => {
-  const [showSubMenu, setShowSubMenu] = useState(false);
+  const [showSubMenu, setShowSubMenu] = useState(false)
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <div className="logo">
-          <img src={logo} alt="logo" className="logo-image"></img>
-          <div className="logo-name">Portal Relipa</div>
-        </div>
+        <Link className="logo-link" to="/">
+          <div className="logo">
+            <img src={logo} alt="logo" className="logo-image"></img>
+            <div className="logo-name">Portal Relipa</div>
+          </div>
+        </Link>
         <div className="nav-links">
           <div className="wrap-link">
             <Link className="link" to="/">
@@ -38,11 +40,14 @@ const Header = () => {
             <div className="user-avatar">
               <img className="avatar" alt="avatar" src={avatar}></img>
             </div>
-            <div className="down-arrow" onClick={()=> setShowSubMenu(!showSubMenu)}>
+            <div
+              className="down-arrow"
+              onClick={() => setShowSubMenu(!showSubMenu)}
+            >
               <CaretDownOutlined />
             </div>
           </div>
-          <div className={showSubMenu ? "sub-menu show" : "sub-menu hide"}>
+          <div className={showSubMenu ? 'sub-menu show' : 'sub-menu hide'}>
             <div className="sub-menu-items">
               <div className="sub-menu-item">
                 <FormOutlined className="icon" />
@@ -57,7 +62,7 @@ const Header = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

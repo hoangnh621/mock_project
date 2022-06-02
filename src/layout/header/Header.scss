@@ -1,3 +1,4 @@
+@import "../../styles/color";
 $font-size-link: 16px;
 .navbar {
   position: fixed;
@@ -21,6 +22,9 @@ $font-size-link: 16px;
   .navbar-left {
     display: flex;
     align-items: center;
+    .logo-link {
+      color: $bgPrimary;
+    }
     .logo {
       display: flex;
       align-items: center;
@@ -84,7 +88,7 @@ $font-size-link: 16px;
       }
     }
 
-    .navbar-right-item{
+    .navbar-right-item {
       position: relative;
       .sub-menu {
         // z-index: -10;
