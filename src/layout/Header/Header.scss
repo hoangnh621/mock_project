@@ -1,230 +1,174 @@
-@import '../../styles/color';
-
-.header {
-  display: flex;
-  font-size: 15px;
-  color: white;
-  font-family: sans-serif;
-  width: 100%;
-  background-color: $bgPrimary;
+@import "../../styles/color";
+$font-size-link: 16px;
+.navbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
-
-  .logo {
-    display: flex;
-    align-items: center;
-    img {
-      width: 65px;
-      margin: 10px 5px;
-    }
-    .logo-name {
-      font-size: 20px;
-    }
-  }
-  .header-function {
-    display: flex;
-    flex: 1;
-    justify-content: space-between;
-    align-items: center;
-    .user-action,
-    .header-navbar {
-      display: flex;
-      margin-bottom: 0;
-    }
-    .header-navbar {
-      margin-left: 40px;
-    }
-    .user-action {
-      margin-right: 40px;
-    }
-    .more,
-    .sidebar-close {
-      display: none;
-    }
-  }
-
-  .user-action-sidebar {
-    display: none;
-    box-sizing: border-box;
-  }
-
-  // CSS chung cho header
+  justify-content: space-between;
+  background-color: white;
+  box-shadow: rgba($color: #000000, $alpha: 0.6) 0px -2px 6px 0px;
   li {
     list-style: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 3px;
-    &:hover {
-      background-color: white;
-      color: black;
+    display: block;
+  }
+  ul {
+    margin: 0;
+  }
+  // CSS for nav bar left
+  .navbar-left {
+    display: flex;
+    align-items: center;
+    .logo-link {
+      color: $bgPrimary;
     }
-    &:hover .link {
-      color: black;
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-right: 40px;
+      cursor: pointer;
+      .logo-image {
+        width: 45px;
+        height: 45px;
+        margin: 6px 10px;
+      }
+      .logo-name {
+        font-size: 20px;
+      }
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      .wrap-link {
+        padding: 10px 20px;
+        .link {
+          color: black;
+          font-size: $font-size-link;
+          display: block;
+          min-width: 65px;
+          text-align: center;
+        }
+        .underline-link {
+          width: 0;
+          transition: ease 500ms;
+          height: 4px;
+          background-color: rgba(115, 103, 240, 1);
+        }
+        &:hover .underline-link {
+          width: 100%;
+        }
+      }
     }
   }
 
-  .link {
-    display: block;
-    text-decoration: none;
-    color: white;
-    height: 100%;
-    cursor: pointer;
+  // CSS for nav bar right
+  .navbar-right {
+    margin-right: 20px;
+
+    .user-function {
+      display: flex;
+      align-items: center;
+      .user-avatar .avatar {
+        width: 38px;
+        height: 38px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin: 0 7px;
+      }
+      .down-arrow {
+        font-size: 20px;
+        cursor: pointer;
+        transition: ease 300ms;
+        &:hover {
+          color: rgb(94, 94, 94);
+        }
+      }
+    }
+
+    .navbar-right-item {
+      position: relative;
+      .sub-menu {
+        // z-index: -10;
+        opacity: 1;
+        transform: translateY(0);
+        position: absolute;
+        transition: ease 300ms;
+        right: 0;
+        bottom: -100px;
+        min-width: 180px;
+        background-color: white;
+        color: rgb(58, 58, 58);
+        border-radius: 5px;
+        box-shadow: rgba($color: #000000, $alpha: 0.2) -1px 1px 2px 1px;
+        .sub-menu-item {
+          padding: 10px 20px;
+          cursor: pointer;
+          &:hover {
+            background-color: whitesmoke;
+          }
+          .icon {
+            margin-right: 7px;
+          }
+        }
+      }
+      .sub-menu.hide {
+        opacity: 0;
+        transform: translateY(-200px);
+      }
+    }
   }
 }
 
-// responsive
+@keyframes underline {
+  to {
+    width: 100%;
+  }
+}
 
 @media screen and (max-width: 640px) {
-  .header {
-    font-size: 12px;
-    width: 100%;
-    .logo {
-      img {
-        width: 45px;
-        margin: 10px 0 10px 15px;
+  .navbar {
+    // CSS for nav bar left
+    .navbar-left {
+      .logo {
+        margin-right: 0;
+        cursor: pointer;
+        .logo-image {
+          width: 50px;
+          height: 50px;
+        }
+        .logo-name {
+          display: none;
+        }
       }
-      .logo-name {
-        display: none;
-      }
-    }
-    li {
-      padding: 10px 13px;
-    }
-    .header-function {
-      margin-left: 5px;
-
-      .header-navbar {
-        margin-left: 0;
-      }
-      .user-action {
-        display: none;
-      }
-
-      .more {
-        display: flex;
-        font-size: 18px;
-        margin-right: 20px;
-      }
-      // side bar
-      .user-action-sidebar {
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        left: 0;
-        left: 0;
-        right: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        background-color: rgb(158, 31, 181);
-        transition: ease 1000ms;
-        display: block;
-        li {
-          padding: 20px 10px;
-          border-radius: 0;
-          .logout-icon {
-            display: inline-block;
-            margin: 0px 0 0 5px;
+      .nav-links {
+        .wrap-link {
+          padding: 10px 10px;
+          .link {
+            color: black;
+            font-size: 15px;
+            display: block;
+            min-width: 60px;
+            text-align: center;
           }
         }
-        .header-welcome {
-          margin-top: 40px;
-        }
-
-        .sidebar-close {
-          display: block;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          font-size: 20px;
-          cursor: pointer;
-        }
-      }
-      .user-action-sidebar.show {
-        transform: translateX(0);
-      }
-      .user-action-sidebar.hide {
-        transform: translateX(110%);
       }
     }
-  }
-}
 
-@media screen and (min-width: 641px) and (max-width: 1004px) {
-  .header {
-    font-size: 14px;
-    .logo {
-      img {
-        width: 50px;
-        margin: 10px 0 10px 15px;
-      }
-      .logo-name {
-        display: block;
-        margin-left: 10px;
-        font-size: 18px;
+    // CSS for nav bar right
+    .navbar-right {
+      margin-right: 10px;
+
+      .user-function {
+        .user-avatar .avatar {
+          margin: 0 5px;
+        }
+        .down-arrow {
+          font-size: 18px;
+        }
       }
     }
-    .header-function {
-      margin-left: 5px;
-
-      .header-navbar {
-        margin-left: 100px;
-      }
-      .user-action {
-        display: none;
-      }
-
-      .more {
-        display: flex;
-        font-size: 19px;
-        margin-right: 20px;
-      }
-      // side bar
-      .user-action-sidebar {
-        flex-direction: column;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        width: 230px;
-        background-color: rgb(158, 31, 181);
-        transition: ease 1000ms;
-        display: block;
-        box-shadow: -5px 5px 5px rgba($color: #000000, $alpha: 0.15);
-        li {
-          padding: 12px 10px;
-          border-radius: 0;
-          .logout-icon {
-            display: inline-block;
-            margin: 0px 0 0 5px;
-          }
-        }
-        .header-welcome {
-          margin-top: 40px;
-        }
-
-        .sidebar-close {
-          display: block;
-          position: absolute;
-          top: 10px;
-          right: 10px;
-          font-size: 20px;
-          cursor: pointer;
-        }
-      }
-      .user-action-sidebar.show {
-        transform: translateX(0);
-      }
-      .user-action-sidebar.hide {
-        transform: translateX(110%);
-      }
-    }
-  }
-}
-
-@media screen and (max-width: 320px) {
-  .header {
-    width: 100vh;
-    font-size: 20px;
   }
 }
