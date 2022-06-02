@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { Outlet, useNavigate } from 'react-router-dom'
-import Header from './layout/header/Header'
+import Header from '../src/layout/Header/Header'
 import { getLoginReplace } from './store/reducer/loginSlice'
 import './styles/index.scss'
 
