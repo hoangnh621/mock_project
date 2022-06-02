@@ -16,7 +16,6 @@ const useAxiosPrivate = () => {
         Promise.reject(error)
       },
     )
-    return () => axiosInstance.interceptors.reject(requestInterceptor)
   }, [])
   return axiosInstance
 }

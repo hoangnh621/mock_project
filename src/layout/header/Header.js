@@ -7,7 +7,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import { logout } from '../../store/reducer/loginSlice'
+import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
 import './Header.scss'
 import logo from './logo.png'
@@ -15,10 +15,10 @@ const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const axiosPrivate = useAxiosPrivate()
   const handleLogOut = () => {
-    console.log('log out')
+    axiosPrivate.delete()
     localStorage.clear()
-    dispatch(logout())
     navigate('/login')
   }
   return (
