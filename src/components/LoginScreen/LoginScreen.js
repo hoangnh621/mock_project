@@ -2,6 +2,7 @@ import { Button, Col, Form, Input, Row } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import data from '../../mockdatas/db.json'
 import {
   getLoginError,
   getLoginLoading,
@@ -10,6 +11,8 @@ import {
 } from '../../store/reducer/loginSlice'
 import LoginImage from './LoginImage.png'
 import './LoginScreen.scss'
+
+console.log(data)
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')

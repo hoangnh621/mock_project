@@ -3,7 +3,7 @@ import axios from 'axios'
 import setLocalStorageItems from '../../utils/helpers/handleLocalStorageItems/setLocalStorageItems'
 
 export const login = createAsyncThunk('login/postUserAccount', async (args) => {
-  const res = await axios.post(process.env.REACT_APP_BASE_URL + '/user', {
+  const res = await axios.post(process.env.REACT_APP_BASE_URL + '/auth/login', {
     email: args.email,
     password: args.password,
   })
