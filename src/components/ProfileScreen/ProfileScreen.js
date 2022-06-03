@@ -1,5 +1,5 @@
 import { Button, Form, Modal } from 'antd'
-import React from 'react'
+import React, { useEffect } from 'react'
 import FormFirstLeft from './FormFirstLeft/FormFirstLeft'
 import FormFirstRight from './FormFirstRight/FormFirstRight'
 import FormSecond from './FormSecond/FormSecond'
@@ -16,7 +16,9 @@ const Profile = () => {
   const handleError = (err) => {
     console.log(err)
   }
-
+  useEffect(() => {
+    document.title = 'Edit Profile'
+  })
   return (
     <>
       <Modal

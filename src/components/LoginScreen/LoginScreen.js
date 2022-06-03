@@ -5,9 +5,9 @@ import { useNavigate } from 'react-router-dom'
 import {
   getLoginError,
   getLoginLoading,
-  getLoginReplace,
   login,
 } from '../../store/reducer/loginSlice'
+import getLocalStorageItem from '../../utils/helpers/handleLocalStorageItems/getLocalStorageItem'
 import LoginImage from './LoginImage.png'
 import './LoginScreen.scss'
 
@@ -18,16 +18,18 @@ const LoginScreen = () => {
   const dispatch = useDispatch()
   const loading = useSelector(getLoginLoading)
   const error = useSelector(getLoginError)
-  const replace = useSelector(getLoginReplace)
   const handleLogin = () => {
     dispatch(login({ email, password }))
   }
-
   useEffect(() => {
-    if (replace) {
+    document.title = 'Login'
+  }, [])
+  const accessToken = getLocalStorageItem('accessToken')
+  useEffect(() => {
+    if (accessToken) {
       navigate('/')
     }
-  }, [navigate, replace])
+  }, [navigate, accessToken])
   return (
     <Row className="loginScreen">
       <Col
