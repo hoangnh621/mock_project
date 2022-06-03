@@ -10,9 +10,9 @@ function App() {
   const replace = useSelector(getLoginReplace)
   // Check accessToken and redirect to LoginScreen
   useEffect(() => {
-    if (!replace) {
-      navigate('/login')
-    }
+    // if (!replace) {
+    //   navigate('/login')
+    // }
   }, [navigate, replace])
 
   return (

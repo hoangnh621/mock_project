@@ -5,7 +5,7 @@ import OverTime from '../../common/popup/OverTime/OverTime'
 import './WorkSheetScreen.scss'
 
 const WorkSheet = () => {
-  const [isModalVisible, setIsModalVisible] = useState(true)
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
   const showModal = () => {
     setIsModalVisible(true)
@@ -22,7 +22,7 @@ const WorkSheet = () => {
   return (
     <div>
       <div> WorkSheet </div>
-      <Button type="primary" onClick={showModal}>
+      <Button style={{ marginTop: 20 }} type="primary" onClick={showModal}>
         Open Modal
       </Button>
       <Modal
