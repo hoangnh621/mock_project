@@ -4,7 +4,7 @@ import axiosInstance from './axiosInstance'
 
 const useAxiosPrivate = () => {
   useEffect(() => {
-    const requestInterceptor = axiosInstance.interceptors.request.use(
+    axiosInstance.interceptors.request.use(
       (configs) => {
         const accessToken = getToken('accessToken')
         if (accessToken) {
@@ -16,7 +16,6 @@ const useAxiosPrivate = () => {
         Promise.reject(error)
       },
     )
-    return () => axiosInstance.interceptors.reject(requestInterceptor)
   }, [])
   return axiosInstance
 }

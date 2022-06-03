@@ -19,12 +19,6 @@ const loginSlice = createSlice({
     },
     loading: false,
     error: null,
-    replace: false,
-  },
-  reducers: {
-    logout: (state) => {
-      state.replace = false
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(login.pending, (state) => {
@@ -34,7 +28,6 @@ const loginSlice = createSlice({
       state.user.role = action.payload.role
       state.user.fullName = action.payload.full_name
       state.loading = false
-      state.replace = true
       setLocalStorageItems('accessToken', action.payload.access_token)
     })
     builder.addCase(login.rejected, (state, action) => {
@@ -49,4 +42,3 @@ export const { logout } = loginSlice.actions
 export const getLoginInfo = (state) => state.loginReducer.user
 export const getLoginLoading = (state) => state.loginReducer.loading
 export const getLoginError = (state) => state.loginReducer.error
-export const getLoginReplace = (state) => state.loginReducer.replace
