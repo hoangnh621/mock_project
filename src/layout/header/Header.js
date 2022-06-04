@@ -4,7 +4,6 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
@@ -14,7 +13,6 @@ import logo from './logo.png'
 const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
   const handleLogOut = () => {
     axiosPrivate.delete()
