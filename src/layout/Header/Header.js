@@ -4,19 +4,24 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
+import { logout } from '../../store/reducer/loginSlice'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
 import './Header.scss'
 import logo from './logo.png'
+
 const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
+  const dispatch = useDispatch()
   const handleLogOut = () => {
     axiosPrivate.delete()
     localStorage.clear()
+    dispatch(logout())
     navigate('/login')
   }
   return (
