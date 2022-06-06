@@ -10,10 +10,12 @@ import { Link, NavLink } from 'react-router-dom'
 import { logout } from '../../store/reducer/loginSlice'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
+import ChangePassPopUp from './ChangePassPopup/ChangePassPopup'
 import './Header.scss'
 import logo from './logo.png'
 const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
+  const [showChangePassPopUp, setShowChangePassPopUp] = useState(false)
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
@@ -25,6 +27,10 @@ const Header = () => {
   }
   return (
     <div className="navbar">
+      <ChangePassPopUp
+        toggleModal={showChangePassPopUp}
+        setToggleModal={setShowChangePassPopUp}
+      />
       <div className="navbar-left">
         <Link className="logo-link" to="/edit-profile">
           <div className="logo">
@@ -34,13 +40,13 @@ const Header = () => {
         </Link>
         <div className="nav-links">
           <div className="wrap-link">
-            <NavLink className="link" to="/worksheet">
+            <NavLink className="link" to="/">
               Home
             </NavLink>
             <div className="underline-link"></div>
           </div>
           <div className="wrap-link">
-            <NavLink className="link" to="/login">
+            <NavLink className="link" to="/timesheet">
               Timesheet
             </NavLink>
             <div className="underline-link"></div>
@@ -62,7 +68,10 @@ const Header = () => {
           </div>
           <div className={showSubMenu ? 'sub-menu show' : 'sub-menu hide'}>
             <div className="sub-menu-items">
-              <div className="sub-menu-item">
+              <div
+                className="sub-menu-item"
+                onClick={() => setShowChangePassPopUp(true)}
+              >
                 <FormOutlined className="icon" />
                 Change pass
               </div>
