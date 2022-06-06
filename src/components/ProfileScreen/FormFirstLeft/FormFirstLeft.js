@@ -17,14 +17,14 @@ function FormFirstLeft() {
           },
         ]}
       >
-        <Select>
+        <Select className="selectPrimary">
           <Option value={0}>Female</Option>
           <Option value={1}>Male</Option>
         </Select>
       </Form.Item>
       <Form.Item
         label="Birth Date"
-        name="birth"
+        name="birth_date"
         rules={[
           {
             required: true,
@@ -32,15 +32,11 @@ function FormFirstLeft() {
           },
         ]}
       >
-        <DatePicker
-          format="DD-MM-YYYY"
-          disabledDate={(d) => !d || d.isAfter(new Date())}
-          placement="bottomLeft"
-        />
+        <DatePicker format="DD-MM-YYYY" />
       </Form.Item>
       <Form.Item
         label="Identity Number"
-        name="indentity"
+        name="identity_number"
         rules={[
           {
             required: true,
@@ -59,11 +55,11 @@ function FormFirstLeft() {
           }),
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Date of issue identity"
-        name="dateOfIdentity"
+        name="identity_card_date"
         rules={[
           {
             required: true,
@@ -75,7 +71,7 @@ function FormFirstLeft() {
       </Form.Item>
       <Form.Item
         label="Place of Issue Identity"
-        name="placeOfIssueIdentity"
+        name="identity_card_place"
         rules={[
           {
             required: true,
@@ -91,11 +87,11 @@ function FormFirstLeft() {
           }),
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Passport number"
-        name="passportNumber"
+        name="passport_number"
         rules={[
           {
             type: 'string',
@@ -104,9 +100,9 @@ function FormFirstLeft() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
-      <Form.Item label="Passport Expiration" name="passportExpiration">
+      <Form.Item label="Passport Expiration" name="passport_expiration">
         <DatePicker format="DD-MM-YYYY" />
       </Form.Item>
       <Form.Item
@@ -124,7 +120,7 @@ function FormFirstLeft() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
     </Form.Item>
   )

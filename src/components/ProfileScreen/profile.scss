@@ -1,14 +1,19 @@
 @import '../../styles/responsive.scss';
 
 .edit-profile-pop-up {
-  width: 1100px !important;
+  width: 1000px !important;
   .ant-modal-title {
     font-size: 20px;
   }
 }
 
+.user-info-form {
+  padding: 0 12px;
+}
+
 .ant-modal-body .user-info {
   display: flex;
+  justify-content: center;
   padding-bottom: 24px;
   border-bottom: 1px solid #f0f0f0;
   .user-info-avatar {
@@ -19,12 +24,18 @@
     flex-direction: column;
     align-items: center;
     margin-right: 16px;
+     .ant-form-item {
+      margin-bottom: 0;
+    }
   }
   .user-info-sub-avatar {
     align-self: end;
     display: flex;
     flex-direction: column;
     align-items: center;
+    .ant-form-item {
+      margin-bottom: 0;
+    }
   }
   .ant-btn {
     margin-top: 16px;
@@ -33,12 +44,20 @@
     font-size: 16px;
     margin-left: 32px;
     align-self: end;
-    label {
-      display: inline-block;
-      min-width: 180px;
-    }
-    span {
-      display: inline-block;
+    div{
+      display: flex;
+      label {
+        min-width: 180px;
+      }
+      span {
+      
+        max-width: 150px;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 1;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
   }
   .ant-upload-list {
@@ -50,7 +69,7 @@
   .user-info-form-first {
     display: flex;
     justify-content: space-between;
-    padding-top: 24px;
+    // padding-top: 24px;
     .ant-col .ant-form-item-label {
       width: 185px;
       text-align: left;
@@ -61,17 +80,27 @@
   }
   .user-info-form-second {
     margin-top: -24px;
+    border-bottom: 1px solid #f0f0f0;
+    .ant-row .ant-form-item {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
     .ant-col .ant-form-item-label {
       width: 185px;
       text-align: left;
     }
   }
   .user-info-form-third {
+    margin-top: 24px;
     display: flex;
     justify-content: space-between;
     .ant-col .ant-form-item-label {
       width: 260px;
       text-align: left;
+    }
+    .ant-col .ant-form-item-control{
+      margin-right: 16px;
     }
   }
   .btn-submit {
