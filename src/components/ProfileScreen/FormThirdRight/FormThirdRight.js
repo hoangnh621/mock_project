@@ -7,7 +7,7 @@ function FormThirdRight() {
     <Form.Item>
       <Form.Item
         label="Emergency Contact Name"
-        name="emergencyContactName"
+        name="emergency_contact_name"
         rules={[
           {
             required: true,
@@ -20,11 +20,11 @@ function FormThirdRight() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Emergency Contact Relationship"
-        name="emergencyContactRelationship"
+        name="emergency_contact_relationship"
         rules={[
           {
             required: true,
@@ -37,11 +37,11 @@ function FormThirdRight() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Emergency Contact Number"
-        name="emergencyContactNumber"
+        name="emergency_contact_number"
         rules={[
           {
             required: true,
@@ -60,10 +60,10 @@ function FormThirdRight() {
           }),
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
-      <Form.Item label="Start Date" name="startDate">
-        <Input readOnly />
+      <Form.Item label="Start Date" name="start_date_official">
+        <Input readOnly className="input-primary" />
       </Form.Item>
     </Form.Item>
   )
