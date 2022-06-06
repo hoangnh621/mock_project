@@ -18,8 +18,6 @@ function OverTime() {
   const hanldeReeasonChange = (e) => {
     setReason(e.target.value)
   }
-  // const [overTime, setOverTime] = useState('')
-  // const [actualOverTime, setActualOverTime] = useState('')
 
   //   const timeCheckIn = (date, checkInTime) => {
   //       (Date.parse(`${date} ${checkInTime}`) - Date.parse(`${date} 08:00`)) /
@@ -36,18 +34,11 @@ function OverTime() {
     today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate()
   const time = today.getHours() + ':' + today.getMinutes()
   const timeFormat = 'HH:mm'
-  //  const onFinish = (values) => {
-  //    console.log('Received values of form: ', values)
-  //  }
 
-  // const handleRequestOT = () => {
-  //   if (overTime < actualOverTime)
-
-  // }
   const config = {
     rules: [
       {
-        type: 'object',
+        // type: 'object',
         required: true,
         message: 'Please select time!',
       },
@@ -149,6 +140,7 @@ function OverTime() {
               ]}
             >
               <Input.TextArea
+                className="input_reason"
                 value={reason}
                 onChange={hanldeReeasonChange}
                 rows={4}

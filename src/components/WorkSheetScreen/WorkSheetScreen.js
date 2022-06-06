@@ -1,26 +1,23 @@
-import { Button, Modal } from 'antd'
+import { Button, Form, Modal } from 'antd'
 import 'antd/dist/antd.min.css'
 import React, { useState } from 'react'
 import OverTime from '../../common/popup/OverTime/OverTime'
 import './WorkSheetScreen.scss'
 
 const WorkSheet = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false)
-
+  const [isModalVisible, setIsModalVisible] = useState(true)
   const showModal = () => {
     setIsModalVisible(true)
   }
-
-  const handleOk = () => {
-    setIsModalVisible(false)
+  const onFinish = (values) => {
+    console.log(values)
   }
 
-  const handleCancel = () => {
-    setIsModalVisible(false)
+  const onFinishFailed = (errorInfo) => {
+    console.log(errorInfo)
   }
-
   return (
-    <div>
+    <>
       <div> WorkSheet </div>
       <Button style={{ marginTop: 20 }} type="primary" onClick={showModal}>
         Open Modal
@@ -28,8 +25,8 @@ const WorkSheet = () => {
       <Modal
         title="Register OT"
         visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
+        onOk={() => setIsModalVisible(true)}
+        onCancel={() => setIsModalVisible(false)}
         width="80%"
         okText="Register"
         okButtonProps={{ style: { marginRight: '20px' } }}
@@ -37,8 +34,29 @@ const WorkSheet = () => {
         cancelText="Cancel"
       >
         <OverTime />
+        <>
+          <Form
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            initialValues={
+              {
+                // required: true,
+                // reason: '',
+              }
+            }
+            scrollToFirstError
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          ></Form>
+        </>
       </Modal>
-    </div>
+    </>
   )
 }
 

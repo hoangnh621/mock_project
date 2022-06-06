@@ -5,13 +5,14 @@ import './styles/index.scss'
 import getLocalStorageItem from './utils/helpers/handleLocalStorageItems/getLocalStorageItem'
 function App() {
   const navigate = useNavigate()
+  // const replace = useSelector(getLoginReplace)
   const accessToken = getLocalStorageItem('accessToken')
   // Check accessToken and redirect to LoginScreen
   useEffect(() => {
-    // if (!replace) {
-    //   navigate('/login')
-    // }
-  }, [navigate, replace])
+    if (!accessToken) {
+      navigate('/login')
+    }
+  }, [navigate, accessToken])
 
   return (
     <div className="App">
