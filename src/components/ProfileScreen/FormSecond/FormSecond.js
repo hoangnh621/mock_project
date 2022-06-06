@@ -6,7 +6,7 @@ function FormSecond() {
     <Form.Item>
       <Form.Item
         label="Permanent Address"
-        name="permanentAddress"
+        name="permanent_address"
         rules={[
           {
             required: true,
@@ -19,11 +19,11 @@ function FormSecond() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Temporary Address"
-        name="temporaryAddress"
+        name="temporary_address"
         rules={[
           {
             required: true,
@@ -36,7 +36,7 @@ function FormSecond() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
     </Form.Item>
   )
