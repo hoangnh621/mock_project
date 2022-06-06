@@ -52,7 +52,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             },
           ]}
         >
-          <Input.Password className="inputPrimary" />
+          <Input.Password className="input-primary" />
         </Form.Item>
         <Form.Item
           label="New password"
@@ -79,7 +79,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             },
           ]}
         >
-          <Input.Password className="inputPrimary" />
+          <Input.Password className="input-primary" />
         </Form.Item>
         <Form.Item
           label="Confirm new password"
@@ -117,24 +117,24 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             }),
           ]}
         >
-          <Input.Password className="inputPrimary" />
+          <Input.Password className="input-primary" />
         </Form.Item>
         <Row>
           <Col lg={{ span: 3, offset: 13 }} xs={{ span: 3, offset: 6 }}>
             <Form.Item>
-              <Button className="primaryButton" htmlType="submit">
+              <Button className="primary-button" htmlType="submit">
                 OK
               </Button>
             </Form.Item>
           </Col>
           <Col lg={{ span: 4, offset: 0 }} xs={{ span: 4, offset: 2 }}>
             <Form.Item>
-              <Button className="outlinePrimaryButton">Reset</Button>
+              <Button className="outline-primary-button">Reset</Button>
             </Form.Item>
           </Col>
           <Col lg={{ span: 4, offset: 0 }} xs={{ span: 4, offset: 2 }}>
             <Form.Item>
-              <Button className="outlineSecondaryButton">Cancel</Button>
+              <Button className="outline-secondary-button">Cancel</Button>
             </Form.Item>
           </Col>
         </Row>

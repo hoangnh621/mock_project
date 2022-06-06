@@ -1,18 +1,40 @@
-import { Form, Input, Select } from 'antd'
-import React from 'react'
+import { AutoComplete, Form, Input, Select } from 'antd'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import { MESSAGE_REQUIRED } from '../../../common/message'
+import { API_BANK_LIST } from '../../../services/apiBankList'
 
 const { Option } = Select
 
 function FormFirstRight() {
+  const [bankList, setBankList] = useState([])
+
+  useEffect(() => {
+    const getBankList = async () => {
+      await axios.get(API_BANK_LIST).then((res) => {
+        if (res) {
+          const bankNameList = res?.data?.data?.map((item) => item.short_name)
+          const bankNameListUnique = [...new Set(bankNameList)]
+          const result = bankNameListUnique.map((bankName) => {
+            return {
+              value: bankName,
+            }
+          })
+          setBankList(result)
+        }
+      })
+    }
+    getBankList()
+  }, [])
+
   return (
     <Form.Item>
-      <Form.Item label="Nick name" name="nickName">
-        <Input />
+      <Form.Item label="Nick name" name="nick_name">
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Other email"
-        name="otherEmail"
+        name="other_email"
         rules={[
           {
             required: true,
@@ -24,7 +46,7 @@ function FormFirstRight() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Skype"
@@ -37,14 +59,14 @@ function FormFirstRight() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item label="Facebook" name="facebook">
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Bank Name"
-        name="bankName"
+        name="bank_name"
         rules={[
           {
             required: true,
@@ -57,11 +79,18 @@ function FormFirstRight() {
           },
         ]}
       >
-        <Input />
+        <AutoComplete
+          className="input-primary"
+          options={bankList}
+          filterOption={(inputValue, option) =>
+            option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+          }
+        />
+        {/* <Input className="input-primary" /> */}
       </Form.Item>
       <Form.Item
         label="Bank Account"
-        name="bankAccount"
+        name="bank_account"
         rules={[
           {
             required: true,
@@ -80,11 +109,11 @@ function FormFirstRight() {
           }),
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Marital Status"
-        name="maritalStatus"
+        name="marital_status"
         rules={[
           {
             required: true,
@@ -101,7 +130,7 @@ function FormFirstRight() {
       </Form.Item>
       <Form.Item
         label="Academic Level"
-        name="academicLevel"
+        name="academic_level"
         rules={[
           {
             type: 'string',
@@ -110,7 +139,7 @@ function FormFirstRight() {
           },
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
     </Form.Item>
   )

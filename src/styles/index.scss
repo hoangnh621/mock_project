@@ -10,7 +10,7 @@ body {
   font-family: 'Montserrat';
 
   //Button
-  .primaryButton {
+  .primary-button {
     background-color: $bgPrimary;
     color: #fff;
     &:hover {
@@ -31,7 +31,7 @@ body {
     }
   }
 
-  .outlinePrimaryButton {
+  .outline-primary-button {
     border-color: $bgPrimary;
     color: $bgPrimary;
     &:hover {
@@ -48,7 +48,7 @@ body {
     }
   }
 
-  .outlineSecondaryButton {
+  .outline-secondary-button {
     &:hover {
       border-color: $bgPrimary;
       color: $bgPrimary;
@@ -64,7 +64,7 @@ body {
   }
 
   //Input
-  .inputPrimary {
+  .input-primary {
     &:hover {
       border-color: $bgPrimary;
       span {
@@ -97,8 +97,28 @@ body {
     border-color: $bgPrimary;
   }
 
+  //Select
+
+  .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    &:hover {
+      border-color: $bgPrimary;
+    }
+  }
+
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
+    border-color: $bgPrimary;
+    box-shadow: 0 0 0 2px $blurPrimaryInput;
+  }
+
+  //Picker
+  .ant-picker {
+    &:hover {
+      border-color: $bgPrimary;
+    }
+  }
   //Message
-  .warningMessage {
+  .warning-message {
     color: $bgWarning !important;
   }
 }

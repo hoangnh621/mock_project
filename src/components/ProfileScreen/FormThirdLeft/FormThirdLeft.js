@@ -6,45 +6,49 @@ function FormThirdLeft() {
     <Form.Item>
       <Form.Item
         label="Tax Identification"
-        name="Tax Identification 1"
+        name="tax_identification"
         rules={[
           () => ({
             validator(_, value) {
-              if (isNaN(value)) {
-                return Promise.reject('Should be number!')
-              }
-              if (value.length > 20) {
-                return Promise.reject("Can't be more than 20 digits!")
+              if (value) {
+                if (isNaN(value)) {
+                  return Promise.reject('Should be number!')
+                }
+                if (value.length > 20) {
+                  return Promise.reject("Can't be more than 20 digits!")
+                }
               }
               return Promise.resolve()
             },
           }),
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Insurance Number"
-        name="Insurance Number"
+        name="insurance_number"
         rules={[
           () => ({
             validator(_, value) {
-              if (isNaN(value)) {
-                return Promise.reject('Should be number!')
-              }
-              if (value.length > 20) {
-                return Promise.reject("Can't be more than 20 digits!")
+              if (value) {
+                if (isNaN(value)) {
+                  return Promise.reject('Should be number!')
+                }
+                if (value.length > 20) {
+                  return Promise.reject("Can't be more than 20 digits!")
+                }
               }
               return Promise.resolve()
             },
           }),
         ]}
       >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
       <Form.Item
         label="Healthcare Provider"
-        name="Healthcare Provider"
+        name="healthcare_provider"
         rules={[
           {
             type: 'string',
@@ -53,26 +57,7 @@ function FormThirdLeft() {
           },
         ]}
       >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Tax Identification"
-        name="Tax Identification 2"
-        rules={[
-          () => ({
-            validator(_, value) {
-              if (isNaN(value)) {
-                return Promise.reject('Should be number!')
-              }
-              if (value.length > 20) {
-                return Promise.reject("Can't be more than 20 digits!")
-              }
-              return Promise.resolve()
-            },
-          }),
-        ]}
-      >
-        <Input />
+        <Input className="input-primary" />
       </Form.Item>
     </Form.Item>
   )
