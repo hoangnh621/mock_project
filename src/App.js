@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
-import Header from '../src/layout/Header/Header'
+import Header from './layout/header/Header'
 import './styles/index.scss'
 import getLocalStorageItem from './utils/helpers/handleLocalStorageItems/getLocalStorageItem'
 function App() {

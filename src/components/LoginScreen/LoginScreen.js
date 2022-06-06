@@ -51,7 +51,7 @@ const LoginScreen = () => {
         <div className="wrapForm">
           <h3>Welcome to Relipa Portal! &#128075;</h3>
           <p>Please login to your account and get started</p>
-          {error && <p className="warningMessage">{error}</p>}
+          {error && <p className="warning-message">{error}</p>}
           <Form layout="vertical" labelAlign="left">
             <Form.Item
               label="Email"
@@ -68,7 +68,7 @@ const LoginScreen = () => {
               ]}
             >
               <Input
-                className="inputPrimary"
+                className="input-primary"
                 size="large"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -97,7 +97,7 @@ const LoginScreen = () => {
               ]}
             >
               <Input.Password
-                className="inputPrimary"
+                className="input-primary"
                 size="large"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -107,7 +107,7 @@ const LoginScreen = () => {
               <Button
                 htmlType="submit"
                 block
-                className="primaryButton"
+                className="primary-button"
                 size="large"
                 loading={loading}
                 onClick={handleLogin}
