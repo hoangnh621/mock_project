@@ -51,7 +51,7 @@ const LoginScreen = () => {
         <div className="wrapForm">
           <h3>Welcome to Relipa Portal! &#128075;</h3>
           <p>Please login to your account and get started</p>
-          {error && <p>Incorrect email or password</p>}
+          {error && <p className="warningMessage">{error}</p>}
           <Form layout="vertical" labelAlign="left">
             <Form.Item
               label="Email"
@@ -81,6 +81,14 @@ const LoginScreen = () => {
                 {
                   required: true,
                   message: 'Please input your password!',
+                },
+                {
+                  min: 8,
+                  message: 'Password contains at least 8 characters',
+                },
+                {
+                  max: 32,
+                  message: 'Password contains at most 32 characters',
                 },
                 {
                   pattern: /(^\S*$)/g,
