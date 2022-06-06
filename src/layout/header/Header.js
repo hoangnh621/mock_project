@@ -5,7 +5,7 @@ import {
 } from '@ant-design/icons'
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
 import './Header.scss'
@@ -22,7 +22,7 @@ const Header = () => {
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <Link className="logo-link" to="/">
+        <Link className="logo-link" to="/edit-profile">
           <div className="logo">
             <img src={logo} alt="logo" className="logo-image"></img>
             <div className="logo-name">Portal Relipa</div>
@@ -30,15 +30,15 @@ const Header = () => {
         </Link>
         <div className="nav-links">
           <div className="wrap-link">
-            <Link className="link" to="/">
+            <NavLink className="link" to="/worksheet">
               Home
-            </Link>
+            </NavLink>
             <div className="underline-link"></div>
           </div>
           <div className="wrap-link">
-            <Link className="link" to="/">
+            <NavLink className="link" to="/login">
               Timesheet
-            </Link>
+            </NavLink>
             <div className="underline-link"></div>
           </div>
         </div>
