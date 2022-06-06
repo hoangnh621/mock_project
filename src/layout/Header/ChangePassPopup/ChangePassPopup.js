@@ -1,14 +1,45 @@
-import { Button, Col, Form, Input, Modal, Row } from 'antd'
-import PropTypes from 'prop-types'
+import { Button, Col, Form, Input, message, Modal, Row } from 'antd'
+import { useDispatch, useSelector } from 'react-redux'
 import XIcon from '../../../common/XIcon/XIcon'
+import {
+  changePass,
+  getChangePassLoading,
+} from '../../../store/reducer/changePassSlice'
 import './ChangePassPopup.scss'
 
 const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
-  const handleOk = () => {
-    setToggleModal(false)
+  const [form] = Form.useForm()
+  const loading = useSelector(getChangePassLoading)
+
+  const dispatch = useDispatch()
+
+  const onFinish = (values) => {
+    dispatch(changePass(values))
+    form.setFieldsValue({
+      oldPassword: '',
+      confirmPassword: '',
+      newPassword: '',
+    })
   }
   const handleCancel = () => {
     setToggleModal(false)
+    form.setFieldsValue({
+      oldPassword: '',
+      confirmPassword: '',
+      newPassword: '',
+    })
+  }
+
+  const onFill = () => {
+    form.setFieldsValue({
+      oldPassword: '',
+      confirmPassword: '',
+      newPassword: '',
+    })
+  }
+
+  const onFinishFailed = () => {
+    message.error('Submit failed!')
   }
 
   return (
@@ -16,16 +47,18 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
       className="modalChangePass"
       title="Change Pass"
       visible={toggleModal}
-      onOk={handleOk}
       onCancel={handleCancel}
       closeIcon={<XIcon />}
       footer={null}
     >
       <Form
+        form={form}
         labelCol={{ span: 10 }}
         wrapperCol={{ span: 14 }}
         labelAlign="left"
         className="formChangePass"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
       >
         <Form.Item
           label="Old password"
@@ -63,7 +96,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             },
             {
               required: true,
-              message: 'Please input your old password!',
+              message: 'Please input your new password!',
             },
             {
               min: 8,
@@ -90,7 +123,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
             },
             {
               required: true,
-              message: 'Please input your old password!',
+              message: 'Please input confirmation password!',
             },
             {
               min: 8,
@@ -119,22 +152,33 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
         >
           <Input.Password className="input-primary" />
         </Form.Item>
-        <Row>
-          <Col lg={{ span: 3, offset: 13 }} xs={{ span: 3, offset: 6 }}>
+        <Row className="button-group">
+          <Col className="mr-20">
             <Form.Item>
-              <Button className="primary-button" htmlType="submit">
+              <Button
+                className="primary-button"
+                htmlType="submit"
+                loading={loading}
+              >
                 OK
               </Button>
             </Form.Item>
           </Col>
-          <Col lg={{ span: 4, offset: 0 }} xs={{ span: 4, offset: 2 }}>
+          <Col className="mr-20">
             <Form.Item>
-              <Button className="outline-primary-button">Reset</Button>
+              <Button className="outline-primary-button" onClick={onFill}>
+                Reset
+              </Button>
             </Form.Item>
           </Col>
-          <Col lg={{ span: 4, offset: 0 }} xs={{ span: 4, offset: 2 }}>
+          <Col>
             <Form.Item>
-              <Button className="outline-secondary-button">Cancel</Button>
+              <Button
+                className="outline-secondary-button"
+                onClick={handleCancel}
+              >
+                Cancel
+              </Button>
             </Form.Item>
           </Col>
         </Row>
@@ -143,9 +187,9 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
   )
 }
 
-ChangePassPopup.propTypes = {
-  toggleModal: PropTypes.bool.isRequired,
-  setToggleModal: PropTypes.func.isRequired,
-}
+// ChangePassPopup.propTypes = {
+//   toggleModal: PropTypes.bool.isRequired,
+//   setToggleModal: PropTypes.func.isRequired,
+// }
 
 export default ChangePassPopup
