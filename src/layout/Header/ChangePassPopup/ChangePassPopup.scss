@@ -20,4 +20,13 @@
       color: $bgPrimary;
     }
   }
+
+  .button-group {
+    justify-content: center;
+    width: 100%;
+
+    .mr-20 {
+      margin-right: 20px;
+    }
+  }
 }
