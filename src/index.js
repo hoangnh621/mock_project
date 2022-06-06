@@ -4,11 +4,7 @@ import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
-import HomeScreen from './components/HomeScreen/HomeScreen'
-import LoginScreen from './components/LoginScreen/LoginScreen'
-import PageNotFound from './components/PageNotFound/PageNotFound'
-import ProfileScreen from './components/ProfileScreen/ProfileScreen'
-import WorkSheetScreen from './components/WorkSheetScreen/WorkSheetScreen'
+import { publicRoutes, otherRoutes } from './routes'
 import { store } from './store/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
@@ -18,12 +14,15 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route index element={<HomeScreen />} />
-            <Route path="edit-profile" element={<ProfileScreen />} />
-            <Route path="worksheet" element={<WorkSheetScreen />} />
+            {publicRoutes.map((route, index) => {
+              const Page = route.component
+              return <Route key={index} path={route.path} element={<Page />} />
+            })}
           </Route>
-          <Route path="login" element={<LoginScreen />} />
-          <Route path="*" element={<PageNotFound />} />
+          {otherRoutes.map((route, index) => {
+            const Page = route.component
+            return <Route key={index} path={route.path} element={<Page />} />
+          })}
         </Routes>
       </BrowserRouter>
     </Provider>

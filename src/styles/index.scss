@@ -96,4 +96,9 @@ body {
   .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
     border-color: $bgPrimary;
   }
+
+  //Message
+  .warningMessage {
+    color: $bgWarning !important;
+  }
 }
