@@ -6,15 +6,16 @@ import {
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { logout } from '../../store/reducer/loginSlice'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
+import ChangePassPopup from './ChangePassPopup/ChangePassPopup'
 import './Header.scss'
 import logo from './logo.png'
-
 const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
+  const [toggleModal, setToggleModal] = useState(false)
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
@@ -24,10 +25,16 @@ const Header = () => {
     dispatch(logout())
     navigate('/login')
   }
+
+  const handleClickChangePass = () => {
+    setShowSubMenu(false)
+    setToggleModal(true)
+  }
+
   return (
     <div className="navbar">
       <div className="navbar-left">
-        <Link className="logo-link" to="/">
+        <Link className="logo-link" to="/edit-profile">
           <div className="logo">
             <img src={logo} alt="logo" className="logo-image"></img>
             <div className="logo-name">Portal Relipa</div>
@@ -35,15 +42,15 @@ const Header = () => {
         </Link>
         <div className="nav-links">
           <div className="wrap-link">
-            <Link className="link" to="/">
+            <NavLink className="link" to="/">
               Home
-            </Link>
+            </NavLink>
             <div className="underline-link"></div>
           </div>
           <div className="wrap-link">
-            <Link className="link" to="/">
+            <NavLink className="link" to="/timesheet">
               Timesheet
-            </Link>
+            </NavLink>
             <div className="underline-link"></div>
           </div>
         </div>
@@ -63,7 +70,7 @@ const Header = () => {
           </div>
           <div className={showSubMenu ? 'sub-menu show' : 'sub-menu hide'}>
             <div className="sub-menu-items">
-              <div className="sub-menu-item">
+              <div className="sub-menu-item" onClick={handleClickChangePass}>
                 <FormOutlined className="icon" />
                 Change pass
               </div>
@@ -75,6 +82,10 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <ChangePassPopup
+        setToggleModal={setToggleModal}
+        toggleModal={toggleModal}
+      />
     </div>
   )
 }
