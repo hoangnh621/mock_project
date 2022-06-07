@@ -40,22 +40,22 @@ $font-size-link: 16px;
         font-size: 20px;
       }
     }
-    .active {
-      background-color: rgb(237, 237, 237);
-    }
     .nav-links {
       display: flex;
       align-items: center;
       .wrap-link {
-        padding: 10px 20px;
+        padding: 10px 15px;
         .link {
+          display: block;
           color: black;
           font-size: $font-size-link;
           padding: 5px 10px;
           border-radius: 4px;
-          display: block;
-          min-width: 65px;
+          min-width: 80px;
           text-align: center;
+        }
+        .link.active .underline-link {
+          width: 100%;
         }
         .underline-link {
           width: 0;
@@ -72,9 +72,10 @@ $font-size-link: 16px;
 
   // CSS for nav bar right
   .navbar-right {
-    margin-right: 20px;
+    margin-right: 10px;
 
     .user-function {
+      cursor: pointer;
       display: flex;
       align-items: center;
       .user-avatar .avatar {
@@ -84,9 +85,12 @@ $font-size-link: 16px;
         border-radius: 50%;
         margin: 0 7px;
       }
+
+      &:active {
+        background-color: whitesmoke;
+      }
       .down-arrow {
         font-size: 20px;
-        cursor: pointer;
         transition: ease 300ms;
         &:hover {
           color: rgb(94, 94, 94);
@@ -101,7 +105,7 @@ $font-size-link: 16px;
         opacity: 1;
         transform: translateY(0);
         position: absolute;
-        transition: ease 300ms;
+        transition: ease 200ms;
         right: 0;
         bottom: -100px;
         min-width: 180px;
@@ -151,9 +155,8 @@ $font-size-link: 16px;
       }
       .nav-links {
         .wrap-link {
-          padding: 10px 5px;
+          padding: 10px 2px;
           .link {
-            padding: 5px 10px;
             font-size: 15px;
             min-width: 60px;
             text-align: center;

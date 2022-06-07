@@ -33,42 +33,38 @@ const Header = () => {
 
   return (
     <div className="navbar">
-      <ChangePassPopUp
-        toggleModal={showChangePassPopUp}
-        setToggleModal={setShowChangePassPopUp}
-      />
       <div className="navbar-left">
         <Link className="logo-link" to="/edit-profile">
           <div className="logo">
             <img src={logo} alt="logo" className="logo-image"></img>
-            <div className="logo-name">Portal Relipa</div>
+            <div className="logo-name">Relipa Portal</div>
           </div>
         </Link>
         <div className="nav-links">
           <div className="wrap-link">
             <NavLink className="link" to="/">
-              Home
+              <span>Home</span>
+              <div className="underline-link"></div>
             </NavLink>
-            <div className="underline-link"></div>
           </div>
           <div className="wrap-link">
-            <NavLink className="link" to="/timesheet">
-              Timesheet
+            <NavLink className="link" to="/edit-profile">
+              <span>Timesheet</span>
+              <div className="underline-link"></div>
             </NavLink>
-            <div className="underline-link"></div>
           </div>
         </div>
       </div>
       <div className="navbar-right">
         <div className="navbar-right-item">
-          <div className="user-function">
+          <div
+            className="user-function"
+            onClick={() => setShowSubMenu(!showSubMenu)}
+          >
             <div className="user-avatar">
               <img className="avatar" alt="avatar" src={avatar}></img>
             </div>
-            <div
-              className="down-arrow"
-              onClick={() => setShowSubMenu(!showSubMenu)}
-            >
+            <div className="down-arrow">
               <CaretDownOutlined />
             </div>
           </div>
