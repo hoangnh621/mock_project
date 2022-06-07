@@ -20,7 +20,7 @@ const Header = () => {
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
   const handleLogOut = () => {
-    axiosPrivate.delete()
+    // axiosPrivate.delete()
     localStorage.clear()
     dispatch(logout())
     navigate('/login')
