@@ -3,11 +3,9 @@ import {
   FormOutlined,
   LogoutOutlined,
 } from '@ant-design/icons'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
-import { logout } from '../../store/reducer/loginSlice'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
 import ChangePassPopup from './ChangePassPopup/ChangePassPopup'
@@ -18,15 +16,24 @@ const Header = () => {
   const [toggleModal, setToggleModal] = useState(false)
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
-  const dispatch = useDispatch()
-  const handleLogOut = () => {
-    // axiosPrivate.delete()
-    localStorage.clear()
-    dispatch(logout())
-    navigate('/login')
+
+  useEffect(() => {
+    async function getProfileUser() {
+      const res = await axiosPrivate.get('/member/profile')
+      console.log(res.data)
+    }
+    getProfileUser()
+  })
+  const handleLogOut = async () => {
+    const res = await axiosPrivate.delete('/auth/logout')
+    if (res.status === 200) {
+      localStorage.clear()
+      navigate('/login')
+    }
   }
 
   const handleClickChangePass = () => {
+    alert('clicked')
     setShowSubMenu(false)
     setToggleModal(true)
   }
