@@ -5,7 +5,6 @@ import logo from '../src/layout/header/logo.png'
 import Header from './layout/header/Header'
 import './styles/index.scss'
 import getLocalStorageItem from './utils/helpers/handleLocalStorageItems/getLocalStorageItem'
-
 function App() {
   const navigate = useNavigate()
   const accessToken = getLocalStorageItem('accessToken')
