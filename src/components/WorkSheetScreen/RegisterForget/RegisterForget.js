@@ -1,9 +1,8 @@
 import { Button, Checkbox, Form, Input, Modal, TimePicker } from 'antd'
 import moment from 'moment'
 import { useState } from 'react'
+import MESSAGE_REQUIRED from '../../../common/message'
 import './RegisterForget.scss'
-
-// moment(new Date()).format('YYYY-MM-DD HH:mm')
 function RegisterForget() {
   const [isModalVisible, setIsModalVisible] = useState(true)
   const registrationDate = moment(new Date()).format('DD-MM-YYYY HH:mm')
@@ -56,14 +55,14 @@ function RegisterForget() {
           <Form.Item
             label="Checkin:"
             name="checkin"
-            rules={[{ required: true, message: 'Can not empty' }]}
+            rules={[{ required: true, message: MESSAGE_REQUIRED }]}
           >
             <TimePicker format={format} />
           </Form.Item>
           <Form.Item
             label="Checkout:"
             name="checkout"
-            rules={[{ required: true, message: 'Can not empty' }]}
+            rules={[{ required: true, message: MESSAGE_REQUIRED }]}
           >
             <TimePicker format={format} />
           </Form.Item>

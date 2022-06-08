@@ -4,8 +4,10 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
+import { saveUserProfile } from '../../store/reducer/userProfileSlice'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import avatar from './avatar.png'
 import ChangePassPopup from './ChangePassPopup/ChangePassPopup'
@@ -16,14 +18,18 @@ const Header = () => {
   const [toggleModal, setToggleModal] = useState(false)
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
-
+  const dispatch = useDispatch()
+  console.log(useSelector((state) => state.userProfileSlice))
   useEffect(() => {
     async function getProfileUser() {
       const res = await axiosPrivate.get('/member/profile')
-      console.log(res.data)
+      const userProfile = res.data.member
+      if (res.status === 200) {
+        dispatch(saveUserProfile(userProfile))
+      }
     }
     getProfileUser()
-  })
+  }, [])
   const handleLogOut = async () => {
     const res = await axiosPrivate.delete('/auth/logout')
     if (res.status === 200) {
