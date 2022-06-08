@@ -20,19 +20,18 @@ const Profile = () => {
   const [form] = Form.useForm()
 
   useEffect(() => {
+    const getUserProfile = async () => {
+      const res = await axiosPrivate.get(`/member/profile`)
+      if (res) {
+        setUserProfile(res.data.member)
+      }
+    }
     getUserProfile()
   }, [axiosPrivate, isShow])
 
   useEffect(() => {
     document.title = 'Edit Profile'
   }, [])
-
-  const getUserProfile = async () => {
-    const res = await axiosPrivate.get(`/member/profile`)
-    if (res) {
-      setUserProfile(res.data.member)
-    }
-  }
 
   const handleSubmit = async (values) => {
     const birth_date = moment(values['birth_date']).format('YYYY-MM-DD')

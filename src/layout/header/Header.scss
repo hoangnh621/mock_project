@@ -1,4 +1,4 @@
-@import "../../styles/color";
+@import '../../styles/color';
 $font-size-link: 16px;
 .navbar {
   position: fixed;
@@ -21,6 +21,7 @@ $font-size-link: 16px;
 
   // CSS for nav bar left
   .navbar-left {
+    margin-left: 1%;
     display: flex;
     align-items: center;
     .logo-link {
@@ -34,7 +35,7 @@ $font-size-link: 16px;
       .logo-image {
         width: 45px;
         height: 45px;
-        margin: 6px 10px;
+        margin-right: 5px;
       }
       .logo-name {
         font-size: 20px;
@@ -72,7 +73,7 @@ $font-size-link: 16px;
 
   // CSS for nav bar right
   .navbar-right {
-    margin-right: 20px;
+    margin-right: 1%;
 
     .user-function {
       display: flex;

@@ -32,7 +32,7 @@ const Header = () => {
   }
 
   return (
-    <div className="navbar">
+    <div className="navbar" id="header">
       <div className="navbar-left">
         <Link className="logo-link" to="/edit-profile">
           <div className="logo">

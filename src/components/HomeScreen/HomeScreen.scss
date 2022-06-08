@@ -1,0 +1,38 @@
+@import '../../styles/color';
+
+.home-screen {
+  background-color: $bgLogin;
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 1%;
+  .container-home-screen {
+    height: 100%;
+    padding-top: 1%;
+    .header-home-screen {
+      height: 10%;
+      h3 {
+        font-size: 18px;
+      }
+    }
+    .body-home-screen {
+      overflow: auto;
+      height: 80%;
+    }
+    .footer-home-screen {
+      height: 10%;
+      .pagination-notice {
+        display: flex;
+        justify-content: center;
+      }
+      .select-item-per-page {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        p {
+          margin: 0 5px 0 0;
+          height: 18px;
+        }
+      }
+    }
+  }
+}
