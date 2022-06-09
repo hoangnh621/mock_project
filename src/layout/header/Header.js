@@ -16,7 +16,6 @@ const Header = () => {
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
-  console.log(useSelector((state) => state.userProfileSlice))
   useEffect(() => {
     async function getProfileUser() {
       const res = await axiosPrivate.get('/member/profile')
