@@ -3,7 +3,7 @@ import moment from 'moment'
 import { useState } from 'react'
 import { MESSAGE_REQUIRED } from '../../../common/message'
 import './RegisterForget.scss'
-function RegisterForget() {
+const RegisterForget = () => {
   const [isModalVisible, setIsModalVisible] = useState(true)
   const registrationDate = moment(new Date()).format('DD-MM-YYYY HH:mm')
   const registerForDate = moment(new Date()).format('DD-MM-YYYY')
