@@ -1,20 +1,20 @@
 import { Button, Form, Modal } from 'antd'
 import 'antd/dist/antd.min.css'
 import React, { useState } from 'react'
-import OverTime from '../../common/popup/OverTime/OverTime'
+import RegisterOverTime from './RegisterOverTime/RegisterOverTime'
 import './WorkSheetScreen.scss'
 
-const WorkSheet = () => {
+const WorkSheetScreen = () => {
   const [isModalVisible, setIsModalVisible] = useState(true)
   const showModal = () => {
     setIsModalVisible(true)
   }
   const onFinish = (values) => {
-    console.log(values)
+    console.log('Success:', values)
   }
 
   const onFinishFailed = (errorInfo) => {
-    console.log(errorInfo)
+    console.log('Failed:', errorInfo)
   }
   return (
     <>
@@ -25,39 +25,39 @@ const WorkSheet = () => {
       <Modal
         title="Register OT"
         visible={isModalVisible}
-        onOk={() => setIsModalVisible(true)}
-        onCancel={() => setIsModalVisible(false)}
+        // onOk={() => setIsModalVisible(false)}
+        // onCancel={() => setIsModalVisible(false)}
         width="80%"
-        okText="Register"
-        okButtonProps={{ style: { marginRight: '20px' } }}
         className="modal_ot"
-        cancelText="Cancel"
+        footer={null}
       >
-        <OverTime />
+        <RegisterOverTime />
         <>
           <Form
-            name="basic"
-            labelCol={{
-              span: 8,
-            }}
-            wrapperCol={{
-              span: 16,
-            }}
-            initialValues={
-              {
-                // required: true,
-                // reason: '',
-              }
-            }
-            scrollToFirstError
+            initialValues={{}}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-          ></Form>
+          >
+            <div className="btn-register">
+              <Form.Item wrapperCol={{ offset: 9, span: 12 }}>
+                <Button className="primary-button" htmlType="submit">
+                  Update
+                </Button>
+                <Button
+                  onClick={() => setIsModalVisible(false)}
+                  className="outline-primary-button "
+                >
+                  {/* {' '} */}
+                  Cancel
+                </Button>
+              </Form.Item>
+            </div>
+          </Form>
         </>
       </Modal>
     </>
   )
 }
 
-export default WorkSheet
+export default WorkSheetScreen

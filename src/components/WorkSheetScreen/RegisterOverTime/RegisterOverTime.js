@@ -29,7 +29,13 @@ function RegisterOverTime() {
       },
     ],
   }
+  // const onFinish = (values) => {
+  //   console.log('Success:', values)
+  // }
 
+  // const onFinishFailed = (errorInfo) => {
+  //   console.log('Failed:', errorInfo)
+  // }
   return (
     <div className="container">
       <Form>
@@ -38,9 +44,7 @@ function RegisterOverTime() {
             <h4 className="w-140 mr-20">Registration date:</h4>
           </Col>
           <Col>
-            {/* <Row> */}
             <p>{registrationDate}</p>
-            {/* </Row> */}
           </Col>
         </Row>
 
