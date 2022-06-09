@@ -1,26 +1,14 @@
 @import '../../../styles/color';
-.register-forget-footer {
-  text-align: center;
-  button {
-    margin-right: 20px;
-    min-width: 80px;
-    padding: 5px 10px;
-    cursor: pointer;
+.register-forget {
+  .ant-input {
+    margin: 0;
+    padding: 0;
+  }
+  .button {
+    text-align: center;
     border: none;
-    transition: ease 500ms;
-    &:hover {
-      transform: scale(1.1);
+    button {
+      background-color: $bgPrimary;
     }
   }
-  button.register-button {
-    background-color: $bgPrimary;
-  }
-  button.cancel-button {
-    background-color: rgb(214, 214, 214);
-  }
-}
-
-.register-forget-checkboxs {
-  display: flex;
-  flex-wrap: wrap;
 }
