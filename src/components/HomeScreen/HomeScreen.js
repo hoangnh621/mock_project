@@ -1,14 +1,27 @@
-import { Col, Pagination, Row, Select, Table } from 'antd'
+import {
+  DoubleLeftOutlined,
+  DoubleRightOutlined,
+  LeftOutlined,
+  RightOutlined,
+} from '@ant-design/icons'
+import { Button, Col, Pagination, Row, Select, Table } from 'antd'
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { getNotice, getNoticeState } from '../../store/reducer/homeSlice'
+import {
+  getNotice,
+  getNoticeDetail,
+  getNoticeState,
+} from '../../store/reducer/homeSlice'
 import calculateComponentHeight from '../../utils/helpers/handleSize/calculateComponentHeight'
 import './HomeScreen.scss'
 import NoticeDetail from './NoticeDetail/NoticeDetail'
 
 const HomeScreen = () => {
+  const [dataSourceState, setDataSourceState] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
   const [toggleModal, setToggleModal] = useState(false)
   const { Option } = Select
   const homeScreen = useRef(null)
@@ -20,35 +33,44 @@ const HomeScreen = () => {
   }, [])
   // Get notices
   useEffect(() => {
-    dispatch(getNotice())
-  }, [dispatch])
+    dispatch(getNotice({ page: 1, per_page: pageSize }))
+  }, [dispatch, pageSize])
   useEffect(() => {
     console.log('dataNotice', dataNotice)
     console.log('notice', notice)
   })
-  const dataSource = dataNotice?.map((notice, index) => {
-    const publishedTo = notice?.published_to
-    let toDepartment = ''
-    const publishedDate = moment(notice.published_date).format('DD/MM/YYYY')
-    if (typeof publishedTo === 'string') {
-      toDepartment = 'All'
-    } else {
-      toDepartment = notice?.published_to[0].division_name
-    }
-    return {
-      key: +index,
-      no: index + 1,
-      subject: notice.subject,
-      author: notice.author.full_name,
-      toDepartment: toDepartment,
-      publishedDate: publishedDate,
-      attachment: notice.attachment,
-      detail: 'view',
-    }
-  })
+  useMemo(() => {
+    const dataSource = dataNotice?.map((notice, index) => {
+      const publishedTo = notice?.published_to
+      let toDepartment = ''
+      const publishedDate = moment(notice.published_date).format('DD/MM/YYYY')
+      if (typeof publishedTo === 'string') {
+        toDepartment = 'All'
+      } else {
+        toDepartment = notice?.published_to[0].division_name
+      }
+      return {
+        key: +index,
+        no: index + 1,
+        subject: notice.subject,
+        author: notice.author.full_name,
+        toDepartment: toDepartment,
+        publishedDate: publishedDate,
+        attachment: notice.attachment,
+        detail: {
+          content: 'view',
+          rowId: notice.id,
+          toDepartment,
+          publishedDate,
+        },
+      }
+    })
+    setDataSourceState(dataSource)
+  }, [dataNotice])
 
-  const handleShowNoticeDetail = () => {
+  const handleShowNoticeDetail = (rowId, toDepartment, publishedDate) => {
     setToggleModal(true)
+    dispatch(getNoticeDetail({ noticeId: rowId, toDepartment, publishedDate }))
   }
 
   // Calculate home screen height
@@ -69,6 +91,16 @@ const HomeScreen = () => {
     window.addEventListener('resize', handleResize)
     return () => window.addEventListener('resize', handleResize)
   }, [])
+
+  const onPageChange = (page, pageSize) => {
+    dispatch(getNotice({ page, per_page: pageSize }))
+    setCurrentPage(page)
+  }
+
+  const onShowSizeChange = (current, size) => {
+    console.log('current', current)
+    console.log('size', size)
+  }
 
   const columns = [
     {
@@ -118,13 +150,20 @@ const HomeScreen = () => {
       title: 'Detail',
       dataIndex: 'detail',
       key: 'detail',
-      render: (text) => (
-        <Link to="./" onClick={handleShowNoticeDetail}>
-          {text}
+      render: ({ content, rowId, toDepartment, publishedDate }) => (
+        <Link
+          to="./"
+          onClick={() =>
+            handleShowNoticeDetail(rowId, toDepartment, publishedDate)
+          }
+        >
+          {content}
         </Link>
       ),
     },
   ]
+
+  console.log('dataSourceState', dataSourceState)
 
   return (
     <div ref={homeScreen} className="home-screen">
@@ -134,7 +173,7 @@ const HomeScreen = () => {
         </div>
         <div className="body-home-screen">
           <Table
-            dataSource={dataSource}
+            dataSource={[...dataSourceState]}
             columns={columns}
             pagination={{
               position: ['none'],
@@ -150,13 +189,76 @@ const HomeScreen = () => {
           </Col>
           <Col span={16}>
             <div className="pagination-notice">
-              <Pagination defaultCurrent={1} total={50} />
+              <Pagination
+                current={currentPage}
+                pageSize={pageSize}
+                defaultCurrent={1}
+                showSizeChanger={false}
+                total={notice?.official_notice.total || 1}
+                onChange={onPageChange}
+                onShowSizeChange={onShowSizeChange}
+                className="custom-pagination"
+                itemRender={(page, type, element) => {
+                  if (type === 'prev') {
+                    return (
+                      <>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            dispatch(getNotice({ page: 1, per_page: pageSize }))
+                            setCurrentPage(1)
+                          }}
+                        >
+                          <DoubleLeftOutlined />
+                        </Button>
+                        <Button style={{ marginLeft: 10 }}>
+                          <LeftOutlined />
+                        </Button>
+                      </>
+                    )
+                  }
+
+                  if (type === 'next') {
+                    return (
+                      <>
+                        <Button style={{ marginRight: 10 }}>
+                          <RightOutlined />
+                        </Button>
+                        <Button
+                          onClick={(e) => {
+                            e.stopPropagation()
+                            dispatch(
+                              getNotice({
+                                page: notice?.official_notice.last_page || 1,
+                                per_page: pageSize,
+                              }),
+                            )
+                            setCurrentPage(
+                              notice?.official_notice.last_page || 1,
+                            )
+                          }}
+                        >
+                          <DoubleRightOutlined />
+                        </Button>
+                      </>
+                    )
+                  }
+
+                  return element
+                }}
+              />
             </div>
           </Col>
           <Col span={4}>
             <div className="select-item-per-page">
               <p>Items per page</p>
-              <Select defaultValue={10}>
+              <Select
+                defaultValue={10}
+                onChange={(value) => {
+                  setPageSize(value)
+                  dispatch(getNotice({ page: 1, per_page: value }))
+                }}
+              >
                 {notice?.per_page_config?.map((item) => {
                   return (
                     <Option key={item} value={item}>
