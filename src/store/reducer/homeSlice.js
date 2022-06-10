@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { handleHomeTableData } from '../../utils/helpers/handleTableData/index'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 
 export const getNotice = createAsyncThunk(
@@ -6,7 +7,7 @@ export const getNotice = createAsyncThunk(
   async (args) => {
     const axiosPrivate = useAxiosPrivate()
     const res = await axiosPrivate.get(
-      `/notifications?page=${args.page}&per_page=${args.per_page}`,
+      `/notifications?page=${args.page}&per_page=${args.per_page}&order_published_date=${args.order_published_date}`,
     )
     return res.data
   },
@@ -30,11 +31,15 @@ const noticeSlice = createSlice({
       toDepartment: null,
       publishedDate: null,
     },
+    homeTable: [],
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getNotice.fulfilled, (state, action) => {
       state.notices = action.payload
+      state.homeTable = handleHomeTableData(
+        action.payload?.official_notice.data,
+      )
     })
     builder.addCase(getNoticeDetail.fulfilled, (state, action) => {
       state.noticeDetail.detail = action.payload
@@ -47,3 +52,4 @@ const noticeSlice = createSlice({
 export default noticeSlice.reducer
 export const getNoticeState = (state) => state.homeReducer.notices
 export const getNoticeDetailState = (state) => state.homeReducer.noticeDetail
+export const getHomeTable = (state) => state.homeReducer.homeTable

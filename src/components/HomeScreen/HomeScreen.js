@@ -4,12 +4,12 @@ import {
   LeftOutlined,
   RightOutlined,
 } from '@ant-design/icons'
-import { Button, Col, Pagination, Row, Select, Table } from 'antd'
-import moment from 'moment'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Button, Table } from 'antd'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import {
+  getHomeTable,
   getNotice,
   getNoticeDetail,
   getNoticeState,
@@ -19,54 +19,27 @@ import './HomeScreen.scss'
 import NoticeDetail from './NoticeDetail/NoticeDetail'
 
 const HomeScreen = () => {
-  const [dataSourceState, setDataSourceState] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
+  const [oderPublishedDate, setOderPublishedDate] = useState('desc')
   const [pageSize, setPageSize] = useState(10)
   const [toggleModal, setToggleModal] = useState(false)
-  const { Option } = Select
   const homeScreen = useRef(null)
   const dispatch = useDispatch()
   const notice = useSelector(getNoticeState)
-  const dataNotice = notice?.official_notice.data
+  const dataSource = useSelector(getHomeTable)
   useEffect(() => {
     document.title = 'Home'
   }, [])
   // Get notices
   useEffect(() => {
-    dispatch(getNotice({ page: 1, per_page: pageSize }))
-  }, [dispatch, pageSize])
-  useEffect(() => {
-    console.log('dataNotice', dataNotice)
-    console.log('notice', notice)
-  })
-  useMemo(() => {
-    const dataSource = dataNotice?.map((notice, index) => {
-      const publishedTo = notice?.published_to
-      let toDepartment = ''
-      const publishedDate = moment(notice.published_date).format('DD/MM/YYYY')
-      if (typeof publishedTo === 'string') {
-        toDepartment = 'All'
-      } else {
-        toDepartment = notice?.published_to[0].division_name
-      }
-      return {
-        key: +index,
-        no: index + 1,
-        subject: notice.subject,
-        author: notice.author.full_name,
-        toDepartment: toDepartment,
-        publishedDate: publishedDate,
-        attachment: notice.attachment,
-        detail: {
-          content: 'view',
-          rowId: notice.id,
-          toDepartment,
-          publishedDate,
-        },
-      }
-    })
-    setDataSourceState(dataSource)
-  }, [dataNotice])
+    dispatch(
+      getNotice({
+        page: 1,
+        per_page: pageSize,
+        order_published_date: oderPublishedDate,
+      }),
+    )
+  }, [dispatch, oderPublishedDate, pageSize])
 
   const handleShowNoticeDetail = (rowId, toDepartment, publishedDate) => {
     setToggleModal(true)
@@ -93,13 +66,18 @@ const HomeScreen = () => {
   }, [])
 
   const onPageChange = (page, pageSize) => {
-    dispatch(getNotice({ page, per_page: pageSize }))
+    dispatch(
+      getNotice({
+        page,
+        per_page: pageSize,
+        order_published_date: oderPublishedDate,
+      }),
+    )
     setCurrentPage(page)
   }
 
   const onShowSizeChange = (current, size) => {
-    console.log('current', current)
-    console.log('size', size)
+    setPageSize(size)
   }
 
   const columns = [
@@ -127,18 +105,28 @@ const HomeScreen = () => {
       title: 'Published Date',
       dataIndex: 'publishedDate',
       key: 'publishedDate',
-      sorter: (a, b) => {
-        const calculatePublishedDateValue = (date) => {
-          const year = parseInt(date.slice(-4))
-          const month = parseInt(date.slice(3, date.length - 5))
-          const day = parseInt(date.slice(0, 2))
-          return year * 1000 + month * 100 + day
+      showSorterTooltip: false,
+      sorter: () => {
+        if (oderPublishedDate === 'desc') {
+          setOderPublishedDate('asc')
+        } else {
+          setOderPublishedDate('desc')
         }
-        return (
-          calculatePublishedDateValue(a.publishedDate) -
-          calculatePublishedDateValue(b.publishedDate)
-        )
       },
+      // sortOrder: ['ascend', 'descend'],
+      // sorter: (a, b) => {
+      //   if()
+      // const calculatePublishedDateValue = (date) => {
+      //   const year = parseInt(date.slice(-4))
+      //   const month = parseInt(date.slice(3, date.length - 5))
+      //   const day = parseInt(date.slice(0, 2))
+      //   return year * 1000 + month * 100 + day
+      // }
+      // return (
+      //   calculatePublishedDateValue(a.publishedDate) -
+      //   calculatePublishedDateValue(b.publishedDate)
+      // )
+      // },
     },
     {
       title: 'Attachment',
@@ -163,8 +151,6 @@ const HomeScreen = () => {
     },
   ]
 
-  console.log('dataSourceState', dataSourceState)
-
   return (
     <div ref={homeScreen} className="home-screen">
       <div className="container-home-screen">
@@ -173,103 +159,75 @@ const HomeScreen = () => {
         </div>
         <div className="body-home-screen">
           <Table
-            dataSource={[...dataSourceState]}
+            dataSource={[...dataSource]}
             columns={columns}
             pagination={{
-              position: ['none'],
+              position: ['bottomCenter'],
+              showTotal: (total) => `Total number of records: ${total}`,
+              hideOnSinglePage: true,
+              current: currentPage,
+              pageSize: pageSize,
+              pageSizeOptions: notice?.per_page_config,
+              total: notice?.official_notice.total || 1,
+              onChange: onPageChange,
+              onShowSizeChange: onShowSizeChange,
+              className: 'custom-pagination',
+              itemRender: (page, type, element) => {
+                if (type === 'prev') {
+                  return (
+                    <>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          dispatch(
+                            getNotice({
+                              page: 1,
+                              per_page: pageSize,
+                              order_published_date: oderPublishedDate,
+                            }),
+                          )
+                          setCurrentPage(1)
+                        }}
+                      >
+                        <DoubleLeftOutlined />
+                      </Button>
+                      <Button style={{ marginLeft: 10 }}>
+                        <LeftOutlined />
+                      </Button>
+                    </>
+                  )
+                }
+
+                if (type === 'next') {
+                  return (
+                    <>
+                      <Button style={{ marginRight: 10 }}>
+                        <RightOutlined />
+                      </Button>
+                      <Button
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          dispatch(
+                            getNotice({
+                              page: notice?.official_notice.last_page || 1,
+                              per_page: pageSize,
+                              order_published_date: oderPublishedDate,
+                            }),
+                          )
+                          setCurrentPage(notice?.official_notice.last_page || 1)
+                        }}
+                      >
+                        <DoubleRightOutlined />
+                      </Button>
+                    </>
+                  )
+                }
+
+                return element
+              },
             }}
           />
         </div>
-        <Row className="footer-home-screen" justify="center">
-          <Col span={4}>
-            <p>
-              Total number of records:{' '}
-              <b style={{ fontSize: 16 }}>{notice?.official_notice.total}</b>
-            </p>
-          </Col>
-          <Col span={16}>
-            <div className="pagination-notice">
-              <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                defaultCurrent={1}
-                showSizeChanger={false}
-                total={notice?.official_notice.total || 1}
-                onChange={onPageChange}
-                onShowSizeChange={onShowSizeChange}
-                className="custom-pagination"
-                itemRender={(page, type, element) => {
-                  if (type === 'prev') {
-                    return (
-                      <>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            dispatch(getNotice({ page: 1, per_page: pageSize }))
-                            setCurrentPage(1)
-                          }}
-                        >
-                          <DoubleLeftOutlined />
-                        </Button>
-                        <Button style={{ marginLeft: 10 }}>
-                          <LeftOutlined />
-                        </Button>
-                      </>
-                    )
-                  }
-
-                  if (type === 'next') {
-                    return (
-                      <>
-                        <Button style={{ marginRight: 10 }}>
-                          <RightOutlined />
-                        </Button>
-                        <Button
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            dispatch(
-                              getNotice({
-                                page: notice?.official_notice.last_page || 1,
-                                per_page: pageSize,
-                              }),
-                            )
-                            setCurrentPage(
-                              notice?.official_notice.last_page || 1,
-                            )
-                          }}
-                        >
-                          <DoubleRightOutlined />
-                        </Button>
-                      </>
-                    )
-                  }
-
-                  return element
-                }}
-              />
-            </div>
-          </Col>
-          <Col span={4}>
-            <div className="select-item-per-page">
-              <p>Items per page</p>
-              <Select
-                defaultValue={10}
-                onChange={(value) => {
-                  setPageSize(value)
-                  dispatch(getNotice({ page: 1, per_page: value }))
-                }}
-              >
-                {notice?.per_page_config?.map((item) => {
-                  return (
-                    <Option key={item} value={item}>
-                      {item}
-                    </Option>
-                  )
-                })}
-              </Select>
-            </div>
-          </Col>
-        </Row>
       </div>
       <NoticeDetail toggleModal={toggleModal} setToggleModal={setToggleModal} />
     </div>
