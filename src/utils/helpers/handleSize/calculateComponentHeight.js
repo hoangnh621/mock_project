@@ -1,5 +1,5 @@
-const calculateComponentHeight = (id) => {
-  const component = document.getElementById(id)
+const calculateComponentHeight = (selector) => {
+  const component = document.querySelector(selector)
   return component?.getBoundingClientRect().height
 }
 

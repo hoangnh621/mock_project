@@ -19,6 +19,7 @@ import './HomeScreen.scss'
 import NoticeDetail from './NoticeDetail/NoticeDetail'
 
 const HomeScreen = () => {
+  const [tableScrollHeight, setTableScrollHeight] = useState(0)
   const [currentPage, setCurrentPage] = useState(1)
   const [oderPublishedDate, setOderPublishedDate] = useState('desc')
   const [pageSize, setPageSize] = useState(10)
@@ -46,13 +47,44 @@ const HomeScreen = () => {
     dispatch(getNoticeDetail({ noticeId: rowId, toDepartment, publishedDate }))
   }
 
-  // Calculate home screen height
   useEffect(() => {
-    const headerHeight = calculateComponentHeight('header')
+    // Calculate home screen height
+    const headerHeight = calculateComponentHeight('.navbar')
     const windowHeight = window.innerHeight
     homeScreen.current.style.paddingTop = headerHeight + 'px'
     homeScreen.current.style.height = windowHeight + 'px'
+    // Calculate table scroll height
+    const PAGINATION_MARGIN_TOP = 16
+    const HOME_SCREEN_PADDING_BOTTOM = 32
+    const customPaginationHeight = 32
+    const tableTileHeight = calculateComponentHeight('.header-home-screen')
+    const tableHeaderHeight = calculateComponentHeight('.ant-table-header')
+    const calculateHeight =
+      windowHeight -
+      headerHeight -
+      tableTileHeight -
+      tableHeaderHeight -
+      customPaginationHeight -
+      2 * HOME_SCREEN_PADDING_BOTTOM -
+      PAGINATION_MARGIN_TOP
+    setTableScrollHeight(calculateHeight)
   }, [])
+
+  // Calculate table scroll height
+  // useEffect(() => {
+  //   const PAGINATION_MARGIN_TOP = 16
+  //   const bodyHomeScreenHeight = calculateComponentHeight('.body-home-screen')
+  //   const headerTableHeight = calculateComponentHeight('.ant-table-header')
+  //   const customPaginationHeight =
+  //     calculateComponentHeight('.custom-pagination')
+  //   setTableScrollHeight(
+  //     bodyHomeScreenHeight -
+  //       headerTableHeight -
+  //       customPaginationHeight -
+  //       PAGINATION_MARGIN_TOP,
+  //   )
+  // }, [])
+
   // Recalculate home screen height when resize
   useEffect(() => {
     const handleResize = () => {
@@ -82,29 +114,32 @@ const HomeScreen = () => {
 
   const columns = [
     {
-      title: 'No',
+      title: 'NO',
       dataIndex: 'no',
       key: 'no',
     },
     {
-      title: 'Subject',
+      title: 'SUBJECT',
       dataIndex: 'subject',
       key: 'subject',
     },
     {
-      title: 'Author',
+      title: 'AUTHOR',
       dataIndex: 'author',
       key: 'author',
+      align: 'center',
     },
     {
-      title: 'To Department',
+      title: 'TO DEPARTMENT',
       dataIndex: 'toDepartment',
       key: 'toDepartment',
+      align: 'center',
     },
     {
-      title: 'Published Date',
+      title: 'PUBLISHED DATE',
       dataIndex: 'publishedDate',
       key: 'publishedDate',
+      align: 'center',
       showSorterTooltip: false,
       sorter: () => {
         if (oderPublishedDate === 'desc') {
@@ -113,31 +148,18 @@ const HomeScreen = () => {
           setOderPublishedDate('desc')
         }
       },
-      // sortOrder: ['ascend', 'descend'],
-      // sorter: (a, b) => {
-      //   if()
-      // const calculatePublishedDateValue = (date) => {
-      //   const year = parseInt(date.slice(-4))
-      //   const month = parseInt(date.slice(3, date.length - 5))
-      //   const day = parseInt(date.slice(0, 2))
-      //   return year * 1000 + month * 100 + day
-      // }
-      // return (
-      //   calculatePublishedDateValue(a.publishedDate) -
-      //   calculatePublishedDateValue(b.publishedDate)
-      // )
-      // },
     },
     {
-      title: 'Attachment',
+      title: 'ATTACHMENT',
       dataIndex: 'attachment',
       key: 'attachment',
       render: (text) => <Link to="./">{text}</Link>,
     },
     {
-      title: 'Detail',
+      title: 'DETAIL',
       dataIndex: 'detail',
       key: 'detail',
+      align: 'center',
       render: ({ content, rowId, toDepartment, publishedDate }) => (
         <Link
           to="./"
@@ -161,6 +183,16 @@ const HomeScreen = () => {
           <Table
             dataSource={[...dataSource]}
             columns={columns}
+            rowClassName={(record, index) => {
+              if (index % 2 === 0) {
+                return 'evenRow'
+              } else {
+                return 'oddRow'
+              }
+            }}
+            scroll={{
+              y: tableScrollHeight,
+            }}
             pagination={{
               position: ['bottomCenter'],
               showTotal: (total) => `Total number of records: ${total}`,
