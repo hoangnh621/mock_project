@@ -20,6 +20,8 @@ import {
   convertMomentToString,
 } from '../../utils/helpers/convertTime'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
+import LateEarly from './popup/LateEarly/LateEarly'
+import Leave from './popup/Leave/Leave'
 import './workSheetScreen.scss'
 
 const { Option } = Select
@@ -47,6 +49,8 @@ const WorkSheet = () => {
   const [worksheetDataTable, setWorksheetDataTable] = useState([])
   const [page, setPage] = useState(1)
   const [totalItem, setTotalItem] = useState(0)
+  const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
+  const [isLeaveVisible, setIsLeaveVisible] = useState(false)
   // const dispatch = useDispatch()
   // const worksheetData = useSelector(getWorksheetData)
   let isLoading = useSelector(getWorksheetLoading)
@@ -114,9 +118,9 @@ const WorkSheet = () => {
           <div className="flex">
             <span>Forget</span>
             <Divider type="vertical" />
-            <span>Late</span>/<span>Early</span>
+            <span onClick={showLateEarly}>Late/Early</span>
             <Divider type="vertical" />
-            <span>Leave</span>
+            <span onClick={showLeave}>Leave</span>
           </div>
         ),
       })
@@ -275,6 +279,15 @@ const WorkSheet = () => {
     setPage(page)
   }
 
+  // show hide LateEarly
+  const showLateEarly = () => {
+    setIsLateEarlyVisible(true)
+  }
+
+  const showLeave = () => {
+    setIsLeaveVisible(true)
+  }
+
   return (
     <div className="worksheet">
       <div className="worksheet-filter">
@@ -415,6 +428,15 @@ const WorkSheet = () => {
           </Button>
         </div>
       </div>
+      <LateEarly
+        isLateEarlyVisible={isLateEarlyVisible}
+        setIsLateEarlyVisible={setIsLateEarlyVisible}
+      />
+
+      <Leave
+        isLeaveVisible={isLeaveVisible}
+        setIsLeaveVisible={setIsLeaveVisible}
+      />
     </div>
   )
 }
