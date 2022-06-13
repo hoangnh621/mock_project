@@ -1,8 +1,15 @@
+import {
+  MailTwoTone,
+  PhoneTwoTone,
+  RightCircleTwoTone,
+  UserOutlined,
+} from '@ant-design/icons'
 import { Col, Modal, Row } from 'antd'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import XIcon from '../../../common/XIcon/XIcon'
 import { getNoticeDetailState } from '../../../store/reducer/homeSlice'
+import './NoticeDetail.scss'
 
 const NoticeDetail = ({ toggleModal, setToggleModal }) => {
   const handleCancel = () => {
@@ -19,37 +26,50 @@ const NoticeDetail = ({ toggleModal, setToggleModal }) => {
       closeIcon={<XIcon />}
       onCancel={handleCancel}
       footer={null}
+      className="notice-detail-modal"
     >
       <Row>
         <Col span={12}>
           <h3>Author</h3>
           <p>
-            Name: <strong>{notice_detail?.author?.full_name}</strong>
+            <UserOutlined style={{ color: '#7367f0', marginRight: 5 }} />
+            <strong>Name:</strong> {notice_detail?.author?.full_name}
           </p>
           <p>
-            Email: <strong>{notice_detail?.author?.email}</strong>
+            <MailTwoTone twoToneColor="#7367f0" style={{ marginRight: 5 }} />
+            <strong>Email:</strong> {notice_detail?.author?.email}
           </p>
           <p>
-            Other email: <strong>{notice_detail?.author?.other_email}</strong>
+            <MailTwoTone twoToneColor="#7367f0" style={{ marginRight: 5 }} />
+            <strong>Other email:</strong> {notice_detail?.author?.other_email}
           </p>
           <p>
-            Phone: <strong>{notice_detail?.author?.phone}</strong>
+            <PhoneTwoTone twoToneColor="#7367f0" style={{ marginRight: 5 }} />
+            <strong>Phone:</strong> {notice_detail?.author?.phone}
           </p>
         </Col>
         <Col span={12}>
           <h3>To Department</h3>
           <p>
-            To department: <strong>{toDepartment}</strong>
+            <RightCircleTwoTone
+              twoToneColor="#7367f0"
+              style={{ marginRight: 5 }}
+            />
+            <strong>To department:</strong> {toDepartment}
           </p>
           <p>
-            Published date: <strong>{publishedDate}</strong>
+            <RightCircleTwoTone
+              twoToneColor="#7367f0"
+              style={{ marginRight: 5 }}
+            />
+            <strong>Published date:</strong> {publishedDate}
           </p>
         </Col>
       </Row>
       <hr />
       <h3>Detail</h3>
       <p>
-        Subject: <strong>{notice_detail?.subject}</strong>
+        <strong>Subject:</strong> {notice_detail?.subject}
       </p>
       <p>Attachment: {notice_detail?.attachment}</p>
       <p>Message: {notice_detail?.message}</p>

@@ -70,25 +70,10 @@ const HomeScreen = () => {
     setTableScrollHeight(calculateHeight)
   }, [])
 
-  // Calculate table scroll height
-  // useEffect(() => {
-  //   const PAGINATION_MARGIN_TOP = 16
-  //   const bodyHomeScreenHeight = calculateComponentHeight('.body-home-screen')
-  //   const headerTableHeight = calculateComponentHeight('.ant-table-header')
-  //   const customPaginationHeight =
-  //     calculateComponentHeight('.custom-pagination')
-  //   setTableScrollHeight(
-  //     bodyHomeScreenHeight -
-  //       headerTableHeight -
-  //       customPaginationHeight -
-  //       PAGINATION_MARGIN_TOP,
-  //   )
-  // }, [])
-
   // Recalculate home screen height when resize
   useEffect(() => {
     const handleResize = () => {
-      const headerHeight = calculateComponentHeight('header')
+      const headerHeight = calculateComponentHeight('.navbar')
       const windowHeight = window.innerHeight
       homeScreen.current.style.paddingTop = headerHeight + 'px'
       homeScreen.current.style.height = windowHeight + 'px'
@@ -204,7 +189,7 @@ const HomeScreen = () => {
               onChange: onPageChange,
               onShowSizeChange: onShowSizeChange,
               className: 'custom-pagination',
-              itemRender: (page, type, element) => {
+              itemRender: (_, type, element) => {
                 if (type === 'prev') {
                   return (
                     <>
@@ -223,7 +208,7 @@ const HomeScreen = () => {
                       >
                         <DoubleLeftOutlined />
                       </Button>
-                      <Button style={{ marginLeft: 10 }}>
+                      <Button>
                         <LeftOutlined />
                       </Button>
                     </>
@@ -233,7 +218,7 @@ const HomeScreen = () => {
                 if (type === 'next') {
                   return (
                     <>
-                      <Button style={{ marginRight: 10 }}>
+                      <Button>
                         <RightOutlined />
                       </Button>
                       <Button
@@ -254,7 +239,6 @@ const HomeScreen = () => {
                     </>
                   )
                 }
-
                 return element
               },
             }}
