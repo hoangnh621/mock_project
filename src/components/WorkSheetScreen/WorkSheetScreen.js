@@ -22,7 +22,7 @@ import {
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import LateEarly from './popup/LateEarly/LateEarly'
 import Leave from './popup/Leave/Leave'
-import './workSheetScreen.scss'
+import './WorkSheetScreen.scss'
 
 const { Option } = Select
 
@@ -62,10 +62,10 @@ const WorkSheet = () => {
         params: { ...paramTimesheet, page: page, per_page: 10 },
       })
       setTotalItem(res.data.worksheet.total)
-      let result = res.data.worksheet.data.map((item) => {
+      let result = res.data.worksheet.data.map((item, index) => {
         return {
           key: item.id,
-          id: item.id,
+          id: index + 1,
           work_date: convertDayToShortDay(item.work_date),
           checkin: item.checkin
             ? convertDateTimeToTime(item.checkin)
@@ -89,41 +89,43 @@ const WorkSheet = () => {
             <div className="flex">
               <span>Forget</span>
               <Divider type="vertical" />
-              <span>Late</span>/<span>Early</span>
+              <span onClick={showLateEarly}>Late/Early</span>
               <Divider type="vertical" />
-              <span>Leave</span>
+              <span onClick={showLeave}>Leave</span>
+              <Divider type="vertical" />
+              <span>OT</span>
             </div>
           ),
         }
       })
-      result.push({
-        key: 27,
-        id: 27,
-        work_date: '27/03/2000|Mon',
-        checkin: '27:03',
-        checkout: '',
-        late: '27:03',
-        early: '27:03',
-        in_office: '27:03',
-        ot_time: '27:03',
-        work_time: '27:03',
-        lack: '27:03',
-        compensation: '27:03',
-        paid_leave: '27:03',
-        unpaid_leave: '27:03',
-        note: '27:03',
-        checkin_original: '27:03',
-        checkout_original: '27:03',
-        action: (
-          <div className="flex">
-            <span>Forget</span>
-            <Divider type="vertical" />
-            <span onClick={showLateEarly}>Late/Early</span>
-            <Divider type="vertical" />
-            <span onClick={showLeave}>Leave</span>
-          </div>
-        ),
-      })
+      // result.push({
+      //   key: 27,
+      //   id: 27,
+      //   work_date: '27/03/2000|Mon',
+      //   checkin: '27:03',
+      //   checkout: '',
+      //   late: '27:03',
+      //   early: '27:03',
+      //   in_office: '27:03',
+      //   ot_time: '27:03',
+      //   work_time: '27:03',
+      //   lack: '27:03',
+      //   compensation: '27:03',
+      //   paid_leave: '27:03',
+      //   unpaid_leave: '27:03',
+      //   note: '27:03',
+      //   checkin_original: '27:03',
+      //   checkout_original: '27:03',
+      //   action: (
+      //     <div className="flex">
+      //       <span>Forget</span>
+      //       <Divider type="vertical" />
+      //       <span onClick={showLateEarly}>Late/Early</span>
+      //       <Divider type="vertical" />
+      //       <span onClick={showLeave}>Leave</span>
+      //     </div>
+      //   ),
+      // })
       setWorksheetDataTable(result)
     }
     getDataWorksheet()
