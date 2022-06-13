@@ -5,7 +5,7 @@ import ProfileScreen from '../components/ProfileScreen/ProfileScreen'
 import WorkSheetScreen from '../components/WorkSheetScreen/WorkSheetScreen'
 
 const publicRoutes = [
-  { path: '', component: HomeScreen },
+  { path: '/', component: HomeScreen },
   { path: 'edit-profile', component: ProfileScreen },
   { path: 'worksheet', component: WorkSheetScreen },
 ]
