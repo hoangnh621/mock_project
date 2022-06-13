@@ -1,4 +1,4 @@
-@import '../../styles//color';
+@import '../../styles/color';
 
 .worksheet {
   margin-top: 57px;
@@ -138,4 +138,20 @@
 
 .ml-12 {
   margin-left: 12px;
+}
+
+.modal_late_early {
+  max-width: 860px;
+  color: $textPrimary;
+  border-radius: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0px;
+}
+
+.ant-modal-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  padding-bottom: 15px;
 }
