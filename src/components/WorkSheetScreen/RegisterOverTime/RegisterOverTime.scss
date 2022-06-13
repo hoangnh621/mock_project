@@ -6,6 +6,13 @@
   .item {
     margin-bottom: 10px;
   }
+  .test-1 {
+    margin-top: 10px;
+  }
+
+  .item_check {
+    margin-bottom: 25px;
+  }
 
   .d-flex {
     display: flex;
@@ -84,4 +91,30 @@
     display: block;
     border-right: none;
   }
+}
+
+.modal_ot {
+  max-width: 870px;
+  color: $textPrimary;
+  border-radius: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.ant-modal-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  padding-bottom: 15px;
+}
+
+.btn-register {
+  justify-content: center;
+  margin-top: 30px;
+  .ant-btn-default {
+    margin-right: 16px;
+  }
+}
+.test-2 {
+  margin-top: 20px;
 }
