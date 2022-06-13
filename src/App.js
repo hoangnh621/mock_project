@@ -6,9 +6,6 @@ import Header from './layout/Header/Header'
 import './styles/index.scss'
 import { getLocalStorageItem } from './utils/helpers/handleLocalStorageItems/index'
 
-// import RegisterForget from './components/WorkSheetScreen/RegisterForget/RegisterForget'
-import './styles/index.scss'
-
 function App() {
   const navigate = useNavigate()
   const accessToken = getLocalStorageItem('accessToken')
@@ -22,7 +19,6 @@ function App() {
   return (
     <div className="App">
       <Favicon url={logo} />
-      {/* <RegisterForget /> */}
       <Header />
       <Outlet />
     </div>
