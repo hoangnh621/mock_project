@@ -1,4 +1,4 @@
-@import '../../../styles/color';
+@import '../../../../styles/color';
 
 .container {
   margin: 0 6px;
@@ -43,19 +43,22 @@
   }
 
   .col-order-2 {
-    width: 100px;
+    width: 120px;
   }
 }
-
+.time-picker {
+  width: 100%;
+  margin-left: 0;
+}
 .check_time {
   display: flex;
   width: 50%;
 }
 
-.time {
+.time_check {
   display: flex;
   width: 50%;
-  color: $bgInfo;
+  color: $bgWarning;
 }
 
 .reason {
@@ -101,12 +104,17 @@
   transform: translateY(-50%);
 }
 
-.ant-modal-footer {
-  display: flex;
-  flex-direction: row-reverse;
-  justify-content: center;
-  padding-bottom: 15px;
+.modal_ot {
+  .ant-modal-body {
+    // justify-content: center;
+  }
 }
+// .ant-modal-footer {
+//   display: flex;
+//   flex-direction: row-reverse;
+//   justify-content: center;
+//   padding-bottom: 15px;
+// }
 
 .btn-register {
   justify-content: center;
@@ -114,7 +122,4 @@
   .ant-btn-default {
     margin-right: 16px;
   }
-}
-.test-2 {
-  margin-top: 20px;
 }

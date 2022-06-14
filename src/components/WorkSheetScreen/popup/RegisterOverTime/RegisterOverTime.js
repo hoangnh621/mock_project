@@ -1,15 +1,15 @@
 import { Button, Col, Form, Input, Modal, Row, TimePicker } from 'antd'
 import 'antd/dist/antd.min.css'
 import moment from 'moment'
-import XIcon from '../../../common/XIcon/XIcon'
+import XIcon from '../../../../common/XIcon/XIcon'
 import './RegisterOverTime.scss'
 
-function RegisterOverTime({ setIsModalVisible, visible }) {
+function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
   const registrationDate = moment(new Date()).format('DD/MM/YYYY HH:mm')
   const registerForDate = moment(new Date()).format('DD/MM/YYYY ')
   const checkInTime = '08:00'
   const checkOutTime = '18:40'
-  console.log(visible)
+  // console.log(visible)
   // const [overTime, setOverTime] = useState([])
   // const [reason, setReason] = useState([])
 
@@ -41,10 +41,9 @@ function RegisterOverTime({ setIsModalVisible, visible }) {
     <>
       <Modal
         title="Register OT"
-        visible={visible}
-        // onOk={() => setIsModalVisible(false)}
-        onCancel={() => setIsModalVisible(false)}
-        width="70%"
+        visible={isOverTimeVisible}
+        onCancel={() => setIsOverTimeVisible(false)}
+        width="80%"
         closeIcon={<XIcon />}
         className="modal_ot"
         footer={null}
@@ -87,17 +86,17 @@ function RegisterOverTime({ setIsModalVisible, visible }) {
             <Row className="item_check">
               <Col xs={{ span: 24 }} lg={{ span: 12 }} className="check_time">
                 <h4 className="w-140 mr-20">Check-in:</h4>
-                <span className="time">{checkInTime}</span>
+                <span className="time_check">{checkInTime}</span>
               </Col>
               <Col xs={{ span: 24 }} lg={{ span: 12 }} className="check_time">
                 <h4 className="col-order-2 mr-20">Check-out:</h4>
-                <span className="time">{checkOutTime}</span>
+                <span className="time_check">{checkOutTime}</span>
               </Col>
             </Row>
             <Row>
               <Col xs={{ span: 24 }} lg={{ span: 12 }}>
                 <Row className="item">
-                  <div className="w-140 mr-20 ">
+                  <div className="w-140 ">
                     <h4>Request OT :</h4>
                   </div>
                   <Form.Item name="request_OT" {...config}>
@@ -161,11 +160,11 @@ function RegisterOverTime({ setIsModalVisible, visible }) {
             </div>
             <div className="btn-register">
               <Form.Item wrapperCol={{ offset: 9, span: 12 }}>
-                <Button className="primary-button" htmlType="submit">
+                <Button className="primary-button " htmlType="submit">
                   Update
                 </Button>
                 <Button
-                  onClick={() => setIsModalVisible(false)}
+                  onClick={() => setIsOverTimeVisible(false)}
                   className="outline-primary-button "
                 >
                   Cancel

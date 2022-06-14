@@ -22,6 +22,7 @@ import {
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import LateEarly from './popup/LateEarly/LateEarly'
 import Leave from './popup/Leave/Leave'
+import RegisterOverTime from './popup/RegisterOverTime/RegisterOverTime'
 import './WorkSheetScreen.scss'
 
 const { Option } = Select
@@ -51,6 +52,7 @@ const WorkSheet = () => {
   const [totalItem, setTotalItem] = useState(0)
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
+  const [isOverTimeVisible, setIsOverTimeVisible] = useState(false)
   // const dispatch = useDispatch()
   // const worksheetData = useSelector(getWorksheetData)
   let isLoading = useSelector(getWorksheetLoading)
@@ -93,7 +95,7 @@ const WorkSheet = () => {
               <Divider type="vertical" />
               <span onClick={showLeave}>Leave</span>
               <Divider type="vertical" />
-              <span>OT</span>
+              <span onClick={showOverTime}>OT </span>
             </div>
           ),
         }
@@ -290,6 +292,10 @@ const WorkSheet = () => {
     setIsLeaveVisible(true)
   }
 
+  const showOverTime = () => {
+    setIsOverTimeVisible(true)
+  }
+
   return (
     <div className="worksheet">
       <div className="worksheet-filter">
@@ -438,6 +444,11 @@ const WorkSheet = () => {
       <Leave
         isLeaveVisible={isLeaveVisible}
         setIsLeaveVisible={setIsLeaveVisible}
+      />
+
+      <RegisterOverTime
+        isOverTimeVisible={isOverTimeVisible}
+        setIsOverTimeVisible={setIsOverTimeVisible}
       />
     </div>
   )
