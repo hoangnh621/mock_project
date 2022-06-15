@@ -173,9 +173,7 @@ const TableWorksheet = () => {
       .get(`worksheet/${id}?type=1`)
       .then((res) => res.data)
       .then((dataAPI) => {
-        console.log('status: ', dataAPI.status)
         if (dataAPI.status === undefined) {
-          console.log('Chua gui request', data)
           setDataRegisterForget(data)
         }
         if (dataAPI.status === 0) {
