@@ -1,7 +1,6 @@
 import { Button, Checkbox, Form, Input, message, Modal, TimePicker } from 'antd'
 import moment from 'moment'
 import { useRef } from 'react'
-import changeFormatDate from '../../../../utils/helpers/handleTime/changeFormatDate'
 import { MESSAGE_REQUIRED } from '../../../../utils/helpers/message'
 import useAxiosPrivate from '../../../../utils/requests/useAxiosPrivate'
 import './RegisterForget.scss'
@@ -14,32 +13,56 @@ const RegisterForget = ({
   const format = 'HH:mm'
   const axiosPrivate = useAxiosPrivate()
   const registerForgetForm = useRef()
-  console.log('data Register: ', dataRegisterForget)
   let registerForDate
   let checkinForm
   let checkoutForm
+  let reasonForm
+  let specialReasonForm
+  const status = dataRegisterForget.status
+  const error_count = dataRegisterForget.error_count
 
   // Chưa gửi request
-  if (dataRegisterForget.status === undefined) {
+  if (status === undefined) {
     registerForDate = dataRegisterForget.work_date
-    console.log('register Date:', registerForDate)
 
     if (registerForDate) {
       registerForDate = registerForDate.slice(0, 10)
+      registerForDate = registerForDate.split('/').join('-')
     }
 
     checkinForm = moment('08:00', format)
     checkoutForm = moment('17:00', format)
+    reasonForm = ''
   }
 
   // Đã gửi request
-  if (dataRegisterForget.status === 0) {
+  if (status === 0) {
     registerForDate = dataRegisterForget.request_for_date
+    registerForDate = registerForDate.split('-').reverse().join('-')
     checkinForm = dataRegisterForget.checkin
     checkinForm = moment(checkinForm).format('HH:mm')
+    checkinForm = moment(checkinForm, format)
     checkoutForm = dataRegisterForget.checkout
     checkoutForm = moment(checkoutForm).format('HH:mm')
-    console.log(checkinForm, checkoutForm)
+    checkoutForm = moment(checkoutForm, format)
+    reasonForm = dataRegisterForget.reason
+    switch (error_count) {
+      case 1:
+        specialReasonForm = ['Check-in not counted as error']
+        break
+      case 2:
+        specialReasonForm = ['Check-out not counted as error']
+        break
+      case 3:
+        specialReasonForm = [
+          'Check-in not counted as error',
+          'Check-out not counted as error',
+        ]
+        break
+      default:
+        specialReasonForm = ['']
+        break
+    }
   }
 
   // Xử lí sự kiện của FORM
@@ -54,19 +77,28 @@ const RegisterForget = ({
 
   const onFinish = (value) => {
     let request_for_date = value.register_for_date
-    request_for_date = changeFormatDate(request_for_date)
+    request_for_date = request_for_date.split('-').reverse().join('-')
     let checkin = value.checkin.format('HH:mm')
     let checkout = value.checkout.format('HH:mm')
     let reason = value.reason
     let special_reason = value.special_reason
     let error_count
-    if (special_reason !== undefined) {
-      error_count = 1
-    } else {
+    if (special_reason === undefined) {
       error_count = 0
+    } else {
+      if (
+        special_reason[0] === 'Check-in not counted as error' &&
+        special_reason[1] === 'Check-out not counted as error'
+      ) {
+        error_count = 3
+      } else if (special_reason[0] === 'Check-out not counted as error') {
+        error_count = 2
+      } else if (special_reason[0] === 'Check-in not counted as error') {
+        error_count = 1
+      }
     }
-    // Chưa gửi request
-    if (dataRegisterForget.status === undefined) {
+
+    if (status === undefined) {
       axiosPrivate.post('/worksheet/request/forget/create', {
         request_for_date: request_for_date,
         checkin: checkin,
@@ -78,16 +110,17 @@ const RegisterForget = ({
       message.success('Request sent')
     }
     // Đã gửi request
-    if (dataRegisterForget.status === 0) {
-      // axiosPrivate.put('/worksheet/request/forget/update', {
-      //   request_for_date: request_for_date,
-      //   checkin: checkin,
-      //   checkout: checkout,
-      //   reason: reason,
-      //   error_count: error_count,
-      // })
+    if (status === 0) {
+      axiosPrivate.put('/worksheet/request/forget/update', {
+        request_for_date: request_for_date,
+        checkin: checkin,
+        checkout: checkout,
+        reason: reason,
+        error_count: error_count,
+      })
       message.success('Updated')
     }
+    setIsRegisterForgetVisible(false)
   }
 
   const onFinishFailed = (errorInfo) => {}
@@ -110,11 +143,10 @@ const RegisterForget = ({
             onFinishFailed={onFinishFailed}
             initialValues={{
               register_for_date: registerForDate,
-              // checkin: moment('08:00', format),
-              // checkout: moment('17:00', format),
-              checkin: moment('08:00', format),
-              checkout: moment('17:00', format),
-              reason: '',
+              checkin: checkinForm,
+              checkout: checkoutForm,
+              reason: reasonForm,
+              special_reason: specialReasonForm,
             }}
             labelCol={{ sm: { span: 9 }, lg: { span: 6 }, md: { span: 7 } }}
             labelAlign={'left'}
@@ -142,8 +174,14 @@ const RegisterForget = ({
             <Form.Item label="Special reason:" name="special_reason">
               <Checkbox.Group
                 options={[
-                  'Check-in not counted as error',
-                  'Check-out not counted as error',
+                  {
+                    label: 'Check-in not counted as error',
+                    value: 'Check-in not counted as error',
+                  },
+                  {
+                    label: 'Check-out not counted as error',
+                    value: 'Check-out not counted as error',
+                  },
                 ]}
               />
             </Form.Item>
@@ -152,29 +190,27 @@ const RegisterForget = ({
             </Form.Item>
             <div className="button">
               <Button
-                type="primary"
                 htmlType="submit"
                 className={
-                  dataRegisterForget.status === 0
-                    ? ' register-button hide'
-                    : 'register-button'
+                  status === 0 || status === 1 || status === 2
+                    ? ' primary-button hide'
+                    : 'primary-button'
                 }
               >
                 Register
               </Button>
 
-              {dataRegisterForget.status === 0 ? (
-                <Button
-                  className="update-button"
-                  type="primary"
-                  htmlType="submit"
-                >
+              {status === 0 ? (
+                <Button className="primary-button" htmlType="submit">
                   Update
                 </Button>
               ) : (
                 <></>
               )}
-              <Button className="cancel" onClick={handleCancel}>
+              <Button
+                className="cancel outline-primary-button"
+                onClick={handleCancel}
+              >
                 Cancel
               </Button>
             </div>
