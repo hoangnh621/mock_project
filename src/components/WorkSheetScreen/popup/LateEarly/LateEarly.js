@@ -1,4 +1,13 @@
-import { Button, Col, DatePicker, Form, Input, Modal, Row } from 'antd'
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Typography,
+} from 'antd'
 import 'antd/dist/antd.min.css'
 import moment from 'moment'
 import { useState } from 'react'
@@ -7,31 +16,46 @@ import {
   getSubmitLateEarlyLoading,
   submitLateEarly,
 } from '../../../../store/reducer/submitLateEarlySlice'
+import {
+  getUpdateLateEarlyLoading,
+  updateLateEarly,
+} from '../../../../store/reducer/updateLateEarlySlice'
 
 import '../../../../styles/index.scss'
-import changeFormatDate from '../../../../utils/helpers/handleTime/changeFormatDate'
-import changeTimeNumberToHour from '../../../../utils/helpers/handleTime/changeTimeNumberToHour'
-import changeTimeToMint from '../../../../utils/helpers/handleTime/changeTimeToMint'
+import {
+  calculateTime,
+  changeFormatDate,
+  changeTimeNumberToHour,
+  changeTimeToMint,
+} from '../../../../utils/helpers/handleTime/index'
+import useAxiosPrivate from '../../../../utils/requests/useAxiosPrivate'
 import './LateEarly.scss'
 
 export default function LateEarly({
+  data,
   isLateEarlyVisible,
   setIsLateEarlyVisible,
 }) {
   // lấy từ bảng worksheet */
-  const registerForDate = '19/02/2022'
-  const checkInTime = '08:15'
-  const checkOutTime = '17:01'
-  const lateTime = '0:15'
-  const earlyTime = '00:00'
+  const registerForDate = moment(data?.work_date).format('DD-MM-YYYY')
+  const checkinData = data?.checkin_original || data?.checkin
+  const checkInTime = checkinData ? moment(checkinData).format('HH:mm') : ''
+  const checkoutData = data?.checkout_original || data?.checkout
+  const checkOutTime = checkoutData ? moment(checkoutData).format('HH:mm') : ''
+  const lateTime = calculateTime(checkInTime, '08:00')
+  const earlyTime = calculateTime('17:00', checkOutTime)
   // eslint-disable-next-line
-  const [requestExists, setRequestExists] = useState(false)
-  // const [overtime, setOvertime] = useState('00:16')
-  // const [overtimeNumber, setOvertimeNumber] = useState(960)
+  const [overtime, setOvertime] = useState('00:00')
+  const [overtimeNumber, setOvertimeNumber] = useState(0)
+
+  const { Text } = Typography
+  const [form] = Form.useForm()
 
   // redux
   const dispatch = useDispatch()
+  const axiosPrivate = useAxiosPrivate()
   const loadingSubmit = useSelector(getSubmitLateEarlyLoading)
+  const loadingUpdate = useSelector(getUpdateLateEarlyLoading)
 
   const layout = {
     labelCol: {
@@ -42,35 +66,55 @@ export default function LateEarly({
     },
   }
 
+  const getDataByDate = async (date) => {
+    const res = await axiosPrivate.get(`/worksheet/getByDate/${date}`)
+    const inOffice = res.data?.in_office || '00:00'
+    const time = '10:00'
+    const overtime = calculateTime(inOffice, time)
+    if (changeTimeToMint(overtime) > 0) {
+      setOvertime(overtime)
+      setOvertimeNumber(changeTimeToMint(overtime))
+    } else {
+      setOvertime('00:00')
+      setOvertimeNumber(0)
+    }
+  }
+
+  const handleChangeDate = (e) => {
+    const date = moment(e).format('YYYY-MM-DD')
+    getDataByDate(date)
+  }
+
   const handleCancel = () => {
+    form.setFieldsValue({
+      'date-cover-up': moment(dateBefore, dateFormat),
+      reason: '',
+    })
     setIsLateEarlyVisible(false)
   }
 
-  const onFinish = (values) => {
+  const onFinish = (values, e) => {
     const newRequest = {
-      created_at: moment().format('DD-MM-YYYY HH:mm'),
       request_type: 4,
       request_for_date: changeFormatDate(registerForDate),
-      check_in: checkInTime,
-      check_out: checkOutTime,
+      checkin: checkInTime,
+      checkout: checkOutTime,
       compensation_date: changeFormatDate(
-        values['date-cover-up'].format('DD/MM/YYYY'),
+        values['date-cover-up'].format('DD-MM-YYYY'),
       ),
       compensation_time: '00:16',
       reason: values['reason'],
     }
-    console.log(newRequest)
-    dispatch(submitLateEarly(newRequest))
-    setIsLateEarlyVisible(false)
-  }
-
-  const deleteRequest = () => {
-    const deleteRequest = {
-      request_type: 4,
-      request_for_date: registerForDate,
-      action: 'delete',
+    if (data?.status === 0) {
+      dispatch(updateLateEarly(newRequest))
+    } else {
+      dispatch(submitLateEarly(newRequest))
     }
-    console.log(deleteRequest)
+    form.setFieldsValue({
+      'date-cover-up': moment(dateBefore, dateFormat),
+      reason: '',
+    })
+    setIsLateEarlyVisible(false)
   }
 
   /* eslint-disable no-template-curly-in-string */
@@ -96,7 +140,6 @@ export default function LateEarly({
   const date = moment().format('DD-MM-YYYY')
   // format datePicker
   const dateFormat = 'DD/MM/YYYY'
-  // the day before
   const dateBefore = moment().subtract(1, 'days').format('DD/MM/YYYY')
   return (
     <Modal
@@ -114,7 +157,11 @@ export default function LateEarly({
           </Col>
           <Col>
             <Row>
-              <p className="date">{date}</p>{' '}
+              <p className="date">
+                {data?.created_at
+                  ? moment(data?.created_at).format('DD-MM-YYYY HH:mm')
+                  : date}
+              </p>
             </Row>
           </Col>
         </Row>
@@ -124,13 +171,11 @@ export default function LateEarly({
             <h4 className="w-140 mr-20">Register for date:</h4>
           </Col>
           <Col>
-            {/* thời gian lấy từ bảng worksheet */}
             <p className="date">{registerForDate}</p>
           </Col>
         </Row>
 
         <Row className="item">
-          {/* thời gian từ bảng worksheet */}
           <Col xs={{ span: 24 }} lg={{ span: 12 }} className="check_time">
             <h4 className="w-140 mr-20">Check-in:</h4>
             <span className="time">{checkInTime}</span>
@@ -142,19 +187,17 @@ export default function LateEarly({
         </Row>
 
         <Row className="item">
-          {/* thời gian từ bảng worksheet */}
           <Col xs={{ span: 24 }} lg={{ span: 12 }} className="late_time">
             <h4 className="w-140 mr-20">Late time:</h4>
-            {/* lấy thời gian check-in trừ 08:00 */}
             <span className="time">{lateNumber > 0 && lateTime}</span>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }} className="early_time">
             <h4 className="col-order-2 mr-20">Early time:</h4>
-            {/* lấy 17:00 trừ thời gian check-out  */}
             <span className="time">{earlyNumber > 0 && earlyTime}</span>
           </Col>
         </Row>
         <Form
+          form={form}
           {...layout}
           name="nest-messages"
           onFinish={onFinish}
@@ -180,31 +223,29 @@ export default function LateEarly({
                   },
                 ]}
               >
-                {/* <div className="date-picker"> */}
                 <DatePicker
                   format={dateFormat}
                   className="outlinePrimaryButton"
+                  onChange={(e) => handleChangeDate(e)}
                 />
-                {/* </div> */}
               </Form.Item>
             </Col>
             <Col xs={{ span: 24 }} lg={{ span: 12 }}>
               <div className="overtime_time-request item">
                 <div className="overtime">
                   <span>Overtime:</span>
-                  {/* thời gian in_office ngày date cover up của worksheet - 9h */}
                   <span style={{ marginLeft: '6px' }}>
-                    {/* {overtime} */}
-                    00:16
+                    {overtimeNumber > 0 ? overtime : '00:00'}
                   </span>
                 </div>
                 <div>
                   <span>Time request:</span>
-                  {/* Thời gian late cộng early */}
                   <span
                     style={{
                       marginLeft: '6px',
-                      // color: `${requestTimeNumber > overtimeNumber && 'red'}`,
+                      color: `${
+                        requestTimeNumber > overtimeNumber ? 'red' : 'black'
+                      }`,
                     }}
                   >
                     {requestTime}
@@ -229,32 +270,50 @@ export default function LateEarly({
           </Row>
           <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
             <div className="button-group">
-              {!requestExists && (
-                <Button
-                  className="primary-button mr-20 item"
-                  htmlType="submit"
-                  loading={loadingSubmit}
-                >
-                  Submit
-                </Button>
-              )}
-              {requestExists && (
+              {!(data?.status || data?.status === 0) && (
                 <>
-                  <Button className="primary-button mr-20 item">Update</Button>
                   <Button
-                    className="outline-primary-button mr-20 item"
-                    onClick={deleteRequest}
+                    className="primary-button mr-20 item"
+                    htmlType="submit"
+                    loading={loadingSubmit}
                   >
-                    Delete
+                    Submit
+                  </Button>
+                  <Button
+                    onClick={handleCancel}
+                    className="outline-secondary-button"
+                  >
+                    Close
                   </Button>
                 </>
               )}
-              <Button
-                onClick={handleCancel}
-                className="outline-secondary-button"
-              >
-                Cancel
-              </Button>
+              {data?.status === 0 && (
+                <>
+                  <Button
+                    className="primary-button mr-20 item"
+                    htmlType="submit"
+                    loading={loadingUpdate}
+                  >
+                    Update
+                  </Button>
+                  <Button
+                    onClick={handleCancel}
+                    className="outline-secondary-button"
+                  >
+                    Close
+                  </Button>
+                </>
+              )}
+
+              {data?.status === -1 && (
+                <Text type="warning">Your request has been rejected.</Text>
+              )}
+              {data?.status === 1 && (
+                <Text type="success">Your request has been confirmed.</Text>
+              )}
+              {data?.status === 2 && (
+                <Text type="success">Your request has been approved.</Text>
+              )}
             </div>
           </Form.Item>
         </Form>
