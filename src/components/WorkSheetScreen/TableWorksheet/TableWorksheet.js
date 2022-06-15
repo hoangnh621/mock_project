@@ -4,11 +4,13 @@ import { useSelector } from 'react-redux'
 import { getWorksheetData } from '../../../store/reducer/worksheetSlice'
 import LateEarly from '../popup/LateEarly/LateEarly'
 import Leave from '../popup/Leave/Leave'
+import RegisterOverTime from '../popup/RegisterOverTime/RegisterOverTime'
 
 const TableWorksheet = () => {
   const worksheetData = useSelector(getWorksheetData)
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
+  const [isOverTimeVisible, setIsOverTimeVisible] = useState(false)
   const columns = [
     {
       title: 'No',
@@ -95,7 +97,7 @@ const TableWorksheet = () => {
             <Divider type="vertical" />
             <span onClick={showLeave}>Leave</span>
             <Divider type="vertical" />
-            <span>OT</span>
+            <span onClick={showOverTime}>OT</span>
           </div>
         )
       },
@@ -109,7 +111,9 @@ const TableWorksheet = () => {
   const showLeave = () => {
     setIsLeaveVisible(true)
   }
-
+  const showOverTime = () => {
+    setIsOverTimeVisible(true)
+  }
   const handleHighlight = (record) => {
     let color
     if (!record.checkin) {
@@ -141,6 +145,11 @@ const TableWorksheet = () => {
       <Leave
         isLeaveVisible={isLeaveVisible}
         setIsLeaveVisible={setIsLeaveVisible}
+      />
+
+      <RegisterOverTime
+        isOverTimeVisible={isOverTimeVisible}
+        setIsOverTimeVisible={setIsOverTimeVisible}
       />
     </>
   )

@@ -97,26 +97,13 @@
 }
 
 .modal_ot {
-  max-width: 870px;
+  max-width: 850px;
   color: $textPrimary;
   border-radius: 5px;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
-.modal_ot {
-  .ant-modal-body {
-    // justify-content: center;
-  }
-}
-// .ant-modal-footer {
-//   display: flex;
-//   flex-direction: row-reverse;
-//   justify-content: center;
-//   padding-bottom: 15px;
-// }
-
-.btn-register {
+.btn-register .ant-form-item-control-input-content {
+  display: flex;
   justify-content: center;
   margin-top: 30px;
   .ant-btn-default {

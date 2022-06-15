@@ -1,7 +1,9 @@
 import { Button, Col, Form, Input, Modal, Row, TimePicker } from 'antd'
 import 'antd/dist/antd.min.css'
 import moment from 'moment'
+// import { useDispatch, useSelector } from 'react-redux'
 import XIcon from '../../../../common/XIcon/XIcon'
+import '../../../../styles/index.scss'
 import './RegisterOverTime.scss'
 
 function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
@@ -9,6 +11,7 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
   const registerForDate = moment(new Date()).format('DD/MM/YYYY ')
   const checkInTime = '08:00'
   const checkOutTime = '18:40'
+  const actualOverTime = '00:40'
   // console.log(visible)
   // const [overTime, setOverTime] = useState([])
   // const [reason, setReason] = useState([])
@@ -37,16 +40,47 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
+  // const checkOutNumber = Number(changeTimeToMint(checkOutTime))
+  // const actualOverTimeNumber =  ()
+  // const dispatch = useDispatch()
+  // const loadingSubmit = useSelector(getSubmitOverTimeLoading)
+
+  // const onFinish = (values) => {
+  //   const newRequest = {
+  //     created_at: moment().format('DD/MM/YYYY HH:mm'),
+  //     request_type: 5,
+  //     request_for_date: changeFormatDate(registerForDate),
+  //     check_in: checkInTime,
+  //     check_out: checkOutTime,
+  //     //  compensation_date: changeFormatDate(
+  //     //    values[''].format('DD/MM/YYYY'),
+  //     //  ),
+  //     //  compensation_time: '',
+  //     reason: values['reason'],
+  //   }
+  //   console.log(newRequest)
+  //   dispatch(submitOverTime(newRequest))
+  //   setIsOverTimeVisible(false)
+  // }
+  // const deleteRequest = () => {
+  //   const deleteRequest = {
+  //     request_type: 5,
+  //     request_for_date: registerForDate,
+  //     action: 'delete',
+  //   }
+  //   console.log(deleteRequest)
+  // }
+
   return (
     <>
       <Modal
         title="Register OT"
         visible={isOverTimeVisible}
         onCancel={() => setIsOverTimeVisible(false)}
-        width="80%"
+        width="70%"
         closeIcon={<XIcon />}
         className="modal_ot"
-        footer={null}
+        footer={false}
       >
         <div className="container">
           <Form
@@ -83,7 +117,7 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
               </Form.Item>
             </Row>
 
-            <Row className="item_check">
+            <Row className="item">
               <Col xs={{ span: 24 }} lg={{ span: 12 }} className="check_time">
                 <h4 className="w-140 mr-20">Check-in:</h4>
                 <span className="time_check">{checkInTime}</span>
@@ -93,24 +127,26 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
                 <span className="time_check">{checkOutTime}</span>
               </Col>
             </Row>
-            <Row>
-              <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-                <Row className="item">
-                  <div className="w-140 ">
-                    <h4>Request OT :</h4>
-                  </div>
-                  <Form.Item name="request_OT" {...config}>
-                    <TimePicker
-                      // onChange={hanldeCheckOverTime}
-                      value={moment('00:00', timeFormat)}
-                      format={timeFormat}
-                    />
-                  </Form.Item>
-                </Row>
+            <Row className="item">
+              <Col xs={{ span: 24 }} lg={{ span: 5 }}>
+                {/* <Row className="item"> */}
+                {/* <div className="w-140 "> */}
+                <h4>Request OT :</h4>
+                {/* </div> */}
               </Col>
+              <Col xs={{ span: 24 }} lg={{ span: 7 }}>
+                <Form.Item name="request_OT" {...config}>
+                  <TimePicker
+                    // onChange={hanldeCheckOverTime}
+                    value={moment('00:00', timeFormat)}
+                    format={timeFormat}
+                  />
+                </Form.Item>
+              </Col>
+              {/* </Row> */}
               <Col xs={{ span: 24 }} lg={{ span: 12 }} className="check_time">
                 <h4 className="w-140">Actual Overtime:</h4>
-                <span className="">00:00</span>
+                <span>{actualOverTime}</span>
               </Col>
             </Row>
             <Row className="item">
@@ -152,8 +188,6 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
                     // value={reason}
                     // onChange={hanldeReeasonChange}
                     rows={4}
-                    showCount
-                    maxLength={100}
                   />
                 </Form.Item>
               </Col>
@@ -161,7 +195,7 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
             <div className="btn-register">
               <Form.Item wrapperCol={{ offset: 9, span: 12 }}>
                 <Button className="primary-button " htmlType="submit">
-                  Update
+                  Register
                 </Button>
                 <Button
                   onClick={() => setIsOverTimeVisible(false)}
