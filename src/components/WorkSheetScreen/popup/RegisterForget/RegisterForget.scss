@@ -13,12 +13,7 @@
     button {
       display: block;
     }
-    button.register-button,
-    button.update-button {
-      background-color: $bgPrimary;
-    }
-
-    .register-button.hide {
+    .primary-button.hide {
       display: none;
     }
 
@@ -28,12 +23,6 @@
   }
   .enableFocus {
     box-shadow: none !important;
-  }
-
-  .checkin,
-  .checkout {
-    display: flex;
-    width: 100%;
   }
 }
 
