@@ -3,18 +3,18 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import XIcon from '../../common/XIcon/XIcon'
 import { convertTimeToIso } from '../../utils/helpers/convertTime'
+import { getLocalStorageItem } from '../../utils/helpers/handleLocalStorageItems'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import FormFirstLeft from './FormFirstLeft/FormFirstLeft'
 import FormFirstRight from './FormFirstRight/FormFirstRight'
 import FormSecond from './FormSecond/FormSecond'
 import FormThirdLeft from './FormThirdLeft/FormThirdLeft'
 import FormThirdRight from './FormThirdRight/FormThirdRight'
-import './profile.scss'
+import './Profile.scss'
 import UserInfo from './UserInfo/UserInfo'
 
-const Profile = () => {
+const Profile = ({ showProFileScreen, handleHideProfileScreen }) => {
   const [profileUser, setUserProfile] = useState({})
-  const [isShow, setIsShow] = useState(false)
 
   const axiosPrivate = useAxiosPrivate()
   const [form] = Form.useForm()
@@ -27,7 +27,7 @@ const Profile = () => {
       }
     }
     getUserProfile()
-  }, [axiosPrivate, isShow])
+  }, [axiosPrivate, showProFileScreen])
 
   useEffect(() => {
     document.title = 'Edit Profile'
@@ -38,22 +38,28 @@ const Profile = () => {
     const identity_card_date = moment(values['identity_card_date']).format(
       'YYYY-MM-DD',
     )
-    const passport_expiration = moment(values['passport_expiration']).format(
-      'YYYY-MM-DD',
-    )
-
-    // let uploadTask = storage
-    //   .ref('images')
-    //   .child(`${values['avatar_official'][0].name}`)
-    //   .put(values['avatar_official'][0].name)
-
+    let passport_expiration = null
+    if (values['passport_expiration']) {
+      passport_expiration = moment(values['passport_expiration']).format(
+        'YYYY-MM-DD',
+      )
+    }
+    let avatar = null
+    let avatar_official = null
+    if (values['avatar_official']) {
+      avatar_official = getLocalStorageItem('officialAvatar')
+    }
+    if (values['avatar']) {
+      avatar = getLocalStorageItem('subAvatar')
+    }
     const updatedData = {
       ...values,
       birth_date,
       identity_card_date,
       passport_expiration,
+      avatar,
+      avatar_official,
     }
-
     const res = await axiosPrivate.put(`member/profile/update`, updatedData)
     if (res.status === 200) {
       message.success('Update profile successfully!')
@@ -61,7 +67,6 @@ const Profile = () => {
   }
 
   const handleError = (err) => {
-    console.log(err)
     message.error('Update profile unsuccessfully!')
   }
 
@@ -71,11 +76,8 @@ const Profile = () => {
       content: 'Everything will be not saved!',
       centered: true,
       onOk: () => {
-        // setIsShow(false)
         form.resetFields()
-      },
-      onCancel: () => {
-        // setIsShow(true)
+        handleHideProfileScreen()
       },
     })
   }
@@ -86,11 +88,8 @@ const Profile = () => {
       content: 'Everything will be not saved!',
       centered: true,
       onOk: () => {
-        // setIsShow(false)
+        handleHideProfileScreen()
         form.resetFields()
-      },
-      onCancel: () => {
-        // setIsShow(true)
       },
     })
   }
@@ -99,19 +98,17 @@ const Profile = () => {
     <>
       <Modal
         className="edit-profile-pop-up"
-        visible
+        visible={showProFileScreen}
         title="My profile"
         footer={null}
         closeIcon={<XIcon />}
         onCancel={handleCancel}
-        onOk={() => setIsShow(false)}
+        onOk={() => handleHideProfileScreen()}
       >
         <div className="user-info-form">
           <Form
             name="userInfo"
             initialValues={{
-              avatar: profileUser.avatar,
-              avatar_official: profileUser.avatar_official,
               gender: profileUser.gender,
               birth_date:
                 profileUser.birth_date &&
