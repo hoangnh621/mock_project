@@ -124,6 +124,7 @@ const HomeScreen = () => {
       dataIndex: 'no',
       key: 'no',
       width: '5%',
+      ellipsis: true,
     },
     {
       title: 'SUBJECT',
