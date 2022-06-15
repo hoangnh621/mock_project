@@ -3,6 +3,7 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { getWorksheetData } from '../../../store/reducer/worksheetSlice'
+import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData'
 import changeFormatDate from '../../../utils/helpers/handleTime/changeFormatDate'
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
@@ -34,7 +35,7 @@ const TableWorksheet = () => {
           per_page: 30,
         },
       })
-      setDataSource(res.data.worksheet.data)
+      setDataSource(handleWorksheetTableData(res.data.worksheet.data))
     }
 
     firstGetDate()
