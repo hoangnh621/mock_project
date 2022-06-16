@@ -42,8 +42,8 @@ export default function LateEarly({
   const checkInTime = checkinData ? moment(checkinData).format('HH:mm') : ''
   const checkoutData = data?.checkout_original || data?.checkout
   const checkOutTime = checkoutData ? moment(checkoutData).format('HH:mm') : ''
-  const lateTime = calculateTime(checkInTime, '08:00')
-  const earlyTime = calculateTime('17:00', checkOutTime)
+  const lateTime = calculateTime(checkInTime, '08:30')
+  const earlyTime = calculateTime('17:30', checkOutTime)
   // eslint-disable-next-line
   const [overtime, setOvertime] = useState('00:00')
   const [overtimeNumber, setOvertimeNumber] = useState(0)
@@ -57,6 +57,8 @@ export default function LateEarly({
   const loadingSubmit = useSelector(getSubmitLateEarlyLoading)
   const loadingUpdate = useSelector(getUpdateLateEarlyLoading)
 
+  console.log(data)
+
   const layout = {
     labelCol: {
       span: 8,
@@ -68,6 +70,7 @@ export default function LateEarly({
 
   const getDataByDate = async (date) => {
     const res = await axiosPrivate.get(`/worksheet/getByDate/${date}`)
+    console.log(res)
     const inOffice = res.data?.in_office || '00:00'
     const time = '10:00'
     const overtime = calculateTime(inOffice, time)
@@ -265,7 +268,12 @@ export default function LateEarly({
                 },
               ]}
             >
-              <Input.TextArea rows={4} maxLength={100} className="flex-1" />
+              <Input.TextArea
+                autoSize={{ maxRows: 7, minRows: 4 }}
+                rows={4}
+                maxLength={100}
+                className="flex-1"
+              />
             </Form.Item>
           </Row>
           <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>

@@ -139,7 +139,7 @@ function UserInfo({ mail, memberCode, phoneNumber, fullName }) {
               src={
                 avatarOfficial
                   ? avatarOfficial
-                  : getLocalStorageItem('avatarOfficial')
+                  : JSON.parse(getLocalStorageItem('officialAvatar'))
               }
             />
             <Form.Item
@@ -158,7 +158,11 @@ function UserInfo({ mail, memberCode, phoneNumber, fullName }) {
             <Avatar
               shape="square"
               size={60}
-              src={subAvatar ? subAvatar : getLocalStorageItem('subAvatar')}
+              src={
+                subAvatar
+                  ? subAvatar
+                  : JSON.parse(getLocalStorageItem('subAvatar'))
+              }
             />
             <Form.Item
               name="avatar"
