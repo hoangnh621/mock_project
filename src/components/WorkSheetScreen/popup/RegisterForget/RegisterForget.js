@@ -142,6 +142,7 @@ const RegisterForget = ({
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={{
+              registration_date: moment(new Date()).format('DD-MM-YYYY HH:mm '),
               register_for_date: registerForDate,
               checkin: checkinForm,
               checkout: checkoutForm,
@@ -151,6 +152,9 @@ const RegisterForget = ({
             labelCol={{ sm: { span: 9 }, lg: { span: 6 }, md: { span: 7 } }}
             labelAlign={'left'}
           >
+            <Form.Item label="Registration date" name="registration_date">
+              <Input className="enableFocus" bordered={false} />
+            </Form.Item>
             <Form.Item label="Register for date:" name="register_for_date">
               <Input bordered={false} readOnly className="enableFocus" />
             </Form.Item>
