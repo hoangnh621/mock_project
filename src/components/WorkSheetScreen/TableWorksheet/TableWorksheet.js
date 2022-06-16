@@ -164,88 +164,88 @@ const TableWorksheet = () => {
     if (!record.checkin) {
       color = 'color-red-late'
     }
-  const showRegisterForget = (data) => {
-    const id = data.key
-    axiosPrivate
-      .get(`worksheet/${id}?type=1`)
-      .then((res) => res.data)
-      .then((dataAPI) => {
-        console.log('status: ', dataAPI.status)
-        if (dataAPI.status === undefined) {
-          console.log('Chua gui request', data)
-          setDataRegisterForget(data)
-        }
-        if (dataAPI.status === 0) {
-          const checkin_original = data.checkin_original
-          const checkout_original = data.checkout_original
-          setDataRegisterForget({
-            ...dataAPI,
-            checkin_original,
-            checkout_original,
-          })
-        }
-      })
-      .then(() => setIsRegisterForgetVisible(true))
-  }
-
-  const getDate = (date) => {
-    setDate(date)
-  }
-
-  const handleTimeLog = (record, index) => {
-    return {
-      onDoubleClick: () => {
-        getDate(record.work_date)
-        setIsShowTimeLog(true)
-      },
+    const showRegisterForget = (data) => {
+      const id = data.key
+      axiosPrivate
+        .get(`worksheet/${id}?type=1`)
+        .then((res) => res.data)
+        .then((dataAPI) => {
+          console.log('status: ', dataAPI.status)
+          if (dataAPI.status === undefined) {
+            console.log('Chua gui request', data)
+            setDataRegisterForget(data)
+          }
+          if (dataAPI.status === 0) {
+            const checkin_original = data.checkin_original
+            const checkout_original = data.checkout_original
+            setDataRegisterForget({
+              ...dataAPI,
+              checkin_original,
+              checkout_original,
+            })
+          }
+        })
+        .then(() => setIsRegisterForgetVisible(true))
     }
-  }
 
-  const handleHighlight = (record, index) => {
-    const formatDate = changeFormatDate(record.work_date.slice(0, 10))
-    if (moment(formatDate).day() === 0 || moment(formatDate).day() === 6) {
-      return 'bg-color-yeloww'
+    const getDate = (date) => {
+      setDate(date)
     }
-    return ''
-  }
 
-  return (
-    <>
-      <Table
-        rowClassName={handleHighlight}
-        dataSource={dataSource.length > 0 ? dataSource : worksheetData}
-        columns={columns}
-        bordered
-        pagination={false}
-        onRow={handleTimeLog}
-      />
-      <LateEarly
-        isLateEarlyVisible={isLateEarlyVisible}
-        setIsLateEarlyVisible={setIsLateEarlyVisible}
-      />
+    const handleTimeLog = (record, index) => {
+      return {
+        onDoubleClick: () => {
+          getDate(record.work_date)
+          setIsShowTimeLog(true)
+        },
+      }
+    }
 
-      <Leave
-        isLeaveVisible={isLeaveVisible}
-        setIsLeaveVisible={setIsLeaveVisible}
-      />
+    const handleHighlight = (record, index) => {
+      const formatDate = changeFormatDate(record.work_date.slice(0, 10))
+      if (moment(formatDate).day() === 0 || moment(formatDate).day() === 6) {
+        return 'bg-color-yeloww'
+      }
+      return ''
+    }
 
-      <RegisterOverTime
-        isOverTimeVisible={isOverTimeVisible}
-        setIsOverTimeVisible={setIsOverTimeVisible}
+    return (
+      <>
+        <Table
+          rowClassName={handleHighlight}
+          dataSource={dataSource.length > 0 ? dataSource : worksheetData}
+          columns={columns}
+          bordered
+          pagination={false}
+          onRow={handleTimeLog}
         />
-      <RegisterForget
-        dataRegisterForget={dataRegisterForget}
-        setDataRegisterForget={setDataRegisterForget}
-        isRegisterForgetVisible={isRegisterForgetVisible}
-        setIsRegisterForgetVisible={setIsRegisterForgetVisible}
-      />
-      <TimeLog
-        isShowTimeLog={isShowTimeLog}
-        setIsShowTimeLog={setIsShowTimeLog}
-        date={date}
-      />
-    </>
-  )
-}
+        <LateEarly
+          isLateEarlyVisible={isLateEarlyVisible}
+          setIsLateEarlyVisible={setIsLateEarlyVisible}
+        />
 
+        <Leave
+          isLeaveVisible={isLeaveVisible}
+          setIsLeaveVisible={setIsLeaveVisible}
+        />
+
+        <RegisterOverTime
+          isOverTimeVisible={isOverTimeVisible}
+          setIsOverTimeVisible={setIsOverTimeVisible}
+        />
+        <RegisterForget
+          dataRegisterForget={dataRegisterForget}
+          setDataRegisterForget={setDataRegisterForget}
+          isRegisterForgetVisible={isRegisterForgetVisible}
+          setIsRegisterForgetVisible={setIsRegisterForgetVisible}
+        />
+        <TimeLog
+          isShowTimeLog={isShowTimeLog}
+          setIsShowTimeLog={setIsShowTimeLog}
+          date={date}
+        />
+      </>
+    )
+  }
+}
 export default TableWorksheet
