@@ -27,15 +27,7 @@ const TableWorksheet = () => {
 
   useEffect(() => {
     const firstGetDate = async () => {
-      const res = await axiosPrivate.get(`/worksheet/my-timesheet`, {
-        params: {
-          start_date: firstDayOfRecentMonth,
-          end_start: today,
-          work_date: 'asc',
-          page: 1,
-          per_page: 30,
-        },
-      })
+      const res = await axiosPrivate.get(`/worksheet/my-timesheet`)
       setDataSource(handleWorksheetTableData(res.data.worksheet.data))
     }
 

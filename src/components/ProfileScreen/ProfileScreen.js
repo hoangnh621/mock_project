@@ -10,7 +10,7 @@ import FormFirstRight from './FormFirstRight/FormFirstRight'
 import FormSecond from './FormSecond/FormSecond'
 import FormThirdLeft from './FormThirdLeft/FormThirdLeft'
 import FormThirdRight from './FormThirdRight/FormThirdRight'
-import './Profile.scss'
+import './profile.scss'
 import UserInfo from './UserInfo/UserInfo'
 
 const Profile = ({ showProFileScreen, handleHideProfileScreen }) => {
@@ -62,6 +62,7 @@ const Profile = ({ showProFileScreen, handleHideProfileScreen }) => {
     }
     const res = await axiosPrivate.put(`member/profile/update`, updatedData)
     if (res.status === 200) {
+      handleHideProfileScreen()
       message.success('Update profile successfully!')
     }
   }
