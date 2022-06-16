@@ -161,7 +161,9 @@ const RegisterForget = ({
             >
               <TimePicker format={format} />
             </Form.Item>
-            <div>{dataRegisterForget.checkin_original}</div>
+            <div className="checkin-oringinal">
+              {`( ${dataRegisterForget.checkin_original} )`}
+            </div>
             <Form.Item
               label="Checkout:"
               name="checkout"
@@ -170,7 +172,9 @@ const RegisterForget = ({
               <TimePicker format={format} />
             </Form.Item>
 
-            <span>{dataRegisterForget.checkout_original}</span>
+            <div className="checkout-original">
+              {`( ${dataRegisterForget.checkout_original} )`}
+            </div>
             <Form.Item label="Special reason:" name="special_reason">
               <Checkbox.Group
                 options={[
@@ -186,7 +190,7 @@ const RegisterForget = ({
               />
             </Form.Item>
             <Form.Item label="Reason:" name="reason">
-              <Input.TextArea />
+              <Input.TextArea autoSize={{ minRows: 4, maxRows: 7 }} />
             </Form.Item>
             <div className="button">
               <Button
