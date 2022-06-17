@@ -28,6 +28,8 @@ const worksheetSlice = createSlice({
   initialState: {
     worksheet: [],
     isLoading: false,
+    totalRecord: 0,
+    isFirstLoad: true,
   },
   reducers: {},
   extraReducers: {
@@ -35,14 +37,20 @@ const worksheetSlice = createSlice({
       const result = handleWorksheetTableData(action.payload.worksheet.data)
       state.worksheet = result
       state.isLoading = false
+      state.totalRecord = action.payload.worksheet.total
+      state.isFirstLoad = false
     },
     [getWorksheet.pending]: (state, action) => {
       state.worksheet = []
       state.isLoading = true
+      state.totalRecord = 0
+      state.isFirstLoad = false
     },
     [getWorksheet.rejected]: (state, action) => {
       state.worksheet = []
       state.isLoading = false
+      state.totalRecord = 0
+      state.isFirstLoad = false
     },
   },
 })
@@ -50,3 +58,5 @@ const worksheetSlice = createSlice({
 export default worksheetSlice.reducer
 export const getWorksheetData = (state) => state.worksheetReducer.worksheet
 export const getWorksheetLoading = (state) => state.worksheetReducer.isLoading
+export const getWorksheetTotal = (state) => state.worksheetReducer.totalRecord
+export const isFirstLoad = (state) => state.worksheetReducer.isFirstLoad

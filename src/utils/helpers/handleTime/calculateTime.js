@@ -1,5 +1,5 @@
-import changeTimeToMint from './changeTimeToMint'
 import changeTimeNumberToHour from './changeTimeNumberToHour'
+import changeTimeToMint from './changeTimeToMint'
 
 export default function calculateTime(firstTime, secondTime) {
   const firstTimeMint = changeTimeToMint(firstTime)

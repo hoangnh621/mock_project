@@ -4,7 +4,6 @@ import {
   Col,
   Form,
   Input,
-  message,
   Modal,
   Radio,
   Row,
@@ -13,7 +12,6 @@ import {
 import 'antd/dist/antd.min.css'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
-import calculateTime from '../../../../utils/helpers/handleTime/calculateTime'
 import changeTimeToMint from '../../../../utils/helpers/handleTime/changeTimeToMint'
 import './Leave.scss'
 
@@ -31,6 +29,7 @@ export default function Leave({ isLeaveVisible, setIsLeaveVisible }) {
   //  set range time
   const [rangeStart, setRangeStart] = useState('')
   const [rangeEnd, setRangeEnd] = useState('')
+  // eslint-disable-next-line
   const [timeCount, setTimeCount] = useState('')
 
   const format = 'HH:mm'
@@ -59,52 +58,38 @@ export default function Leave({ isLeaveVisible, setIsLeaveVisible }) {
     setIsLeaveVisible(false)
   }
 
-  const deleteRequest = () => {
-    const deleteRequest = {
-      request_type: 2,
-      request_for_date: registerForDate,
-      action: 'delete',
-    }
-    console.log(deleteRequest)
-  }
-
   const onFinish = (values) => {
-    console.log(values)
-    let newRequest
-    if (isLeaveAllDay) {
-      console.log(values['start_time']['_i'])
-      newRequest = {
-        leave_all_day: 1,
-        request_type: Number(values['paid_unpaid'] + 1),
-        request_for_date: registerForDate,
-        check_in: checkInTime,
-        check_out: checkOutTime,
-        reason: values['reason'],
-      }
-    } else {
-      const rangeStartNumber = changeTimeToMint(rangeStart)
-      const rangeStartEnd = changeTimeToMint(rangeEnd)
-      if (rangeStartEnd > rangeStartNumber) {
-        setTimeCount(calculateTime(rangeEnd, rangeStart))
-        console.log(values['start_time']['_i'])
-        newRequest = {
-          leave_start: rangeStart,
-          leave_end: rangeEnd,
-          request_type: Number(values['paid_unpaid'] + 1),
-          request_for_date: registerForDate,
-          check_in: checkInTime,
-          check_out: checkOutTime,
-          reason: values['reason'],
-        }
-      } else {
-        message.error(`Please choose end time after start time!!!`)
-      }
-    }
-    console.log(newRequest)
+    // let newRequest
+    // if (isLeaveAllDay) {
+    //   newRequest = {
+    //     leave_all_day: 1,
+    //     request_type: Number(values['paid_unpaid'] + 1),
+    //     request_for_date: registerForDate,
+    //     check_in: checkInTime,
+    //     check_out: checkOutTime,
+    //     reason: values['reason'],
+    //   }
+    // } else {
+    //   const rangeStartNumber = changeTimeToMint(rangeStart)
+    //   const rangeStartEnd = changeTimeToMint(rangeEnd)
+    //   if (rangeStartEnd > rangeStartNumber) {
+    //     setTimeCount(calculateTime(rangeEnd, rangeStart))
+    //     newRequest = {
+    //       leave_start: rangeStart,
+    //       leave_end: rangeEnd,
+    //       request_type: Number(values['paid_unpaid'] + 1),
+    //       request_for_date: registerForDate,
+    //       check_in: checkInTime,
+    //       check_out: checkOutTime,
+    //       reason: values['reason'],
+    //     }
+    //   } else {
+    //     message.error(`Please choose end time after start time!!!`)
+    //   }
+    // }
   }
 
   const onChangeLeaveAllDay = (e) => {
-    console.log(`checked = ${e.target.checked}`)
     setIsLeaveAllDay(e.target.checked)
   }
 
@@ -295,10 +280,7 @@ export default function Leave({ isLeaveVisible, setIsLeaveVisible }) {
               {requestExists && (
                 <>
                   <Button className="primary-button mr-20 item">Update</Button>
-                  <Button
-                    className="outline-primary-button mr-20 item"
-                    onClick={deleteRequest}
-                  >
+                  <Button className="outline-primary-button mr-20 item">
                     Delete
                   </Button>
                 </>

@@ -1,19 +1,22 @@
-import { Divider, Table } from 'antd'
+import { Divider, Select, Table } from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { getWorksheetData } from '../../../store/reducer/worksheetSlice'
+import {
+  getWorksheetData,
+  getWorksheetTotal,
+  isFirstLoad
+} from '../../../store/reducer/worksheetSlice'
 import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData'
-import changeFormatDate from '../../../utils/helpers/handleTime/changeFormatDate'
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
 import Leave from '../popup/Leave/Leave'
 import RegisterForget from '../popup/RegisterForget/RegisterForget'
 import TimeLog from '../TimeLog/TimeLog'
 
+const { Option } = Select
+
 const TableWorksheet = () => {
-  const today = moment().format('YYYY-MM-DD')
-  const firstDayOfRecentMonth = moment().startOf('month').format('YYYY-MM-DD')
   const worksheetData = useSelector(getWorksheetData)
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
   const [dataLateEarly, setDataLateEarly] = useState()
@@ -22,18 +25,30 @@ const TableWorksheet = () => {
   const [isRegisterForgetVisible, setIsRegisterForgetVisible] = useState(false)
   const [dataRegisterForget, setDataRegisterForget] = useState({})
   const [isShowTimeLog, setIsShowTimeLog] = useState(false)
-  const [dataSource, setDataSource] = useState([])
   const [date, setDate] = useState()
+  // const [perPage, setPerPage] = useState(30)
   const axiosPrivate = useAxiosPrivate()
-
+  const totalRecordStore = useSelector(getWorksheetTotal)
+  const today = moment().format('YYYY-MM-DD')
+  const firstDayOfRecentMonth = moment().startOf('month').format('YYYY-MM-DD')
+  const [firstDataWorksheet, setFirstDataWorksheet] = useState([])
+  const [totalRecord, setTotalRecord] = useState(0)
+  const isFirstLoading = useSelector(isFirstLoad)
   useEffect(() => {
-    const firstGetDate = async () => {
-      const res = await axiosPrivate.get(`/worksheet/my-timesheet`)
-      setDataSource(handleWorksheetTableData(res.data.worksheet.data))
+    const getFirstData = async () => {
+      const res = await axiosPrivate('/worksheet/my-timesheet', {
+        params: {
+          end_date: today,
+          start_date: firstDayOfRecentMonth,
+          work_date: 'asc',
+          page: 1,
+        },
+      })
+      setFirstDataWorksheet(handleWorksheetTableData(res.data.worksheet.data))
+      setTotalRecord(res.data.worksheet.total)
     }
-
-    firstGetDate()
-  }, [axiosPrivate, firstDayOfRecentMonth, today])
+    getFirstData()
+  }, [axiosPrivate, today, firstDayOfRecentMonth])
 
   const columns = [
     {
@@ -162,84 +177,90 @@ const TableWorksheet = () => {
   const showOverTime = () => {
     setIsOverTimeVisible(true)
 
-    const showRegisterForget = (data) => {
-      const id = data.key
-      axiosPrivate
-        .get(`worksheet/${id}?type=1`)
-        .then((res) => res.data)
-        .then((dataAPI) => {
-          console.log('status: ', dataAPI.status)
-          if (dataAPI.status === undefined) {
-            setDataRegisterForget(data)
-          }
-          if (dataAPI.status === 0) {
-            const checkin_original = data.checkin_original
-            const checkout_original = data.checkout_original
-            setDataRegisterForget({
-              ...dataAPI,
-              checkin_original,
-              checkout_original,
-            })
-          }
-        })
-        .then(() => setIsRegisterForgetVisible(true))
+  const showRegisterForget = (data) => {
+    const id = data.key
+    axiosPrivate
+      .get(`worksheet/${id}?type=1`)
+      .then((res) => res.data)
+      .then((dataAPI) => {
+        if (dataAPI.status === undefined) {
+          setDataRegisterForget(data)
+        }
+        if (dataAPI.status === 0) {
+          const checkin_original = data.checkin_original
+          const checkout_original = data.checkout_original
+          setDataRegisterForget({
+            ...dataAPI,
+            checkin_original,
+            checkout_original,
+          })
+        }
+      })
+      .then(() => setIsRegisterForgetVisible(true))
+  }
+
+  const getDate = (date) => {
+    setDate(date)
+  }
+
+  const handleTimeLog = (record, index) => {
+    return {
+      onClick: () => {
+        getDate(record.work_date)
+        setIsShowTimeLog(true)
+      },
     }
 
-    const getDate = (date) => {
-      setDate(date)
-    }
-
-    const handleTimeLog = (record, index) => {
-      return {
-        onDoubleClick: () => {
-          getDate(record.work_date)
-          setIsShowTimeLog(true)
-        },
-      }
-    }
-
-    const handleHighlight = (record, index) => {
-      const formatDate = changeFormatDate(record.work_date.slice(0, 10))
-      if (moment(formatDate).day() === 0 || moment(formatDate).day() === 6) {
-        return 'bg-color-yeloww'
-      }
-      return ''
-    }
-
-    return (
-      <>
+  const handleHighlight = (record, index) => {}
+  return (
+    <>
+      <div className="worksheet-per-page">
+        <h3>{`Totals number of records: ${
+          isFirstLoading ? totalRecord : totalRecordStore
+        }`}</h3>
+        <div className="per-page-select">
+          <label>Items per page</label>
+          <Select defaultValue={30}>
+            <Option value={30}>30</Option>
+            <Option value={50}>50</Option>
+            <Option value={100}>100</Option>
+          </Select>
+        </div>
+      </div>
+      <div className="worksheet-table">
         <Table
           rowClassName={handleHighlight}
-          dataSource={dataSource.length > 0 ? dataSource : worksheetData}
+          dataSource={isFirstLoading ? firstDataWorksheet : worksheetData}
           columns={columns}
           bordered
           pagination={false}
           onRow={handleTimeLog}
         />
-        <LateEarly
-          data={dataLateEarly}
-          isLateEarlyVisible={isLateEarlyVisible}
-          setIsLateEarlyVisible={setIsLateEarlyVisible}
-        />
+      </div>
 
-        <Leave
-          isLeaveVisible={isLeaveVisible}
-          setIsLeaveVisible={setIsLeaveVisible}
-        />
+      <LateEarly
+        data={dataLateEarly}
+        isLateEarlyVisible={isLateEarlyVisible}
+        setIsLateEarlyVisible={setIsLateEarlyVisible}
+      />
 
-        <RegisterForget
-          dataRegisterForget={dataRegisterForget}
-          setDataRegisterForget={setDataRegisterForget}
-          isRegisterForgetVisible={isRegisterForgetVisible}
-          setIsRegisterForgetVisible={setIsRegisterForgetVisible}
-        />
-        <TimeLog
-          isShowTimeLog={isShowTimeLog}
-          setIsShowTimeLog={setIsShowTimeLog}
-          date={date}
-        />
-      </>
-    )
-  }
+      <Leave
+        isLeaveVisible={isLeaveVisible}
+        setIsLeaveVisible={setIsLeaveVisible}
+      />
+
+      <RegisterForget
+        dataRegisterForget={dataRegisterForget}
+        setDataRegisterForget={setDataRegisterForget}
+        isRegisterForgetVisible={isRegisterForgetVisible}
+        setIsRegisterForgetVisible={setIsRegisterForgetVisible}
+      />
+      <TimeLog
+        isShowTimeLog={isShowTimeLog}
+        setIsShowTimeLog={setIsShowTimeLog}
+        date={date}
+      />
+    </>
+  )
 }
 export default TableWorksheet
