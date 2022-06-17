@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Radio, Select, Space } from 'antd'
+import { Button, DatePicker, Form, message, Radio, Select, Space } from 'antd'
 import moment from 'moment'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -10,7 +10,7 @@ import { convertMomentToString } from '../../../utils/helpers/convertTime'
 
 const { Option } = Select
 
-const WorkSheetFilter = ({ page, perPage }) => {
+const WorkSheetFilter = ({ page }) => {
   const firstDayOfRecentMonth = moment().startOf('month').format('YYYY-MM-DD')
   const today = moment().format('YYYY-MM-DD')
   const firstDayOfPreviousMonth = moment()
@@ -28,49 +28,49 @@ const WorkSheetFilter = ({ page, perPage }) => {
   const dispatch = useDispatch()
 
   const handleSearch = (value) => {
-    let { radio_filter, select_filter, ...newParam } = value
     let paramTimesheet
+    let { radio_filter, select_filter, ...newParam } = value
     if (radio_filter === 1) {
       if (select_filter === 1) {
         paramTimesheet = {
           ...newParam,
           start_date: firstDayOfRecentMonth,
-          end_start: today,
+          end_date: today,
           page: page,
-          per_page: perPage,
         }
       }
       if (select_filter === 2) {
         paramTimesheet = {
           ...newParam,
           start_date: firstDayOfPreviousMonth,
-          end_start: lastDayOfPreviousMonth,
+          end_date: lastDayOfPreviousMonth,
           page: page,
-          per_page: perPage,
         }
       }
       if (select_filter === 3) {
         paramTimesheet = {
           ...newParam,
           start_date: firstDayOfYear,
-          end_start: today,
+          end_date: today,
           page: page,
-          per_page: perPage,
         }
       }
       if (select_filter === 4) {
-        const { start_date, end_start, ...workByDate } = newParam
-        paramTimesheet = { ...workByDate, page: page, per_page: perPage }
+        const { start_date, end_date, ...workByDate } = newParam
+        paramTimesheet = { ...workByDate, page: page }
       }
     }
     if (radio_filter === 2) {
+      if (newParam.start_date.isAfter(newParam.end_date)) {
+        message.warning('Invalid date')
+        return
+      }
       paramTimesheet = {
         ...newParam,
         start_date: convertMomentToString(value.start_date),
-        end_start: convertMomentToString(value.end_start),
+        end_date: convertMomentToString(value.end_date),
       }
     }
-
     dispatch(getWorksheet(paramTimesheet))
   }
 
@@ -118,15 +118,7 @@ const WorkSheetFilter = ({ page, perPage }) => {
                     </Select>
                   </Form.Item>
                   <div className="worksheet-filter-left-by-day">
-                    <Form.Item
-                      name="start_date"
-                      // rules={[
-                      //   {
-                      //     required: true,
-                      //     message: MESSAGE_REQUIRED,
-                      //   },
-                      // ]}
-                    >
+                    <Form.Item name="start_date">
                       <DatePicker
                         placeholder="DD/MM/YYYY"
                         format="DD/MM/YYYY"
@@ -134,15 +126,7 @@ const WorkSheetFilter = ({ page, perPage }) => {
                       />
                     </Form.Item>
                     <span style={{ marginLeft: 20, marginRight: 20 }}>to</span>
-                    <Form.Item
-                      name="end_start"
-                      // rules={[
-                      // {
-                      //   required: true,
-                      //     message: MESSAGE_REQUIRED,
-                      //   },
-                      // ]}
-                    >
+                    <Form.Item name="end_date">
                       <DatePicker
                         placeholder="DD/MM/YYYY"
                         format="DD/MM/YYYY"
@@ -166,9 +150,9 @@ const WorkSheetFilter = ({ page, perPage }) => {
               <Form.Item>
                 <Space size="large">
                   <Button
+                    loading={isLoading}
                     className="primary-button"
                     htmlType="submit"
-                    loading={isLoading}
                   >
                     Search
                   </Button>

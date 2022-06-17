@@ -142,6 +142,7 @@ const RegisterForget = ({
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             initialValues={{
+              registration_date: moment(new Date()).format('DD-MM-YYYY HH:mm '),
               register_for_date: registerForDate,
               checkin: checkinForm,
               checkout: checkoutForm,
@@ -151,6 +152,9 @@ const RegisterForget = ({
             labelCol={{ sm: { span: 9 }, lg: { span: 6 }, md: { span: 7 } }}
             labelAlign={'left'}
           >
+            <Form.Item label="Registration date" name="registration_date">
+              <Input className="enableFocus" bordered={false} />
+            </Form.Item>
             <Form.Item label="Register for date:" name="register_for_date">
               <Input bordered={false} readOnly className="enableFocus" />
             </Form.Item>
@@ -161,7 +165,9 @@ const RegisterForget = ({
             >
               <TimePicker format={format} />
             </Form.Item>
-            <div>{dataRegisterForget.checkin_original}</div>
+            <div className="checkin-oringinal">
+              {`( ${dataRegisterForget.checkin_original} )`}
+            </div>
             <Form.Item
               label="Checkout:"
               name="checkout"
@@ -170,7 +176,9 @@ const RegisterForget = ({
               <TimePicker format={format} />
             </Form.Item>
 
-            <span>{dataRegisterForget.checkout_original}</span>
+            <div className="checkout-original">
+              {`( ${dataRegisterForget.checkout_original} )`}
+            </div>
             <Form.Item label="Special reason:" name="special_reason">
               <Checkbox.Group
                 options={[
@@ -186,7 +194,7 @@ const RegisterForget = ({
               />
             </Form.Item>
             <Form.Item label="Reason:" name="reason">
-              <Input.TextArea />
+              <Input.TextArea autoSize={{ minRows: 4, maxRows: 7 }} />
             </Form.Item>
             <div className="button">
               <Button
