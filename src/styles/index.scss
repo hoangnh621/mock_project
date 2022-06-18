@@ -29,6 +29,10 @@
 body {
   font-family: 'Montserrat';
 
+  .ant-btn {
+    border-radius: 4px;
+  }
+
   //Button
   .primary-button {
     background-color: $bgPrimary;
@@ -109,10 +113,6 @@ body {
   }
 
   .ant-input {
-    // &:hover {
-    //   border-color: $bgPrimary;
-    //   box-shadow: 0 0 0 2px $blurPrimaryInput;
-    // }
     &:focus {
       border-color: $bgPrimary;
       box-shadow: 0 0 0 2px $blurPrimaryInput;

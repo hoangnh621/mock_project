@@ -8,8 +8,10 @@ import { Button, Table } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import CustomSpin from '../../common/CustomSpin/CustomSpin'
 import {
   getHomeTable,
+  getLoadingNotice,
   getNotice,
   getNoticeDetail,
   getNoticeState,
@@ -25,13 +27,15 @@ const HomeScreen = () => {
   const [oderPublishedDate, setOderPublishedDate] = useState('desc')
   const [pageSize, setPageSize] = useState(10)
   const [toggleModal, setToggleModal] = useState(false)
-  const homeScreen = useRef(null)
+  const homeScreen = useRef()
   const dispatch = useDispatch()
   const notice = useSelector(getNoticeState)
   const dataSource = useSelector(getHomeTable)
+  const loadingNotice = useSelector(getLoadingNotice)
   useEffect(() => {
     document.title = 'Home'
   }, [])
+
   // Get notices
   useEffect(() => {
     dispatch(
@@ -205,6 +209,7 @@ const HomeScreen = () => {
             dataSource={[...dataSource]}
             columns={columns}
             bordered
+            loading={{ indicator: <CustomSpin />, spinning: loadingNotice }}
             rowClassName={(record, index) => {
               if (index % 2 === 0) {
                 return 'evenRow'
@@ -243,6 +248,7 @@ const HomeScreen = () => {
                           )
                           setCurrentPage(1)
                         }}
+                        disabled={currentPage === 1}
                       >
                         <DoubleLeftOutlined />
                       </Button>
@@ -271,6 +277,9 @@ const HomeScreen = () => {
                           )
                           setCurrentPage(notice?.official_notice.last_page || 1)
                         }}
+                        disabled={
+                          currentPage === notice?.official_notice.last_page
+                        }
                       >
                         <DoubleRightOutlined />
                       </Button>
