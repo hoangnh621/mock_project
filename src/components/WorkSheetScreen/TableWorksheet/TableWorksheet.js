@@ -5,13 +5,14 @@ import { useSelector } from 'react-redux'
 import {
   getWorksheetData,
   getWorksheetTotal,
-  isFirstLoad
+  isFirstLoad,
 } from '../../../store/reducer/worksheetSlice'
 import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData'
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
 import Leave from '../popup/Leave/Leave'
 import RegisterForget from '../popup/RegisterForget/RegisterForget'
+import RegisterOverTime from '../popup/RegisterOverTime/RegisterOverTime'
 import TimeLog from '../TimeLog/TimeLog'
 
 const { Option } = Select
@@ -176,7 +177,7 @@ const TableWorksheet = () => {
   }
   const showOverTime = () => {
     setIsOverTimeVisible(true)
-
+  }
   const showRegisterForget = (data) => {
     const id = data.key
     axiosPrivate
@@ -210,6 +211,7 @@ const TableWorksheet = () => {
         setIsShowTimeLog(true)
       },
     }
+  }
 
   const handleHighlight = (record, index) => {}
   return (
@@ -248,7 +250,10 @@ const TableWorksheet = () => {
         isLeaveVisible={isLeaveVisible}
         setIsLeaveVisible={setIsLeaveVisible}
       />
-
+      <RegisterOverTime
+        isOverTimeVisible={isOverTimeVisible}
+        setIsOverTimeVisible={setIsOverTimeVisible}
+      />
       <RegisterForget
         dataRegisterForget={dataRegisterForget}
         setDataRegisterForget={setDataRegisterForget}
@@ -263,4 +268,5 @@ const TableWorksheet = () => {
     </>
   )
 }
+
 export default TableWorksheet

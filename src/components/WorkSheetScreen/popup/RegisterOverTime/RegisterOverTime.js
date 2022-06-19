@@ -9,8 +9,8 @@ import './RegisterOverTime.scss'
 function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
   const registrationDate = moment(new Date()).format('DD/MM/YYYY HH:mm')
   const registerForDate = moment(new Date()).format('DD/MM/YYYY ')
-  const checkInTime = '08:00'
-  const checkOutTime = '18:40'
+  const checkInTime = '09:00'
+  const checkOutTime = '17:00'
   const actualOverTime = '00:40'
   // console.log(visible)
   // const [overTime, setOverTime] = useState([])
