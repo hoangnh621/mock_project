@@ -15,6 +15,7 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
 
   const onFinish = (values) => {
     dispatch(changePass(values))
+    setToggleModal(false)
     form.setFieldsValue({
       oldPassword: '',
       confirmPassword: '',
@@ -166,18 +167,18 @@ const ChangePassPopup = ({ toggleModal, setToggleModal }) => {
           </Col>
           <Col className="mr-20">
             <Form.Item>
-              <Button className="outline-primary-button" onClick={onFill}>
-                Reset
-              </Button>
-            </Form.Item>
-          </Col>
-          <Col>
-            <Form.Item>
               <Button
                 className="outline-secondary-button"
                 onClick={handleCancel}
               >
                 Cancel
+              </Button>
+            </Form.Item>
+          </Col>
+          <Col>
+            <Form.Item>
+              <Button className="outline-primary-button" onClick={onFill}>
+                Reset
               </Button>
             </Form.Item>
           </Col>
