@@ -18,9 +18,6 @@ const Header = () => {
   const axiosPrivate = useAxiosPrivate()
   const subMenu = useRef()
   const subMenuHeight = useRef()
-  if (subMenu.current) {
-    subMenuHeight.current = 0 - subMenu.current.clientHeight
-  }
   const dispatch = useDispatch()
   useEffect(() => {
     async function getProfileUser() {
@@ -106,7 +103,6 @@ const Header = () => {
             ref={subMenu}
             id="sub-menu"
             className={showSubMenu ? 'sub-menu show' : 'sub-menu hide'}
-            style={{ bottom: subMenuHeight.current - 12 }}
           >
             <div className="sub-menu-items">
               <div className="sub-menu-item" onClick={handleClickChangePass}>
@@ -122,7 +118,7 @@ const Header = () => {
                 Log out
               </div>
               <div className="sub-menu-item">
-                <Link to="admin">Admin</Link>
+                <Link to="">Admin</Link>
               </div>
             </div>
           </div>
