@@ -2,7 +2,7 @@ import {
   ControlOutlined,
   NodeIndexOutlined,
   NotificationOutlined,
-  PaperClipOutlined,
+  PaperClipOutlined
 } from '@ant-design/icons'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../../../../layout/Header/logo.png'

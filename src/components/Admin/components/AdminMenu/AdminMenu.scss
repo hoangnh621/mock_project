@@ -4,20 +4,20 @@
   top: 0;
   bottom: 0;
   left: 0;
-  width: 260px;
+  width: 280px;
   background-color: white;
   z-index: 100;
   color: black;
   .title {
     display: flex;
     align-items: center;
-    padding: 22px 15px;
+    padding: 30px 15px;
     .logo {
-      width: 40px;
-      height: 40px;
+      width: 45px;
+      height: 45px;
     }
     a {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 550;
       margin-left: 10px;
       color: $color;
@@ -38,6 +38,11 @@
 
   &:hover {
     transform: translateX(5px);
+    color: #7367f0;
+  }
+
+  &:hover .admin-icon {
+    color: #7367f0;
   }
 }
 
@@ -46,6 +51,10 @@
   box-shadow: 0 0 10px 1px rgb(115 103 240 / 70%);
   color: white;
   font-weight: 200;
+
+  .admin-icon {
+    color: white;
+  }
 }
 
 .admin-icon {
