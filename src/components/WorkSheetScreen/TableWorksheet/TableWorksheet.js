@@ -22,7 +22,9 @@ import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
 import Leave from '../popup/Leave/Leave'
+import OverTime from '../popup/OverTime/OverTime'
 import RegisterForget from '../popup/RegisterForget/RegisterForget'
+
 import TimeLog from '../TimeLog/TimeLog'
 
 const TableWorksheet = () => {
@@ -31,6 +33,8 @@ const TableWorksheet = () => {
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
   const [dataLateEarly, setDataLateEarly] = useState({})
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
+  const [isOverTimeVisible, setIsOverTimeVisible] = useState(false)
+  const [dataOverTime, setDataOverTime] = useState()
   const [dataLeave, setDataLeave] = useState({})
   const [isRegisterForgetVisible, setIsRegisterForgetVisible] = useState(false)
   const [dataRegisterForget, setDataRegisterForget] = useState({})
@@ -186,7 +190,7 @@ const TableWorksheet = () => {
             <Divider type="vertical" />
             <span onClick={() => handleLeave(record.key)}>Leave</span>
             <Divider type="vertical" />
-            <span>OT</span>
+            <span onClick={() => handleOverTime(record)}>OT</span>
           </div>
         )
       },
@@ -240,6 +244,19 @@ const TableWorksheet = () => {
         }
       })
       .then(() => setIsRegisterForgetVisible(true))
+  }
+
+  const getData = async (id) => {
+    const res = await axiosPrivate.get(`/worksheet/${id}`, {
+      params: {
+        type: 5,
+      },
+    })
+    setDataOverTime(res.data)
+  }
+  const handleOverTime = (id) => {
+    getData(id)
+    setIsOverTimeVisible(true)
   }
 
   const getDate = (date) => {
@@ -368,7 +385,11 @@ const TableWorksheet = () => {
         data={dataLeave}
         setIsLeaveVisible={setIsLeaveVisible}
       />
-
+      <OverTime
+        dataOverTime={dataOverTime}
+        isOverTimeVisible={isOverTimeVisible}
+        setIsOverTimeVisible={setIsOverTimeVisible}
+      />
       <RegisterForget
         dataRegisterForget={dataRegisterForget}
         setDataRegisterForget={setDataRegisterForget}

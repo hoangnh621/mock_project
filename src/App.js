@@ -8,6 +8,7 @@ import { getLocalStorageItem } from './utils/helpers/handleLocalStorageItems/ind
 
 function App() {
   const navigate = useNavigate()
+  // const replace = useSelector(getLoginReplace)
   const accessToken = getLocalStorageItem('accessToken')
   // Check accessToken and redirect to LoginScreen
   useEffect(() => {
