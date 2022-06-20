@@ -72,6 +72,14 @@ export const viewAttachment = createAsyncThunk(
           const file = new Blob([response.data], { type: 'application/pdf' })
           const fileURL = URL.createObjectURL(file)
           window.open(fileURL)
+        } else {
+          const file = new Blob([response.data])
+          const url = window.URL.createObjectURL(file)
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', fileName)
+          document.body.appendChild(link)
+          link.click()
         }
       })
     return res.data
