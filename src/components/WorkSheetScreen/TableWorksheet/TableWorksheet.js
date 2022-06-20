@@ -19,8 +19,9 @@ const { Option } = Select
 const TableWorksheet = () => {
   const worksheetData = useSelector(getWorksheetData)
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
-  const [dataLateEarly, setDataLateEarly] = useState()
+  const [dataLateEarly, setDataLateEarly] = useState({})
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
+  const [dataLeave, setDataLeave] = useState({})
   const [isRegisterForgetVisible, setIsRegisterForgetVisible] = useState(false)
   const [dataRegisterForget, setDataRegisterForget] = useState({})
   const [isShowTimeLog, setIsShowTimeLog] = useState(false)
@@ -147,7 +148,7 @@ const TableWorksheet = () => {
             <Divider type="vertical" />
             <span onClick={() => handleLateEarly(record.key)}>Late/Early</span>
             <Divider type="vertical" />
-            <span onClick={showLeave}>Leave</span>
+            <span onClick={() => handleLeave(record.key)}>Leave</span>
             <Divider type="vertical" />
             <span>OT</span>
           </div>
@@ -165,12 +166,21 @@ const TableWorksheet = () => {
     setDataLateEarly(res.data)
   }
 
+  const getDataLeaveByID = async (id) => {
+    const res = await axiosPrivate.get(`/worksheet/${id}`, {
+      params: {
+        type: 3,
+      },
+    })
+    setDataLeave(res.data)
+  }
   const handleLateEarly = (id) => {
     getDataByID(id)
     setIsLateEarlyVisible(true)
   }
 
-  const showLeave = () => {
+  const handleLeave = (id) => {
+    getDataLeaveByID(id)
     setIsLeaveVisible(true)
   }
 
@@ -250,6 +260,7 @@ const TableWorksheet = () => {
 
       <Leave
         isLeaveVisible={isLeaveVisible}
+        data={dataLeave}
         setIsLeaveVisible={setIsLeaveVisible}
       />
 
