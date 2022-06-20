@@ -1,5 +1,5 @@
 import { EditOutlined, FormOutlined, LogoutOutlined } from '@ant-design/icons'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
@@ -16,8 +16,6 @@ const Header = () => {
   const [showProFileScreen, setShowProfileScreen] = useState(false)
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
-  const subMenu = useRef()
-  const subMenuHeight = useRef()
   const dispatch = useDispatch()
   useEffect(() => {
     async function getProfileUser() {
@@ -100,7 +98,6 @@ const Header = () => {
             </div>
           </div>
           <div
-            ref={subMenu}
             id="sub-menu"
             className={showSubMenu ? 'sub-menu show' : 'sub-menu hide'}
           >
@@ -118,7 +115,7 @@ const Header = () => {
                 Log out
               </div>
               <div className="sub-menu-item">
-                <Link to="">Admin</Link>
+                <Link to="admin">Admin</Link>
               </div>
             </div>
           </div>

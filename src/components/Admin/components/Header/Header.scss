@@ -27,12 +27,13 @@ $admin-margin: 20px;
 .admin-header-right {
   display: flex;
   align-items: center;
+  position: relative;
+  cursor: pointer;
   .avatar {
     width: 40px;
     height: 40px;
     border-radius: 50%;
   }
-
   .admin-name {
     text-align: right;
     margin-right: 10px !important;

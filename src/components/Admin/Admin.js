@@ -11,7 +11,9 @@ const Admin = () => {
         <div className="content">
           <Header />
 
-          <Outlet />
+          <div className="admin-function">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
