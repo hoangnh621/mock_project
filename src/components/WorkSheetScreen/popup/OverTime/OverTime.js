@@ -4,27 +4,33 @@ import moment from 'moment'
 // import { useDispatch, useSelector } from 'react-redux'
 import XIcon from '../../../../common/XIcon/XIcon'
 import '../../../../styles/index.scss'
-import './RegisterOverTime.scss'
+// import useAxiosPrivate from '../../../../utils/requests/useAxiosPrivate'
+import './OverTime.scss'
 
-function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
-  const registrationDate = moment(new Date()).format('DD/MM/YYYY HH:mm')
-  const registerForDate = moment(new Date()).format('DD/MM/YYYY ')
+function OverTime({ dataOverTime, isOverTimeVisible, setIsOverTimeVisible }) {
+  const registerForDateData =
+    dataOverTime?.request_for_date || dataOverTime?.work_date
+  const registrationDate = moment(new Date()).format('DD/MM/YYYY')
+  const registerForDate = moment(registerForDateData).format('DD/MM/YYYY ')
+  // const checkInTimeData =
+  //   dataOverTime?.checkin_original || dataOverTime?.checkin
+  // const checkInTime = checkInTimeData
+  //   ? moment(checkInTimeData).format('HH:mm')
+  //   : ''
+  // const checkOutTimeData =
+  //   dataOverTime?.checkout_original || dataOverTime?.checkout
+  // const checkOutTime = checkOutTimeData
+  //   ? moment(checkOutTimeData).format('HH:mm')
+  //   : ''
+
   const checkInTime = '09:00'
-  const checkOutTime = '17:00'
+  const checkOutTime = '18:40'
   const actualOverTime = '00:40'
-  // console.log(visible)
-  // const [overTime, setOverTime] = useState([])
-  // const [reason, setReason] = useState([])
-
-  // const hanldeCheckOverTime = (value) => {
-  //   value && setOverTime(value.format('HH:mm'))
-  // }
-
-  // const hanldeReeasonChange = (e) => {
-  //   setReason(e.target.value)
-  // }
   const timeFormat = 'HH:mm'
-
+  // const dispatch = useDispatch()
+  // const axiosPrivate = useAxiosPrivate()
+  // const submitLoading = useSelector(getSubmitOverTimeLoading)
+  // const updateLoading = useSelector(getUpdateOverTimeLoading)
   const config = {
     rules: [
       {
@@ -40,37 +46,6 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
   const onFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo)
   }
-  // const checkOutNumber = Number(changeTimeToMint(checkOutTime))
-  // const actualOverTimeNumber =  ()
-  // const dispatch = useDispatch()
-  // const loadingSubmit = useSelector(getSubmitOverTimeLoading)
-
-  // const onFinish = (values) => {
-  //   const newRequest = {
-  //     created_at: moment().format('DD/MM/YYYY HH:mm'),
-  //     request_type: 5,
-  //     request_for_date: changeFormatDate(registerForDate),
-  //     check_in: checkInTime,
-  //     check_out: checkOutTime,
-  //     //  compensation_date: changeFormatDate(
-  //     //    values[''].format('DD/MM/YYYY'),
-  //     //  ),
-  //     //  compensation_time: '',
-  //     reason: values['reason'],
-  //   }
-  //   console.log(newRequest)
-  //   dispatch(submitOverTime(newRequest))
-  //   setIsOverTimeVisible(false)
-  // }
-  // const deleteRequest = () => {
-  //   const deleteRequest = {
-  //     request_type: 5,
-  //     request_for_date: registerForDate,
-  //     action: 'delete',
-  //   }
-  //   console.log(deleteRequest)
-  // }
-
   return (
     <>
       <Modal
@@ -129,15 +104,11 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
             </Row>
             <Row className="item">
               <Col xs={{ span: 24 }} lg={{ span: 5 }}>
-                {/* <Row className="item"> */}
-                {/* <div className="w-140 "> */}
                 <h4>Request OT :</h4>
-                {/* </div> */}
               </Col>
               <Col xs={{ span: 24 }} lg={{ span: 7 }}>
                 <Form.Item name="request_OT" {...config}>
                   <TimePicker
-                    // onChange={hanldeCheckOverTime}
                     value={moment('00:00', timeFormat)}
                     format={timeFormat}
                   />
@@ -183,12 +154,7 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
                     },
                   ]}
                 >
-                  <Input.TextArea
-                    className="input-primary"
-                    // value={reason}
-                    // onChange={hanldeReeasonChange}
-                    rows={4}
-                  />
+                  <Input.TextArea className="input-primary" rows={4} />
                 </Form.Item>
               </Col>
             </div>
@@ -212,4 +178,4 @@ function RegisterOverTime({ isOverTimeVisible, setIsOverTimeVisible }) {
   )
 }
 
-export default RegisterOverTime
+export default OverTime

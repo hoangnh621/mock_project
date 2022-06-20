@@ -11,8 +11,9 @@ import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
 import Leave from '../popup/Leave/Leave'
+import OverTime from '../popup/OverTime/OverTime'
 import RegisterForget from '../popup/RegisterForget/RegisterForget'
-import RegisterOverTime from '../popup/RegisterOverTime/RegisterOverTime'
+
 import TimeLog from '../TimeLog/TimeLog'
 
 const { Option } = Select
@@ -23,6 +24,7 @@ const TableWorksheet = () => {
   const [dataLateEarly, setDataLateEarly] = useState()
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
   const [isOverTimeVisible, setIsOverTimeVisible] = useState(false)
+  const [dataOverTime, setDataOverTime] = useState()
   const [isRegisterForgetVisible, setIsRegisterForgetVisible] = useState(false)
   const [dataRegisterForget, setDataRegisterForget] = useState({})
   const [isShowTimeLog, setIsShowTimeLog] = useState(false)
@@ -151,7 +153,7 @@ const TableWorksheet = () => {
             <Divider type="vertical" />
             <span onClick={showLeave}>Leave</span>
             <Divider type="vertical" />
-            <span onClick={showOverTime}>OT</span>
+            <span onClick={() => handleOverTime(record)}>OT</span>
           </div>
         )
       },
@@ -175,9 +177,7 @@ const TableWorksheet = () => {
   const showLeave = () => {
     setIsLeaveVisible(true)
   }
-  const showOverTime = () => {
-    setIsOverTimeVisible(true)
-  }
+
   const showRegisterForget = (data) => {
     const id = data.key
     axiosPrivate
@@ -198,6 +198,19 @@ const TableWorksheet = () => {
         }
       })
       .then(() => setIsRegisterForgetVisible(true))
+  }
+
+  const getData = async (id) => {
+    const res = await axiosPrivate.get(`/worksheet/${id}`, {
+      params: {
+        type: 5,
+      },
+    })
+    setDataOverTime(res.data)
+  }
+  const handleOverTime = (id) => {
+    getData(id)
+    setIsOverTimeVisible(true)
   }
 
   const getDate = (date) => {
@@ -256,7 +269,8 @@ const TableWorksheet = () => {
         isLeaveVisible={isLeaveVisible}
         setIsLeaveVisible={setIsLeaveVisible}
       />
-      <RegisterOverTime
+      <OverTime
+        dataOverTime={dataOverTime}
         isOverTimeVisible={isOverTimeVisible}
         setIsOverTimeVisible={setIsOverTimeVisible}
       />

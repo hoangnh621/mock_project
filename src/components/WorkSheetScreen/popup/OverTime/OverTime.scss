@@ -6,10 +6,6 @@
   .item {
     margin-bottom: 10px;
   }
-  .test-1 {
-    margin-top: 10px;
-  }
-
   .item_check {
     margin-bottom: 25px;
   }
@@ -58,41 +54,19 @@
 .time_check {
   display: flex;
   width: 50%;
-  color: $bgInfo;
 }
 
 .reason {
   display: flex;
 }
-
-@media (min-width: 992px) {
-  .col-order-2 {
-    width: 80px;
+@media screen and (max-width: 640px) {
+  .ant-modal {
+    width: 80% !important;
   }
 }
-
-@media (max-width: 767px) {
-  .reason {
-    display: block;
-  }
-
-  .ant-modal-body {
-    padding: 12px 24px 24px;
-  }
-}
-
-@media (min-width: 576px) {
-  .time {
-    display: flex;
-    padding-right: 8px;
-    margin-right: 8px;
-  }
-}
-
-@media (max-width: 575px) {
-  .time {
-    display: block;
-    border-right: none;
+@media screen and (min-width: 641px) and (max-width: 940px) {
+  .ant-modal {
+    width: 80% !important;
   }
 }
 
