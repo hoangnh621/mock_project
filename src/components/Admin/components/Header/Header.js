@@ -1,9 +1,11 @@
 import { FieldTimeOutlined, HomeOutlined } from '@ant-design/icons'
 import { Tooltip } from 'antd'
+import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import defaultAvatar from '../../../../layout/Header/defaultAvatar.png'
 import './Header.scss'
 const Header = () => {
+  const [showAdminSubMenu, setShowAdminSubMenu] = useState(false)
   return (
     <div className="admin-header">
       <div className="admin-header-left">
@@ -32,7 +34,10 @@ const Header = () => {
           </NavLink>
         </div>
       </div>
-      <div className="admin-header-right">
+      <div
+        className="admin-header-right"
+        onClick={() => setShowAdminSubMenu(!showAdminSubMenu)}
+      >
         <div className="admin-name header-item">
           <div>
             {localStorage.getItem('full_name')
