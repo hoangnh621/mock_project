@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   DoubleLeftOutlined,
   DoubleRightOutlined,
@@ -40,12 +41,12 @@ const HomeScreen = () => {
   useEffect(() => {
     dispatch(
       getNotice({
-        page: 1,
+        page: currentPage,
         per_page: pageSize,
         order_published_date: oderPublishedDate,
       }),
     )
-  }, [dispatch, oderPublishedDate, pageSize])
+  }, [dispatch, oderPublishedDate, pageSize, currentPage])
 
   const handleShowNoticeDetail = (rowId, toDepartment, publishedDate) => {
     setToggleModal(true)
@@ -60,8 +61,10 @@ const HomeScreen = () => {
     // Calculate home screen height
     const headerHeight = calculateComponentHeight('.navbar')
     const windowHeight = window.innerHeight
-    homeScreen.current.style.paddingTop = headerHeight + 'px'
-    homeScreen.current.style.height = windowHeight + 'px'
+    if (homeScreen.current) {
+      homeScreen.current.style.paddingTop = headerHeight + 'px'
+      homeScreen.current.style.height = windowHeight + 'px'
+    }
     // Calculate table scroll height
     const PAGINATION_MARGIN_TOP = 16
     const HOME_SCREEN_PADDING_BOTTOM = 32
@@ -85,8 +88,10 @@ const HomeScreen = () => {
       // Calculate home screen height
       const headerHeight = calculateComponentHeight('.navbar')
       const windowHeight = window.innerHeight
-      homeScreen.current.style.paddingTop = headerHeight + 'px'
-      homeScreen.current.style.height = windowHeight + 'px'
+      if (homeScreen.current) {
+        homeScreen.current.style.paddingTop = headerHeight + 'px'
+        homeScreen.current.style.height = windowHeight + 'px'
+      }
       // Calculate table scroll height
       const PAGINATION_MARGIN_TOP = 16
       const HOME_SCREEN_PADDING_BOTTOM = 32
@@ -108,13 +113,6 @@ const HomeScreen = () => {
   }, [])
 
   const onPageChange = (page, pageSize) => {
-    dispatch(
-      getNotice({
-        page,
-        per_page: pageSize,
-        order_published_date: oderPublishedDate,
-      }),
-    )
     setCurrentPage(page)
   }
 
