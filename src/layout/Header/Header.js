@@ -104,7 +104,7 @@ const Header = () => {
             <div className="sub-menu-items">
               <div className="sub-menu-item" onClick={handleClickChangePass}>
                 <FormOutlined className="icon" />
-                Change pass
+                Change password
               </div>
               <div className="sub-menu-item" onClick={handleShowProfileScreen}>
                 <EditOutlined className="icon" />

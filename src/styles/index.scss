@@ -1,5 +1,5 @@
-@import "reset";
-@import "color";
+@import 'reset';
+@import 'color';
 
 @font-face {
   font-family: Montserrat;
@@ -26,8 +26,48 @@
   background-color: $bgPrimary;
   border-color: $bgPrimary !important;
 }
+.modal-confirm {
+  .ant-btn-default {
+    background-color: $bgPrimary;
+    color: #fff;
+    border-color: $bgPrimary;
+    &:hover {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+      box-shadow: 0 8px 25px -8px $bgPrimary;
+    }
+    &:focus {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+    &:active {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+    }
+  }
+  .ant-btn-primary {
+    border-color: $bgPrimary;
+    color: $bgPrimary;
+    background-color: #fff;
+    &:hover {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:active {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+  }
+}
 body {
-  font-family: "Montserrat";
+  font-family: 'Montserrat';
 
   //Button
   .ant-btn {
@@ -37,6 +77,7 @@ body {
   .primary-button {
     background-color: $bgPrimary;
     color: #fff;
+    border-color: $bgPrimary;
     &:hover {
       background-color: $bgPrimary;
       color: #fff;
@@ -144,7 +185,8 @@ body {
     }
   }
 
-  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+  .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
     border-color: $bgPrimary;
     box-shadow: 0 0 0 2px $blurPrimaryInput;
   }
@@ -162,14 +204,105 @@ body {
 }
 
 // Radio Button
-.ant-radio-checked .ant-radio-inner{
+.ant-radio-checked .ant-radio-inner {
   border-color: $bgPrimary !important ;
 }
 
-.ant-radio-checked .ant-radio-inner:after{
+.ant-radio-checked .ant-radio-inner:after {
   background-color: $bgPrimary;
 }
 
 .ant-radio:hover .ant-radio-inner {
-  border-color: $bgPrimary ;
+  border-color: $bgPrimary;
+}
+
+.ant-form input[type='radio']:focus {
+  // outline: thin dotted;
+  outline: 5px auto $blurPrimary;
+  outline-offset: -2px;
+}
+.ant-radio-input:focus + .ant-radio-inner {
+  box-shadow: none;
+  border-color: $bgPrimary;
+}
+.custom-pagination {
+  margin-bottom: 0;
+  .ant-pagination-item-active {
+    border-color: $bgPrimary;
+    a {
+      color: $bgPrimary;
+    }
+  }
+  .ant-pagination-item {
+    margin-right: 0;
+    &:hover {
+      border-color: $bgPrimary;
+      a {
+        color: $bgPrimary;
+      }
+    }
+  }
+  .ant-pagination-prev {
+    margin-right: 0;
+    &:hover {
+      button {
+        border-color: #ccc;
+        a {
+          color: black;
+        }
+      }
+    }
+  }
+  .ant-btn {
+    &:hover {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:active {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+    &:focus {
+      border-color: $bgPrimary;
+      color: $bgPrimary;
+    }
+  }
+  .ant-pagination-next {
+    &:hover {
+      button {
+        border-color: #ccc;
+        a {
+          color: black;
+        }
+      }
+    }
+  }
+  .ant-pagination-jump-next {
+    &:hover {
+      .ant-pagination-item-link-icon {
+        color: $bgPrimary;
+      }
+    }
+  }
+  .ant-pagination-jump-prev {
+    &:hover {
+      .ant-pagination-item-link-icon {
+        color: $bgPrimary;
+      }
+    }
+  }
+  .ant-pagination-options {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    &::before {
+      content: 'Items per page';
+      display: flex;
+      align-items: center;
+      margin-right: 8px;
+    }
+  }
+  .ant-pagination-total-text {
+    flex: 1;
+  }
 }

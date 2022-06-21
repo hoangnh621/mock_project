@@ -29,7 +29,16 @@ function FormFirstRight() {
 
   return (
     <Form.Item>
-      <Form.Item label="Nick name" name="nick_name">
+      <Form.Item
+        label="Nick name"
+        name="nick_name"
+        rules={[
+          {
+            max: 32,
+            message: "Can't be more than 32 characters",
+          },
+        ]}
+      >
         <Input className="input-primary" />
       </Form.Item>
       <Form.Item
@@ -43,6 +52,10 @@ function FormFirstRight() {
           {
             type: 'email',
             message: 'Should be a email!',
+          },
+          {
+            max: 254,
+            message: "Can't be more than 254 characters",
           },
         ]}
       >

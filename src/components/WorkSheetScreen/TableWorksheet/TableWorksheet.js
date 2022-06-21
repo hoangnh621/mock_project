@@ -8,6 +8,7 @@ import { Button, Divider, Table } from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {
   getCurrentPage,
   getLastPage,
@@ -18,6 +19,7 @@ import {
   paramTimesheet,
   worksheetPagination,
 } from '../../../store/reducer/worksheetSlice'
+import { calculateComponentBottom } from '../../../utils/helpers/handleSize/index'
 import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData'
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
@@ -51,7 +53,9 @@ const TableWorksheet = () => {
   const currentPageStore = useSelector(getCurrentPage)
   const lastPageStore = useSelector(getLastPage)
   const [pageSize, setPageSize] = useState(30)
+  const [tableScrollHeight, setTableScrollHeight] = useState(0)
   const dispatch = useDispatch()
+  console.log('firstDataWorksheet', firstDataWorksheet)
 
   useEffect(() => {
     const getFirstData = async () => {
@@ -90,30 +94,67 @@ const TableWorksheet = () => {
     )
   }, [pageSize, currentPage, paramTimesheetStore, dispatch])
 
+  // Calculate scroll height of table
+  useEffect(() => {
+    const TIME_SHEET_PADDING_BOTTOM = 32
+    const PAGINATION_SIZE = 117
+    const HEADER_TABLE_HEIGHT = 78
+    const timesheetFilterBottom = calculateComponentBottom('.worksheet-filter')
+    const windowHeight = window.innerHeight
+    setTableScrollHeight(
+      windowHeight -
+        timesheetFilterBottom -
+        PAGINATION_SIZE -
+        TIME_SHEET_PADDING_BOTTOM -
+        HEADER_TABLE_HEIGHT,
+    )
+  }, [])
+
+  //Recalculate scroll height when resize
+  useEffect(() => {
+    const handleResize = () => {
+      const TIME_SHEET_PADDING_BOTTOM = 32
+      const PAGINATION_SIZE = 117
+      const HEADER_TABLE_HEIGHT = 78
+      const timesheetFilterBottom =
+        calculateComponentBottom('.worksheet-filter')
+      const windowHeight = window.innerHeight
+      setTableScrollHeight(
+        windowHeight -
+          timesheetFilterBottom -
+          PAGINATION_SIZE -
+          TIME_SHEET_PADDING_BOTTOM -
+          HEADER_TABLE_HEIGHT,
+      )
+    }
+    document.addEventListener('resize', handleResize)
+    return () => document.removeEventListener('resize', handleResize)
+  })
+
   const columns = [
     {
-      title: 'No',
+      title: 'NO',
       dataIndex: 'id',
       key: 'id',
     },
     {
-      title: 'Date',
+      title: 'DATE',
       dataIndex: 'work_date',
       key: 'work_date',
       width: '180px',
     },
     {
-      title: 'Check-in',
+      title: 'CHECK IN',
       dataIndex: 'checkin',
       key: 'checkin',
     },
     {
-      title: 'Check-out',
+      title: 'CHECK OUT',
       dataIndex: 'checkout',
       key: 'checkout',
     },
     {
-      title: 'Late',
+      title: 'LATE',
       dataIndex: 'late',
       key: 'late',
       render: (late) => {
@@ -125,7 +166,7 @@ const TableWorksheet = () => {
       },
     },
     {
-      title: 'Early',
+      title: 'EARLY',
       dataIndex: 'early',
       key: 'early',
       render: (early) => {
@@ -137,7 +178,7 @@ const TableWorksheet = () => {
       },
     },
     {
-      title: 'In Office',
+      title: 'IN OFFICE',
       dataIndex: 'in_office',
       key: 'in_office',
     },
@@ -147,50 +188,58 @@ const TableWorksheet = () => {
       key: 'ot_time',
     },
     {
-      title: 'Work time',
+      title: 'WORK TIME',
       dataIndex: 'work_time',
       key: 'work_time',
     },
     {
-      title: 'Lack',
+      title: 'LACK',
       dataIndex: 'lack',
       key: 'lack',
     },
     {
-      title: 'Comp',
+      title: 'COMP',
       dataIndex: 'compensation',
       key: 'compensation',
     },
     {
-      title: 'PLeave',
+      title: 'PLEAVE',
       dataIndex: 'paid_leave',
       key: 'paid_leave',
     },
     {
-      title: 'ULeave',
+      title: 'ULEAVE',
       dataIndex: 'unpaid_leave',
       key: 'unpaid_leave',
     },
     {
-      title: 'Note',
+      title: 'NOTE',
       dataIndex: 'note',
       key: 'note',
     },
     {
-      title: 'Action',
+      title: 'ACTION',
       dataIndex: 'action',
       key: 'action',
       width: '250px',
       render: (text, record, index) => {
         return (
           <div>
-            <span onClick={() => showRegisterForget(record)}>Forget</span>
-            <Divider type="vertical" />
-            <span onClick={() => handleLateEarly(record.key)}>Late/Early</span>
-            <Divider type="vertical" />
-            <span onClick={() => handleLeave(record.key)}>Leave</span>
-            <Divider type="vertical" />
-            <span onClick={() => handleOverTime(record)}>OT</span>
+            <Link to="#" onClick={() => showRegisterForget(record)}>
+              Forget
+            </Link>
+            <Divider type="vertical" className="dividerCustom" />
+            <Link to="#" onClick={() => handleLateEarly(record.key)}>
+              Late/Early
+            </Link>
+            <Divider type="vertical" className="dividerCustom" />
+            <Link to="#" onClick={() => handleLeave(record.key)}>
+              Leave
+            </Link>
+            <Divider type="vertical" className="dividerCustom" />
+            <Link to="#" onClick={() => handleOverTime(record)}>
+              OT
+            </Link>
           </div>
         )
       },
@@ -276,8 +325,11 @@ const TableWorksheet = () => {
     const weekend = record.work_date.slice(11)
     if (weekend.includes('Sat') || weekend.includes('Sun')) {
       return 'bg-color-yellow'
+    } else if (index % 2 === 0) {
+      return 'evenRow'
+    } else {
+      return 'oddRow'
     }
-    return ''
   }
 
   const onShowSizeChange = (current, page) => {
@@ -310,7 +362,7 @@ const TableWorksheet = () => {
           columns={columns}
           bordered
           onRow={handleTimeLog}
-          scroll={{ y: 240 }}
+          scroll={{ y: tableScrollHeight }}
           pagination={{
             className: 'custom-pagination',
             position: ['bottomCenter', 'topCenter'],
@@ -337,6 +389,7 @@ const TableWorksheet = () => {
                           }),
                         )
                       }}
+                      disabled={currentPageStore === 1}
                     >
                       <DoubleLeftOutlined />
                     </Button>
@@ -362,6 +415,7 @@ const TableWorksheet = () => {
                           }),
                         )
                       }}
+                      disabled={currentPageStore === lastPageStore}
                     >
                       <DoubleRightOutlined />
                     </Button>

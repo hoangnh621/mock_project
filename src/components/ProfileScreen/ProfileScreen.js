@@ -78,7 +78,10 @@ const Profile = ({ showProFileScreen, handleHideProfileScreen }) => {
       title: 'Do you really want to cancel updating?',
       content: 'Everything will be not saved!',
       centered: true,
-      onOk: () => {
+      className: 'modal-confirm',
+      okText: 'Cancel',
+      cancelText: 'OK',
+      onCancel: () => {
         form.resetFields()
         handleHideProfileScreen()
       },
@@ -90,7 +93,10 @@ const Profile = ({ showProFileScreen, handleHideProfileScreen }) => {
       title: 'Do you really want to close this form?',
       content: 'Everything will be not saved!',
       centered: true,
-      onOk: () => {
+      okText: 'Cancel',
+      cancelText: 'OK',
+      className: 'modal-confirm',
+      onCancel: () => {
         handleHideProfileScreen()
         form.resetFields()
       },
@@ -173,14 +179,14 @@ const Profile = ({ showProFileScreen, handleHideProfileScreen }) => {
             </div>
             <div className="btn-submit">
               <Form.Item>
+                <Button className="primary-button" htmlType="submit">
+                  Update
+                </Button>
                 <Button
                   onClick={handleShowDialog}
                   className="outline-primary-button"
                 >
                   Cancel
-                </Button>
-                <Button className="primary-button" htmlType="submit">
-                  Update
                 </Button>
               </Form.Item>
             </div>
