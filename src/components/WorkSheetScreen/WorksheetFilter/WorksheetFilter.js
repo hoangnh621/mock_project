@@ -3,16 +3,17 @@ import moment from 'moment'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
-  getParams,
   getWorksheet,
-  getWorksheetLoading,
+  getWorksheetSearchLoading,
   paramTimesheet,
+  setWorkSheetParams,
 } from '../../../store/reducer/worksheetSlice'
 import { convertMomentToString } from '../../../utils/helpers/convertTime'
 
 const { Option } = Select
 
 const WorkSheetFilter = () => {
+  const isLoading = useSelector(getWorksheetSearchLoading)
   const firstDayOfRecentMonth = moment().startOf('month').format('YYYY-MM-DD')
   const today = moment().format('YYYY-MM-DD')
   const firstDayOfPreviousMonth = moment()
@@ -26,7 +27,6 @@ const WorkSheetFilter = () => {
   const firstDayOfYear = moment().startOf('year').format('YYYY-MM-DD')
   const [form] = Form.useForm()
   const [radioValue, setRadioValue] = useState(1)
-  const isLoading = useSelector(getWorksheetLoading)
   const dispatch = useDispatch()
   let paramTimesheetStore = useSelector(paramTimesheet)
 
@@ -68,19 +68,37 @@ const WorkSheetFilter = () => {
       }
     }
     if (radio_filter === 2) {
-      if (newParam.start_date.isAfter(newParam.end_date)) {
-        message.warning('Invalid date')
+      if (newParam.start_date?.isAfter(newParam.end_date)) {
+        message.warning('The end date must be greater than the start date')
         return
       }
-      paramTimesheetStore = {
-        ...paramTimesheetStore,
-        ...newParam,
-        start_date: convertMomentToString(value.start_date),
-        end_date: convertMomentToString(value.end_date),
-        page: 1,
+      if (!value.end_date) {
+        paramTimesheetStore = {
+          ...paramTimesheetStore,
+          ...newParam,
+          start_date: convertMomentToString(value.start_date),
+          page: 1,
+        }
+      }
+      if (!value.start_date) {
+        paramTimesheetStore = {
+          ...paramTimesheetStore,
+          ...newParam,
+          end_date: convertMomentToString(value.end_date),
+          page: 1,
+        }
+      }
+      if (!value.end_date && !value.start_date) {
+        paramTimesheetStore = {
+          ...paramTimesheetStore,
+          ...newParam,
+          start_date: '',
+          end_date: '',
+          page: 1,
+        }
       }
     }
-    dispatch(getParams(paramTimesheetStore))
+    dispatch(setWorkSheetParams(paramTimesheetStore))
     dispatch(getWorksheet(paramTimesheetStore))
   }
 
@@ -131,7 +149,7 @@ const WorkSheetFilter = () => {
                     <Form.Item name="start_date">
                       <DatePicker
                         placeholder="DD/MM/YYYY"
-                        format="DD/MM/YYYY"
+                        format={['DD/MM/YYYY', 'DDMMYYYY', 'DD-MM-YYYY']}
                         disabled={radioValue === 1}
                       />
                     </Form.Item>
@@ -139,7 +157,7 @@ const WorkSheetFilter = () => {
                     <Form.Item name="end_date">
                       <DatePicker
                         placeholder="DD/MM/YYYY"
-                        format="DD/MM/YYYY"
+                        format={['DD/MM/YYYY', 'DDMMYYYY', 'DD-MM-YYYY']}
                         disabled={radioValue === 1}
                         disabledDate={(d) => d.isAfter(new Date())}
                       />
@@ -160,14 +178,14 @@ const WorkSheetFilter = () => {
               <Form.Item>
                 <Space size="large">
                   <Button
-                    loading={isLoading}
                     className="primary-button"
                     htmlType="submit"
+                    loading={isLoading}
                   >
                     Search
                   </Button>
                   <Button
-                    className="outline-secondary-button"
+                    className="outline-primary-button"
                     onClick={handleReset}
                   >
                     Reset

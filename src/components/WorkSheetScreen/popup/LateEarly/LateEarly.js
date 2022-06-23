@@ -8,7 +8,6 @@ import {
   Row,
   Typography,
 } from 'antd'
-import 'antd/dist/antd.min.css'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -139,7 +138,6 @@ export default function LateEarly({
 
   // format datePicker
   const dateFormat = 'DD/MM/YYYY'
-  // const dateBefore = moment().subtract(1, 'days').format('DD/MM/YYYY')
   let date = moment().day()
 
   useEffect(() => {
@@ -153,7 +151,7 @@ export default function LateEarly({
 
   return (
     <Modal
-      title="Register Late Early"
+      title="Register Late/Early"
       visible={isLateEarlyVisible}
       onCancel={handleCancel}
       width="80%"
@@ -224,7 +222,8 @@ export default function LateEarly({
             >
               <Form.Item
                 name={'date-cover-up'}
-                label="Date cover up:"
+                label="Date cover up"
+                colon
                 rules={[
                   {
                     type: 'object',
@@ -234,7 +233,7 @@ export default function LateEarly({
                 ]}
               >
                 <DatePicker
-                  format={dateFormat}
+                  format={['DD/MM/YYYY', 'DDMMYYYY', 'DD-MM-YYYY']}
                   className="outlinePrimaryButton"
                   onChange={(e) => handleChangeDate(e)}
                 />
@@ -296,7 +295,7 @@ export default function LateEarly({
                   </Button>
                   <Button
                     onClick={handleCancel}
-                    className="outline-secondary-button"
+                    className="outline-primary-button"
                   >
                     Close
                   </Button>
@@ -313,7 +312,7 @@ export default function LateEarly({
                   </Button>
                   <Button
                     onClick={handleCancel}
-                    className="outline-secondary-button"
+                    className="outline-primary-button"
                   >
                     Cancel
                   </Button>

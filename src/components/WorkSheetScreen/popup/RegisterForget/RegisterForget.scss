@@ -1,4 +1,4 @@
-@import "../../../../styles/color";
+@import '../../../../styles/color';
 
 .register-forget-form {
   .ant-input {
@@ -28,7 +28,7 @@
     box-shadow: none !important;
   }
   .ant-form-item {
-    margin: 12px 0;
+    margin: 8px 0;
   }
   .register-textarea .ant-form-item {
     width: 70%;
@@ -39,6 +39,15 @@
   .checkout-original,
   .checkin-original {
     margin-left: 10px;
+  }
+  .register-textarea {
+    .ant-col {
+      margin-top: 8px;
+      align-self: flex-start;
+    }
+    .ant-form-item {
+      margin-top: 0;
+    }
   }
 }
 

@@ -5,7 +5,6 @@ import getLocalStorageItem from '../../utils/helpers/handleLocalStorageItems/get
 import { handleWorksheetTableData } from '../../utils/helpers/handleTableData'
 
 const today = moment().format('YYYY-MM-DD')
-const firstDayOfRecentMonth = moment().startOf('month').format('YYYY-MM-DD')
 
 export const getWorksheet = createAsyncThunk(
   'getWorksheet',
@@ -54,9 +53,10 @@ const worksheetSlice = createSlice({
     isLoading: false,
     totalRecord: 0,
     isFirstLoad: true,
+    searchLoading: false,
     paramTimesheet: {
       end_date: today,
-      start_date: firstDayOfRecentMonth,
+      start_date: '',
       work_date: 'asc',
       page: 1,
       per_page: 30,
@@ -66,7 +66,7 @@ const worksheetSlice = createSlice({
     lastPage: 1,
   },
   reducers: {
-    getParams: (state, action) => {
+    setWorkSheetParams: (state, action) => {
       state.paramTimesheet = { ...action.payload }
     },
   },
@@ -85,19 +85,19 @@ const worksheetSlice = createSlice({
         sortBy,
       )
       state.worksheet = result
-      state.isLoading = false
+      state.searchLoading = false
       state.isFirstLoad = false
       state.lastPage = last_page
     },
     [getWorksheet.pending]: (state, action) => {
       state.worksheet = []
-      state.isLoading = true
+      state.searchLoading = true
       state.totalRecord = 0
       state.isFirstLoad = false
     },
     [getWorksheet.rejected]: (state, action) => {
       state.worksheet = []
-      state.isLoading = false
+      state.searchLoading = false
       state.totalRecord = 0
       state.isFirstLoad = false
     },
@@ -116,14 +116,23 @@ const worksheetSlice = createSlice({
       )
       state.worksheet = result
       state.lastPage = last_page
+      state.isLoading = false
+    },
+    [worksheetPagination.pending]: (state) => {
+      state.isLoading = true
+    },
+    [worksheetPagination.rejected]: (state) => {
+      state.isLoading = false
     },
   },
 })
 
 export default worksheetSlice.reducer
-export const { getParams } = worksheetSlice.actions
+export const { setWorkSheetParams } = worksheetSlice.actions
 export const getWorksheetData = (state) => state.worksheetReducer.worksheet
 export const getWorksheetLoading = (state) => state.worksheetReducer.isLoading
+export const getWorksheetSearchLoading = (state) =>
+  state.worksheetReducer.searchLoading
 export const getWorksheetTotal = (state) => state.worksheetReducer.totalRecord
 export const isFirstLoad = (state) => state.worksheetReducer.isFirstLoad
 export const paramTimesheet = (state) => state.worksheetReducer.paramTimesheet

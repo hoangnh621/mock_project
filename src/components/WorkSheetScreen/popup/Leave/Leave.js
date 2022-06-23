@@ -140,10 +140,10 @@ export default function Leave({ data, isLeaveVisible, setIsLeaveVisible }) {
       visible={isLeaveVisible}
       onOk={handleOk}
       onCancel={handleCancel}
-      width="80%"
+      width="60%"
       okText="Register"
       okButtonProps={{ style: { marginRight: '20px' } }}
-      className="modal_leave"
+      className="modal-leave"
       footer={null}
     >
       <div className="container">
@@ -220,16 +220,13 @@ export default function Leave({ data, isLeaveVisible, setIsLeaveVisible }) {
               style={{ margin: 0 }}
             >
               <Row className="item">
-                <Col>
+                <Col className="d-flex">
                   <div className="w-140 mr-20 d-flex align-center">
                     <h4>Range:</h4>
                   </div>
                 </Col>
-                <Col
-                  className="d-flex align-center item range-time_container"
-                  style={{ margin: 0 }}
-                >
-                  <Form.Item name={'start_time'} className="range-item">
+                <Col className="d-flex align-center item range-time_container m-0">
+                  <Form.Item name={'start_time'} className="range-item m-0">
                     <TimePicker
                       format={format}
                       suffixIcon=""
@@ -241,7 +238,7 @@ export default function Leave({ data, isLeaveVisible, setIsLeaveVisible }) {
                     />
                   </Form.Item>
                   <span style={{ margin: '0 5px' }}>to</span>
-                  <Form.Item name={'end_time'} className="range-item">
+                  <Form.Item name={'end_time'} className="range-item m-0">
                     <TimePicker
                       format={format}
                       suffixIcon=""
@@ -270,7 +267,7 @@ export default function Leave({ data, isLeaveVisible, setIsLeaveVisible }) {
                   </Form.Item>
                 </Col>
                 <Col className="d-flex align-center">
-                  <span>Time count:</span>
+                  <span>| Time count:</span>
                   {/* Thời gian late cộng early */}
                   <span style={{ marginLeft: '6px' }}>
                     {isLeaveAllDay ? '08:00' : timeCount}
@@ -280,16 +277,7 @@ export default function Leave({ data, isLeaveVisible, setIsLeaveVisible }) {
             </Col>
           </Row>
           <Row>
-            <Form.Item
-              name={'reason'}
-              label="Reason"
-              rules={[
-                {
-                  required: true,
-                  message: 'Please write your reason!',
-                },
-              ]}
-            >
+            <Form.Item name={'reason'} label="Reason">
               <Input.TextArea rows={4} maxLength={100} className="flex-1" />
             </Form.Item>
           </Row>
@@ -308,10 +296,7 @@ export default function Leave({ data, isLeaveVisible, setIsLeaveVisible }) {
                   </Button>
                 </>
               )}
-              <Button
-                onClick={handleCancel}
-                className="outline-secondary-button"
-              >
+              <Button onClick={handleCancel} className="outline-primary-button">
                 Cancel
               </Button>
             </div>

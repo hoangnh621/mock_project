@@ -35,9 +35,8 @@
     display: flex;
   }
   .ant-form-item {
-    margin: 0 0 8px;
     width: 100%;
-
+    margin: 0 0 8px;
     .ant-col {
       margin-left: 0;
 
@@ -80,6 +79,15 @@
 
 .reason {
   display: flex;
+}
+
+.modal_late_early {
+  .button-group {
+    margin-top: 12px;
+    .primary-button {
+      margin-bottom: 0;
+    }
+  }
 }
 
 @media (min-width: 992px) {

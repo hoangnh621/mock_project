@@ -1,79 +1,78 @@
 @import '../../../../styles/color';
 
-.container {
-  margin: 0 6px;
-
-  .item {
-    margin-bottom: 10px;
-  }
-  .item_check {
-    margin-bottom: 25px;
-  }
-
-  .d-flex {
-    display: flex;
-  }
-
-  .flex-1 {
-    flex: 1;
-  }
-
-  .w-140 {
-    width: 140px;
-  }
-  .mr-15 {
-    margin-bottom: auto;
-  }
-  .mr-20 {
-    margin-right: 15px;
-  }
-  .ml-20 {
-    margin-bottom: auto;
-    margin-left: 20px;
-  }
-  .mt-20 {
-    margin-top: 20px;
-  }
-  .mr-25 {
-    margin-right: 25px;
-  }
-
-  .col-order-2 {
-    width: 120px;
-  }
-}
-.time-picker {
-  width: 100%;
-  margin-left: 0;
-}
-.check_time {
-  display: flex;
-  width: 50%;
-}
-
-.time_check {
-  display: flex;
-  width: 50%;
-}
-
-.reason {
-  display: flex;
-}
-@media screen and (max-width: 640px) {
-  .ant-modal {
-    width: 80% !important;
-  }
-}
-@media screen and (min-width: 641px) and (max-width: 940px) {
-  .ant-modal {
-    width: 80% !important;
-  }
-}
-
 .modal_ot {
   max-width: 850px;
   color: $textPrimary;
   border-radius: 5px;
+  .container {
+    margin: 0 6px;
+
+    .item {
+      margin-bottom: 10px;
+    }
+    .item_check {
+      margin-bottom: 25px;
+    }
+
+    .d-flex {
+      display: flex;
+    }
+
+    .flex-1 {
+      flex: 1;
+    }
+
+    .w-140 {
+      width: 140px;
+    }
+    .mr-15 {
+      margin-bottom: auto;
+    }
+    .mr-20 {
+      margin-right: 15px;
+    }
+    .ml-20 {
+      margin-bottom: auto;
+      margin-left: 20px;
+    }
+    .mt-20 {
+      margin-top: 20px;
+    }
+    .mr-25 {
+      margin-right: 25px;
+    }
+
+    .col-order-2 {
+      width: 120px;
+    }
+  }
+  .time-picker {
+    width: 100%;
+    margin-left: 0;
+  }
+  .check_time {
+    display: flex;
+    width: 50%;
+  }
+
+  .time_check {
+    display: flex;
+    width: 50%;
+  }
+
+  .reason {
+    display: flex;
+  }
+  @media screen and (max-width: 640px) {
+    .ant-modal {
+      width: 80% !important;
+    }
+  }
+  @media screen and (min-width: 641px) and (max-width: 940px) {
+    .ant-modal {
+      width: 80% !important;
+    }
+  }
 }
 
 .btn-register .ant-form-item-control-input-content {

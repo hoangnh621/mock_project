@@ -9,14 +9,16 @@ import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import CustomSpin from '../../../common/CustomSpin/CustomSpin'
 import {
   getCurrentPage,
   getLastPage,
-  getParams,
   getWorksheetData,
+  getWorksheetLoading,
   getWorksheetTotal,
   isFirstLoad,
   paramTimesheet,
+  setWorkSheetParams,
   worksheetPagination,
 } from '../../../store/reducer/worksheetSlice'
 import { calculateComponentBottom } from '../../../utils/helpers/handleSize/index'
@@ -30,6 +32,7 @@ import RegisterForget from '../popup/RegisterForget/RegisterForget'
 import TimeLog from '../TimeLog/TimeLog'
 
 const TableWorksheet = () => {
+  const loadingWorkSheet = useSelector(getWorksheetLoading)
   const worksheetData = useSelector(getWorksheetData)
   const paramTimesheetStore = useSelector(paramTimesheet)
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
@@ -55,7 +58,6 @@ const TableWorksheet = () => {
   const [pageSize, setPageSize] = useState(30)
   const [tableScrollHeight, setTableScrollHeight] = useState(0)
   const dispatch = useDispatch()
-  console.log('firstDataWorksheet', firstDataWorksheet)
 
   useEffect(() => {
     const getFirstData = async () => {
@@ -101,13 +103,18 @@ const TableWorksheet = () => {
     const HEADER_TABLE_HEIGHT = 78
     const timesheetFilterBottom = calculateComponentBottom('.worksheet-filter')
     const windowHeight = window.innerHeight
-    setTableScrollHeight(
-      windowHeight -
-        timesheetFilterBottom -
-        PAGINATION_SIZE -
-        TIME_SHEET_PADDING_BOTTOM -
-        HEADER_TABLE_HEIGHT,
+    const antTableContainer = document.querySelector(
+      '.worksheet-table .ant-table-container',
     )
+    const calculateHeight =
+      windowHeight -
+      timesheetFilterBottom -
+      PAGINATION_SIZE -
+      TIME_SHEET_PADDING_BOTTOM -
+      HEADER_TABLE_HEIGHT
+    antTableContainer.style.height =
+      calculateHeight + HEADER_TABLE_HEIGHT + 'px'
+    setTableScrollHeight(calculateHeight)
   }, [])
 
   //Recalculate scroll height when resize
@@ -119,13 +126,18 @@ const TableWorksheet = () => {
       const timesheetFilterBottom =
         calculateComponentBottom('.worksheet-filter')
       const windowHeight = window.innerHeight
-      setTableScrollHeight(
-        windowHeight -
-          timesheetFilterBottom -
-          PAGINATION_SIZE -
-          TIME_SHEET_PADDING_BOTTOM -
-          HEADER_TABLE_HEIGHT,
+      const antTableContainer = document.querySelector(
+        '.worksheet-table .ant-table-container',
       )
+      const calculateHeight =
+        windowHeight -
+        timesheetFilterBottom -
+        PAGINATION_SIZE -
+        TIME_SHEET_PADDING_BOTTOM -
+        HEADER_TABLE_HEIGHT
+      antTableContainer.style.height =
+        calculateHeight + HEADER_TABLE_HEIGHT + 'px'
+      setTableScrollHeight(calculateHeight)
     }
     document.addEventListener('resize', handleResize)
     return () => document.removeEventListener('resize', handleResize)
@@ -273,6 +285,7 @@ const TableWorksheet = () => {
     setIsLeaveVisible(true)
   }
 
+  // Toggle register forget check-in/check-out
   const showRegisterForget = (data) => {
     const id = data.key
     axiosPrivate
@@ -335,7 +348,7 @@ const TableWorksheet = () => {
   const onShowSizeChange = (current, page) => {
     setPageSize(page)
     dispatch(
-      getParams({
+      setWorkSheetParams({
         ...paramTimesheetStore,
         per_page: page,
       }),
@@ -363,6 +376,7 @@ const TableWorksheet = () => {
           bordered
           onRow={handleTimeLog}
           scroll={{ y: tableScrollHeight }}
+          loading={{ indicator: <CustomSpin />, spinning: loadingWorkSheet }}
           pagination={{
             className: 'custom-pagination',
             position: ['bottomCenter', 'topCenter'],
@@ -444,12 +458,14 @@ const TableWorksheet = () => {
         isOverTimeVisible={isOverTimeVisible}
         setIsOverTimeVisible={setIsOverTimeVisible}
       />
-      <RegisterForget
-        dataRegisterForget={dataRegisterForget}
-        setDataRegisterForget={setDataRegisterForget}
-        isRegisterForgetVisible={isRegisterForgetVisible}
-        setIsRegisterForgetVisible={setIsRegisterForgetVisible}
-      />
+      {isRegisterForgetVisible && (
+        <RegisterForget
+          dataRegisterForget={dataRegisterForget}
+          setDataRegisterForget={setDataRegisterForget}
+          isRegisterForgetVisible={isRegisterForgetVisible}
+          setIsRegisterForgetVisible={setIsRegisterForgetVisible}
+        />
+      )}
       <TimeLog
         isShowTimeLog={isShowTimeLog}
         setIsShowTimeLog={setIsShowTimeLog}
