@@ -1,8 +1,11 @@
-import { FieldTimeOutlined, HomeOutlined } from '@ant-design/icons'
-import { Tooltip } from 'antd'
+import {
+  FieldTimeOutlined,
+  HomeOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
+import { Avatar, Tooltip } from 'antd'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import defaultAvatar from '../../../../layout/Header/defaultAvatar.png'
 import './Header.scss'
 const Header = () => {
   const [showAdminSubMenu, setShowAdminSubMenu] = useState(false)
@@ -48,7 +51,16 @@ const Header = () => {
         </div>
         <div className="admin-avatar header-item">
           {localStorage.getItem('avatar') === 'null' ? (
-            <img className="avatar" alt="avatar" src={defaultAvatar}></img>
+            <Avatar
+              size={38}
+              icon={<UserOutlined />}
+              style={{
+                color: '#7367f0',
+                backgroundColor: '#eeedfd',
+                marginLeft: 7,
+                marginRight: 7,
+              }}
+            />
           ) : (
             <img
               className="avatar"

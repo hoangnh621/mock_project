@@ -39,7 +39,6 @@ const TableWorksheet = () => {
   const [dataLateEarly, setDataLateEarly] = useState({})
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
   const [isOverTimeVisible, setIsOverTimeVisible] = useState(false)
-  const [dataOverTime, setDataOverTime] = useState()
   const [dataLeave, setDataLeave] = useState({})
   const [isRegisterForgetVisible, setIsRegisterForgetVisible] = useState(false)
   const [dataRegisterForget, setDataRegisterForget] = useState({})
@@ -57,6 +56,7 @@ const TableWorksheet = () => {
   const lastPageStore = useSelector(getLastPage)
   const [pageSize, setPageSize] = useState(30)
   const [tableScrollHeight, setTableScrollHeight] = useState(0)
+  const [currentRow, setCurrentRow] = useState()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -237,19 +237,19 @@ const TableWorksheet = () => {
       render: (text, record, index) => {
         return (
           <div>
-            <Link to="#" onClick={() => showRegisterForget(record)}>
+            <Link to="#" onClick={(e) => showRegisterForget(record, e)}>
               Forget
             </Link>
             <Divider type="vertical" className="dividerCustom" />
-            <Link to="#" onClick={() => handleLateEarly(record.key)}>
+            <Link to="#" onClick={(e) => handleLateEarly(record.key, e)}>
               Late/Early
             </Link>
             <Divider type="vertical" className="dividerCustom" />
-            <Link to="#" onClick={() => handleLeave(record.key)}>
+            <Link to="#" onClick={(e) => handleLeave(record.key, e)}>
               Leave
             </Link>
             <Divider type="vertical" className="dividerCustom" />
-            <Link to="#" onClick={() => handleOverTime(record)}>
+            <Link to="#" onClick={(e) => handleOverTime(record, e)}>
               OT
             </Link>
           </div>
@@ -266,36 +266,40 @@ const TableWorksheet = () => {
     })
     setDataLateEarly(res.data)
   }
-
+  // Handle late early
   const getDataLeaveByID = async (id) => {
     const res = await axiosPrivate.get(`/worksheet/${id}`, {
       params: {
-        type: 3,
+        type: 6,
       },
     })
     setDataLeave(res.data)
   }
-  const handleLateEarly = (id) => {
+  const handleLateEarly = (id, e) => {
+    e.stopPropagation()
     getDataByID(id)
     setIsLateEarlyVisible(true)
   }
 
-  const handleLeave = (id) => {
+  const handleLeave = (id, e) => {
+    e.stopPropagation()
     getDataLeaveByID(id)
     setIsLeaveVisible(true)
   }
 
-  // Toggle register forget check-in/check-out
-  const showRegisterForget = (data) => {
+  // Handle forget check-in check-out
+  const showRegisterForget = (data, e) => {
+    e.stopPropagation()
     const id = data.key
     axiosPrivate
       .get(`worksheet/${id}?type=1`)
-      .then((res) => res.data)
+      .then((res) => {
+        return res.data
+      })
       .then((dataAPI) => {
         if (dataAPI.status === undefined) {
           setDataRegisterForget(data)
-        }
-        if (dataAPI.status === 0) {
+        } else {
           const checkin_original = data.checkin_original
           const checkout_original = data.checkout_original
           setDataRegisterForget({
@@ -307,33 +311,27 @@ const TableWorksheet = () => {
       })
       .then(() => setIsRegisterForgetVisible(true))
   }
+  // Handle over time
 
-  const getData = async (id) => {
-    const res = await axiosPrivate.get(`/worksheet/${id}`, {
-      params: {
-        type: 5,
-      },
-    })
-    setDataOverTime(res.data)
-  }
-  const handleOverTime = (id) => {
-    getData(id)
+  const handleOverTime = (row, e) => {
+    e.stopPropagation()
     setIsOverTimeVisible(true)
+    setCurrentRow(row)
   }
-
+  // Handle time log
   const getDate = (date) => {
     setDate(date)
   }
 
   const handleTimeLog = (record, index) => {
     return {
-      onDoubleClick: () => {
+      onClick: () => {
         getDate(record.work_date)
         setIsShowTimeLog(true)
       },
     }
   }
-
+  // Handle highlight
   const handleHighlight = (record, index) => {
     const weekend = record.work_date.slice(11)
     if (weekend.includes('Sat') || weekend.includes('Sun')) {
@@ -344,7 +342,7 @@ const TableWorksheet = () => {
       return 'oddRow'
     }
   }
-
+  // Size and pagination
   const onShowSizeChange = (current, page) => {
     setPageSize(page)
     dispatch(
@@ -389,6 +387,7 @@ const TableWorksheet = () => {
             showTotal: (total) => `Totals number of records: ${total}`,
             onChange: handlePagination,
             onShowSizeChange: onShowSizeChange,
+            showTitle: false,
             itemRender: (_, type, element) => {
               if (type === 'prev') {
                 return (
@@ -447,17 +446,21 @@ const TableWorksheet = () => {
         isLateEarlyVisible={isLateEarlyVisible}
         setIsLateEarlyVisible={setIsLateEarlyVisible}
       />
-
-      <Leave
-        isLeaveVisible={isLeaveVisible}
-        data={dataLeave}
-        setIsLeaveVisible={setIsLeaveVisible}
-      />
-      <OverTime
-        dataOverTime={dataOverTime}
-        isOverTimeVisible={isOverTimeVisible}
-        setIsOverTimeVisible={setIsOverTimeVisible}
-      />
+      {isLeaveVisible && (
+        <Leave
+          isLeaveVisible={isLeaveVisible}
+          data={dataLeave}
+          setData={setDataLeave}
+          setIsLeaveVisible={setIsLeaveVisible}
+        />
+      )}
+      {isOverTimeVisible && (
+        <OverTime
+          currentRow={currentRow}
+          isOverTimeVisible={isOverTimeVisible}
+          setIsOverTimeVisible={setIsOverTimeVisible}
+        />
+      )}
       {isRegisterForgetVisible && (
         <RegisterForget
           dataRegisterForget={dataRegisterForget}

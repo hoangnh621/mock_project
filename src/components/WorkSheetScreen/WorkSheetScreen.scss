@@ -79,6 +79,13 @@
         }
       }
     }
+    .ant-table-tbody {
+      tr {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
     .oddRow {
       background-color: $bgLogin;
       &:hover {

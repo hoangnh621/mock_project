@@ -1,0 +1,155 @@
+@import '../../styles/color';
+
+.manager-screen {
+  background-color: $bgLogin;
+  padding-left: 64px;
+  padding-right: 64px;
+  padding-bottom: 32px;
+  border-radius: 5px;
+  .container-manager-screen {
+    height: 100%;
+    padding-top: 32px;
+    background-color: $bgLogin;
+    .header-manager-screen {
+      display: flex;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 5px 5px 0 0;
+      height: 10%;
+      h3 {
+        font-size: 18px;
+        margin: 0;
+        padding-left: 12px;
+      }
+    }
+    .body-manager-screen {
+      height: 90%;
+      .ant-table {
+        border-radius: 5px;
+        border: 1px #ccc solid;
+        .oddRow {
+          background-color: $bgLogin;
+          &:hover {
+            background-color: $bgLogin;
+          }
+        }
+      }
+      .ant-table-tbody {
+        tr {
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+      .ant-table-thead {
+        tr {
+          th {
+            &:nth-child(7) {
+              border-right: none;
+            }
+            background-color: #f3f2f7;
+            &:last-child() {
+              border-right: none;
+            }
+          }
+        }
+
+        .ant-table-cell {
+          &:last-of-type {
+            border-right: none;
+          }
+        }
+        .ant-table-cell-scrollbar {
+          box-shadow: none;
+        }
+        .ant-table-column-sorter-up.active {
+          color: $bgPrimary;
+        }
+        .ant-table-column-sorter-down.active {
+          color: $bgPrimary;
+        }
+      }
+      .custom-pagination {
+        margin-bottom: 0;
+        .ant-pagination-item-active {
+          border-color: $bgPrimary;
+          a {
+            color: $bgPrimary;
+          }
+        }
+        .ant-pagination-item {
+          margin-right: 0;
+          &:hover {
+            border-color: $bgPrimary;
+            a {
+              color: $bgPrimary;
+            }
+          }
+        }
+        .ant-pagination-prev {
+          margin-right: 0;
+          &:hover {
+            button {
+              border-color: #ccc;
+              a {
+                color: black;
+              }
+            }
+          }
+        }
+        .ant-btn {
+          &:hover {
+            border-color: $bgPrimary;
+            color: $bgPrimary;
+          }
+          &:active {
+            border-color: $bgPrimary;
+            color: $bgPrimary;
+          }
+          &:focus {
+            border-color: $bgPrimary;
+            color: $bgPrimary;
+          }
+        }
+        .ant-pagination-next {
+          &:hover {
+            button {
+              border-color: #ccc;
+              a {
+                color: black;
+              }
+            }
+          }
+        }
+        .ant-pagination-jump-next {
+          &:hover {
+            .ant-pagination-item-link-icon {
+              color: $bgPrimary;
+            }
+          }
+        }
+        .ant-pagination-jump-prev {
+          &:hover {
+            .ant-pagination-item-link-icon {
+              color: $bgPrimary;
+            }
+          }
+        }
+        .ant-pagination-options {
+          flex: 1;
+          display: flex;
+          justify-content: flex-end;
+          &::before {
+            content: 'Items per page';
+            display: flex;
+            align-items: center;
+            margin-right: 8px;
+          }
+        }
+        .ant-pagination-total-text {
+          flex: 1;
+        }
+      }
+    }
+  }
+}

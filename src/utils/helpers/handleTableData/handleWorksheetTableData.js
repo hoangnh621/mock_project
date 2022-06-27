@@ -50,8 +50,8 @@ const handleWorksheetTableData = (
       paid_leave: item.paid_leave,
       unpaid_leave: item.unpaid_leave,
       note: item.note,
-      checkin_original: convertDateTimeToTime(item.checkin_original),
-      checkout_original: convertDateTimeToTime(item.checkout_original),
+      checkin_original: item.checkin_original,
+      checkout_original: item.checkout_original,
     }
   })
   return dataSource

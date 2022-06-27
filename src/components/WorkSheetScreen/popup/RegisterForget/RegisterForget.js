@@ -11,6 +11,7 @@ import {
 } from 'antd'
 import moment from 'moment'
 import { useRef } from 'react'
+import { checkInvalidDateTime } from '../../../../utils/helpers/handleTime/checkInvalid'
 import { MESSAGE_REQUIRED } from '../../../../utils/helpers/message'
 import useAxiosPrivate from '../../../../utils/requests/useAxiosPrivate'
 import './RegisterForget.scss'
@@ -47,7 +48,7 @@ const RegisterForget = ({
   }
 
   // Đã gửi request
-  if (status === 0) {
+  if (status === 0 || status === 1 || status === 2) {
     registerForDate = dataRegisterForget.request_for_date
     registerForDate = registerForDate.split('-').reverse().join('-')
     checkinForm = dataRegisterForget.checkin
@@ -195,7 +196,9 @@ const RegisterForget = ({
                 <TimePicker format={format} />
               </Form.Item>
               <div className="checkin-original">
-                {`( ${dataRegisterForget.checkin_original} )`}
+                {`( ${checkInvalidDateTime(
+                  dataRegisterForget.checkin_original,
+                )} )`}
               </div>
             </Row>
 
@@ -211,7 +214,9 @@ const RegisterForget = ({
               </Form.Item>
 
               <div className="checkout-original">
-                {`( ${dataRegisterForget.checkout_original} )`}
+                {`( ${checkInvalidDateTime(
+                  dataRegisterForget.checkout_original,
+                )} )`}
               </div>
             </Row>
             <Row>

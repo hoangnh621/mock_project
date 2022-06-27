@@ -4,11 +4,32 @@
   max-width: 850px;
   color: $textPrimary;
   border-radius: 5px;
+  .ant-form-item {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .range-time {
+    width: 56px;
+    padding: 4px;
+    margin: 0;
+
+    .ant-form-item {
+      margin: 0;
+    }
+  }
   .container {
     margin: 0 6px;
+    h4 {
+      margin: 0;
+    }
 
     .item {
-      margin-bottom: 10px;
+      margin-bottom: 8px;
+      i {
+        font-size: 12px;
+        margin-bottom: 16px;
+      }
     }
     .item_check {
       margin-bottom: 25px;
@@ -37,6 +58,9 @@
     }
     .mt-20 {
       margin-top: 20px;
+    }
+    .mt-16 {
+      margin-top: 16px;
     }
     .mr-25 {
       margin-right: 25px;
@@ -73,13 +97,12 @@
       width: 80% !important;
     }
   }
-}
-
-.btn-register .ant-form-item-control-input-content {
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  .ant-btn-default {
-    margin-right: 16px;
+  .btn-register .ant-form-item-control-input-content {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    .ant-btn-default {
+      margin-right: 16px;
+    }
   }
 }

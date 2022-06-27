@@ -9,7 +9,7 @@ import {
   Typography,
 } from 'antd'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getSubmitLateEarlyLoading,
@@ -50,12 +50,23 @@ export default function LateEarly({
 
   const { Text } = Typography
   const [form] = Form.useForm()
+  const formRef = useRef(null)
 
   // redux
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
   const loadingSubmit = useSelector(getSubmitLateEarlyLoading)
   const loadingUpdate = useSelector(getUpdateLateEarlyLoading)
+  useEffect(() => {
+    if (formRef.current) {
+      if (data.status === 0 || data.status) {
+        form.setFieldsValue({
+          reason: data?.reason,
+          'date-cover-up': moment(data.compensation_date),
+        })
+      }
+    }
+  })
 
   const layout = {
     labelCol: {
@@ -206,12 +217,13 @@ export default function LateEarly({
         <Form
           form={form}
           {...layout}
+          ref={formRef}
           name="nest-messages"
           onFinish={onFinish}
           validateMessages={validateMessages}
           initialValues={{
+            reason: data.reason,
             'date-cover-up': moment(dateBefore, dateFormat),
-            reason: data?.reason,
           }}
         >
           <Row>
@@ -265,7 +277,7 @@ export default function LateEarly({
           </Row>
           <Row>
             <Form.Item
-              name={'reason'}
+              name="reason"
               label="Reason"
               rules={[
                 {
@@ -275,6 +287,7 @@ export default function LateEarly({
               ]}
             >
               <Input.TextArea
+                value={data.reason}
                 autoSize={{ maxRows: 7, minRows: 4 }}
                 rows={4}
                 maxLength={100}

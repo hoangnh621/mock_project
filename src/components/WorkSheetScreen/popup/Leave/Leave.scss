@@ -1,6 +1,32 @@
 @import '../../../../styles/color';
 
 .modal-leave {
+  .ant-picker-footer {
+    .ant-btn-primary {
+      background-color: $bgPrimary;
+      color: #fff;
+      border-color: $bgPrimary;
+      &:hover {
+        background-color: $bgPrimary !important;
+        color: #fff;
+        border-color: $bgPrimary;
+        box-shadow: 0 8px 25px -8px $bgPrimary;
+      }
+      &:focus {
+        background-color: $bgPrimary;
+        color: #fff;
+        border-color: $bgPrimary;
+      }
+      &:active {
+        background-color: $bgPrimary;
+        color: #fff;
+        border-color: $bgPrimary;
+      }
+    }
+  }
+  .hightLightRed {
+    color: red;
+  }
   .container {
     .button-group {
       margin-top: 16px;
