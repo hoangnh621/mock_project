@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
-import { setLocalStorageItems } from '../../utils/helpers/handleLocalStorageItems/index'
+import {
+  setLocalStorage,
+  setLocalStorageItems,
+} from '../../utils/helpers/handleLocalStorageItems/index'
 export const login = createAsyncThunk(
   'login/postUserAccount',
   async (args, thunkAPI) => {
@@ -16,6 +19,7 @@ export const login = createAsyncThunk(
       const avatar = res.data.member.avatar
       localStorage.setItem('full_name', fullName)
       localStorage.setItem('avatar', avatar)
+      setLocalStorage('role', res.data.role)
 
       return res.data
     } catch (error) {
@@ -29,7 +33,6 @@ const loginSlice = createSlice({
   initialState: {
     user: {
       fullName: null,
-      role: null,
     },
     loading: false,
     error: null,
@@ -40,7 +43,6 @@ const loginSlice = createSlice({
       state.loading = true
     })
     builder.addCase(login.fulfilled, (state, action) => {
-      state.user.role = action.payload.role
       state.user.fullName = action.payload.full_name
       state.loading = false
       state.error = null

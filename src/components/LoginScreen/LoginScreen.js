@@ -1,5 +1,5 @@
 import { Button, Col, Form, Input, Row } from 'antd'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import {
@@ -12,24 +12,38 @@ import LoginImage from './LoginImage.png'
 import './LoginScreen.scss'
 
 const LoginScreen = () => {
+  const passwordRef = useRef(null)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const loading = useSelector(getLoginLoading)
   const error = useSelector(getLoginError)
+
   const handleLogin = () => {
     dispatch(login({ email, password }))
   }
+
   useEffect(() => {
     document.title = 'Login'
   }, [])
+
   const accessToken = getLocalStorageItem('accessToken')
   useEffect(() => {
     if (accessToken) {
       navigate('/')
     }
   }, [navigate, accessToken])
+
+  useEffect(() => {
+    if (error) {
+      setPassword('')
+      if (passwordRef.current) {
+        passwordRef.current.focus({ cursor: 'start' })
+      }
+    }
+  }, [error])
+
   return (
     <Row className="loginScreen">
       <Col
@@ -55,7 +69,6 @@ const LoginScreen = () => {
           <Form layout="vertical" labelAlign="left">
             <Form.Item
               label="Email"
-              name="email"
               rules={[
                 {
                   required: true,
@@ -76,7 +89,6 @@ const LoginScreen = () => {
             </Form.Item>
             <Form.Item
               label="Password"
-              name="password"
               validateFirst={true}
               rules={[
                 {
@@ -99,6 +111,7 @@ const LoginScreen = () => {
             >
               <Input.Password
                 className="input-primary"
+                ref={passwordRef}
                 size="large"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

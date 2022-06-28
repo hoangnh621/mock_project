@@ -1,5 +1,4 @@
 import { Form, Input } from 'antd'
-import React from 'react'
 import { MESSAGE_REQUIRED } from '../../../utils/helpers/message'
 
 function FormThirdRight() {
@@ -63,7 +62,7 @@ function FormThirdRight() {
         <Input className="input-primary" />
       </Form.Item>
       <Form.Item label="Start Date" name="start_date_official">
-        <Input readOnly className="input-primary" />
+        <Input disabled />
       </Form.Item>
     </Form.Item>
   )

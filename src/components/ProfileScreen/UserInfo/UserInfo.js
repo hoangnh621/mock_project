@@ -1,3 +1,4 @@
+import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Button, Form, message, Tooltip, Upload } from 'antd'
 import { useState } from 'react'
 import { storage } from '../../../firebase'
@@ -24,8 +25,7 @@ function UserInfo({ mail, memberCode, phoneNumber, fullName }) {
       const filename = new Date() + '-' + file.name
       if (!isOverLimitSize) {
         message.error(`This file greater than 4MB`)
-      }
-      if (!isPNG && !isJPG) {
+      } else if (!isPNG && !isJPG) {
         message.error(`${file.name} should be a PNG or JPG file!`)
       }
       if (isOverLimitSize && (isPNG || isJPG)) {
@@ -79,8 +79,7 @@ function UserInfo({ mail, memberCode, phoneNumber, fullName }) {
       const filename = new Date() + '-' + file.name
       if (!isOverLimitSize) {
         message.error(`This file greater than 4MB`)
-      }
-      if (!isPNG && !isJPG) {
+      } else if (!isPNG && !isJPG) {
         message.error(`${file.name} should be a PNG or JPG file!`)
       }
       if (isOverLimitSize && (isPNG || isJPG)) {
@@ -136,6 +135,12 @@ function UserInfo({ mail, memberCode, phoneNumber, fullName }) {
             <Avatar
               shape="square"
               size={100}
+              icon={<UserOutlined />}
+              style={{
+                color: '#7367f0',
+                backgroundColor: '#eeedfd',
+                borderRadius: 6,
+              }}
               src={
                 avatarOfficial
                   ? avatarOfficial
@@ -158,6 +163,12 @@ function UserInfo({ mail, memberCode, phoneNumber, fullName }) {
             <Avatar
               shape="square"
               size={60}
+              icon={<UserOutlined />}
+              style={{
+                color: '#7367f0',
+                backgroundColor: '#eeedfd',
+                borderRadius: 6,
+              }}
               src={
                 subAvatar
                   ? subAvatar

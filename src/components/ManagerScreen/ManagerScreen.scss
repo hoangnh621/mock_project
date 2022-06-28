@@ -1,16 +1,16 @@
 @import '../../styles/color';
 
-.home-screen {
+.manager-screen {
   background-color: $bgLogin;
   padding-left: 64px;
   padding-right: 64px;
   padding-bottom: 32px;
   border-radius: 5px;
-  .container-home-screen {
+  .container-manager-screen {
     height: 100%;
     padding-top: 32px;
     background-color: $bgLogin;
-    .header-home-screen {
+    .header-manager-screen {
       display: flex;
       align-items: center;
       background-color: #fff;
@@ -22,7 +22,7 @@
         padding-left: 12px;
       }
     }
-    .body-home-screen {
+    .body-manager-screen {
       height: 90%;
       .ant-table {
         border-radius: 5px;
@@ -31,6 +31,13 @@
           background-color: $bgLogin;
           &:hover {
             background-color: $bgLogin;
+          }
+        }
+      }
+      .ant-table-tbody {
+        tr {
+          &:hover {
+            cursor: pointer;
           }
         }
       }
@@ -141,6 +148,11 @@
         }
         .ant-pagination-total-text {
           flex: 1;
+        }
+      }
+      .custom-dropdown {
+        .ant-dropdown-menu-title-content {
+          color: $bgPrimary;
         }
       }
     }

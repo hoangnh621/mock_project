@@ -68,9 +68,13 @@ const HomeScreen = () => {
     // Calculate table scroll height
     const PAGINATION_MARGIN_TOP = 16
     const HOME_SCREEN_PADDING_BOTTOM = 32
+    const HOME_SCREEN_HEADER = 55
     const customPaginationHeight = 32
     const tableTileHeight = calculateComponentHeight('.header-home-screen')
     const tableHeaderHeight = calculateComponentHeight('.ant-table-header')
+    const homeTableContainer = document.querySelector(
+      '.body-home-screen .ant-table-container',
+    )
     const calculateHeight =
       windowHeight -
       headerHeight -
@@ -79,6 +83,8 @@ const HomeScreen = () => {
       customPaginationHeight -
       2 * HOME_SCREEN_PADDING_BOTTOM -
       PAGINATION_MARGIN_TOP
+    homeTableContainer.style.height =
+      calculateHeight + HOME_SCREEN_HEADER + 'px'
     setTableScrollHeight(calculateHeight)
   }, [])
 
@@ -96,8 +102,12 @@ const HomeScreen = () => {
       const PAGINATION_MARGIN_TOP = 16
       const HOME_SCREEN_PADDING_BOTTOM = 32
       const customPaginationHeight = 32
+      const HOME_SCREEN_HEADER = 55
       const tableTileHeight = calculateComponentHeight('.header-home-screen')
       const tableHeaderHeight = calculateComponentHeight('.ant-table-header')
+      const homeTableContainer = document.querySelector(
+        '.body-home-screen .ant-table-container',
+      )
       const calculateHeight =
         windowHeight -
         headerHeight -
@@ -106,6 +116,8 @@ const HomeScreen = () => {
         customPaginationHeight -
         2 * HOME_SCREEN_PADDING_BOTTOM -
         PAGINATION_MARGIN_TOP
+      homeTableContainer.style.height =
+        calculateHeight + HOME_SCREEN_HEADER + 'px'
       setTableScrollHeight(calculateHeight)
     }
     window.addEventListener('resize', handleResize)
@@ -230,6 +242,7 @@ const HomeScreen = () => {
               onChange: onPageChange,
               onShowSizeChange: onShowSizeChange,
               className: 'custom-pagination',
+              showTitle: false,
               itemRender: (_, type, element) => {
                 if (type === 'prev') {
                   return (
@@ -237,13 +250,6 @@ const HomeScreen = () => {
                       <Button
                         onClick={(e) => {
                           e.stopPropagation()
-                          dispatch(
-                            getNotice({
-                              page: 1,
-                              per_page: pageSize,
-                              order_published_date: oderPublishedDate,
-                            }),
-                          )
                           setCurrentPage(1)
                         }}
                         disabled={currentPage === 1}

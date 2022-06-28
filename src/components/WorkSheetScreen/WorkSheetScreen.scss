@@ -1,14 +1,27 @@
-@import "../../styles/color";
+@import '../../styles/color';
 
 .worksheet {
-  margin-top: 57px;
-  padding: 32px;
+  padding: 32px 64px;
+  padding-top: 89px;
+  background-color: $bgLogin;
 
   fieldset {
-    border: 1px solid #000;
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
   legend {
     width: fit-content;
+  }
+
+  .dividerCustom {
+    border-left: 1px solid #000;
+  }
+  .worksheet-filter {
+    background-color: #fff;
+    border-radius: 5px;
+  }
+  .worksheet-table {
+    background-color: #fff;
   }
 
   .worksheet-filter-form {
@@ -55,14 +68,40 @@
 
   // Table
   .worksheet-table {
+    .ant-table-container {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .ant-table-thead {
+      tr {
+        th {
+          background-color: #f3f2f7;
+        }
+      }
+    }
+    .ant-table-tbody {
+      tr {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    .oddRow {
+      background-color: $bgLogin;
+      &:hover {
+        background-color: $bgLogin;
+      }
+    }
     .ant-table-cell {
       text-align: center;
-      padding:  16px 0;
+      padding: 16px 0;
       min-width: fit-content;
     }
     .custom-pagination {
-      margin-top: 28px;
+      margin-top: 16px;
       margin-bottom: 0;
+      border-radius: 0 0 5px 5px;
+      // background-color: $bgLogin;
       .ant-pagination-item-active {
         border-color: $bgPrimary;
         a {
@@ -70,13 +109,16 @@
         }
       }
       &:first-child {
-      height: 60px;
-        .ant-pagination-prev , .ant-pagination-item, .ant-pagination-next {
+        height: 48px;
+        .ant-pagination-prev,
+        .ant-pagination-item,
+        .ant-pagination-next {
           display: none;
         }
       }
       &:last-child {
-        .ant-pagination-total-text, .ant-pagination-options {
+        .ant-pagination-total-text,
+        .ant-pagination-options {
           display: none;
         }
       }
@@ -125,24 +167,22 @@
         }
       }
 
-    .ant-pagination-total-text {
-      position: absolute;
-      left: 0;
-      font-size: 16px;
-    }
-    .ant-pagination-options {
-      position: absolute;
-      right: 0;
-      &::before {
-        content: 'Items per page';
-        font-size: 16px;
-        margin-right: 4px;
+      .ant-pagination-total-text {
+        position: absolute;
+        left: 0;
+        font-size: 14px;
+      }
+      .ant-pagination-options {
+        position: absolute;
+        right: 0;
+        &::before {
+          content: 'Items per page';
+          font-size: 14px;
+          margin-right: 8px;
+        }
       }
     }
-     
-    } 
   }
-
 }
 
 .even {
@@ -163,7 +203,7 @@
 }
 
 .bg-color-yellow {
-  background-color: rgba(217, 255, 94, 0.727);
+  background-color: $bgTableYellow;
 }
 
 .ml-12 {
@@ -174,8 +214,6 @@
   max-width: 860px;
   color: $textPrimary;
   border-radius: 5px;
-  top: 50%;
-  transform: translateY(-50%);
   padding: 0px;
 }
 
@@ -185,5 +223,3 @@
   justify-content: center;
   padding-bottom: 15px;
 }
-
-

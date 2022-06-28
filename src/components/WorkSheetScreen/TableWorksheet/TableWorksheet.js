@@ -8,16 +8,20 @@ import { Button, Divider, Table } from 'antd'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import CustomSpin from '../../../common/CustomSpin/CustomSpin'
 import {
   getCurrentPage,
   getLastPage,
-  getParams,
   getWorksheetData,
+  getWorksheetLoading,
   getWorksheetTotal,
   isFirstLoad,
   paramTimesheet,
+  setWorkSheetParams,
   worksheetPagination,
 } from '../../../store/reducer/worksheetSlice'
+import { calculateComponentBottom } from '../../../utils/helpers/handleSize/index'
 import { handleWorksheetTableData } from '../../../utils/helpers/handleTableData'
 import useAxiosPrivate from '../../../utils/requests/useAxiosPrivate'
 import LateEarly from '../popup/LateEarly/LateEarly'
@@ -28,13 +32,13 @@ import RegisterForget from '../popup/RegisterForget/RegisterForget'
 import TimeLog from '../TimeLog/TimeLog'
 
 const TableWorksheet = () => {
+  const loadingWorkSheet = useSelector(getWorksheetLoading)
   const worksheetData = useSelector(getWorksheetData)
   const paramTimesheetStore = useSelector(paramTimesheet)
   const [isLateEarlyVisible, setIsLateEarlyVisible] = useState(false)
   const [dataLateEarly, setDataLateEarly] = useState({})
   const [isLeaveVisible, setIsLeaveVisible] = useState(false)
   const [isOverTimeVisible, setIsOverTimeVisible] = useState(false)
-  const [dataOverTime, setDataOverTime] = useState()
   const [dataLeave, setDataLeave] = useState({})
   const [isRegisterForgetVisible, setIsRegisterForgetVisible] = useState(false)
   const [dataRegisterForget, setDataRegisterForget] = useState({})
@@ -51,6 +55,8 @@ const TableWorksheet = () => {
   const currentPageStore = useSelector(getCurrentPage)
   const lastPageStore = useSelector(getLastPage)
   const [pageSize, setPageSize] = useState(30)
+  const [tableScrollHeight, setTableScrollHeight] = useState(0)
+  const [currentRow, setCurrentRow] = useState()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -90,30 +96,77 @@ const TableWorksheet = () => {
     )
   }, [pageSize, currentPage, paramTimesheetStore, dispatch])
 
+  // Calculate scroll height of table
+  useEffect(() => {
+    const TIME_SHEET_PADDING_BOTTOM = 32
+    const PAGINATION_SIZE = 117
+    const HEADER_TABLE_HEIGHT = 78
+    const timesheetFilterBottom = calculateComponentBottom('.worksheet-filter')
+    const windowHeight = window.innerHeight
+    const antTableContainer = document.querySelector(
+      '.worksheet-table .ant-table-container',
+    )
+    const calculateHeight =
+      windowHeight -
+      timesheetFilterBottom -
+      PAGINATION_SIZE -
+      TIME_SHEET_PADDING_BOTTOM -
+      HEADER_TABLE_HEIGHT
+    antTableContainer.style.height =
+      calculateHeight + HEADER_TABLE_HEIGHT + 'px'
+    setTableScrollHeight(calculateHeight)
+  }, [])
+
+  //Recalculate scroll height when resize
+  useEffect(() => {
+    const handleResize = () => {
+      const TIME_SHEET_PADDING_BOTTOM = 32
+      const PAGINATION_SIZE = 117
+      const HEADER_TABLE_HEIGHT = 78
+      const timesheetFilterBottom =
+        calculateComponentBottom('.worksheet-filter')
+      const windowHeight = window.innerHeight
+      const antTableContainer = document.querySelector(
+        '.worksheet-table .ant-table-container',
+      )
+      const calculateHeight =
+        windowHeight -
+        timesheetFilterBottom -
+        PAGINATION_SIZE -
+        TIME_SHEET_PADDING_BOTTOM -
+        HEADER_TABLE_HEIGHT
+      antTableContainer.style.height =
+        calculateHeight + HEADER_TABLE_HEIGHT + 'px'
+      setTableScrollHeight(calculateHeight)
+    }
+    document.addEventListener('resize', handleResize)
+    return () => document.removeEventListener('resize', handleResize)
+  })
+
   const columns = [
     {
-      title: 'No',
+      title: 'NO',
       dataIndex: 'id',
       key: 'id',
     },
     {
-      title: 'Date',
+      title: 'DATE',
       dataIndex: 'work_date',
       key: 'work_date',
       width: '180px',
     },
     {
-      title: 'Check-in',
+      title: 'CHECK IN',
       dataIndex: 'checkin',
       key: 'checkin',
     },
     {
-      title: 'Check-out',
+      title: 'CHECK OUT',
       dataIndex: 'checkout',
       key: 'checkout',
     },
     {
-      title: 'Late',
+      title: 'LATE',
       dataIndex: 'late',
       key: 'late',
       render: (late) => {
@@ -125,7 +178,7 @@ const TableWorksheet = () => {
       },
     },
     {
-      title: 'Early',
+      title: 'EARLY',
       dataIndex: 'early',
       key: 'early',
       render: (early) => {
@@ -137,7 +190,7 @@ const TableWorksheet = () => {
       },
     },
     {
-      title: 'In Office',
+      title: 'IN OFFICE',
       dataIndex: 'in_office',
       key: 'in_office',
     },
@@ -147,50 +200,59 @@ const TableWorksheet = () => {
       key: 'ot_time',
     },
     {
-      title: 'Work time',
+      title: 'WORK TIME',
       dataIndex: 'work_time',
       key: 'work_time',
     },
     {
-      title: 'Lack',
+      title: 'LACK',
       dataIndex: 'lack',
       key: 'lack',
     },
     {
-      title: 'Comp',
+      title: 'COMP',
       dataIndex: 'compensation',
       key: 'compensation',
     },
     {
-      title: 'PLeave',
+      title: 'PLEAVE',
       dataIndex: 'paid_leave',
       key: 'paid_leave',
     },
     {
-      title: 'ULeave',
+      title: 'ULEAVE',
       dataIndex: 'unpaid_leave',
       key: 'unpaid_leave',
     },
     {
-      title: 'Note',
+      title: 'NOTE',
       dataIndex: 'note',
       key: 'note',
+      ellipsis: true,
     },
     {
-      title: 'Action',
+      title: 'ACTION',
       dataIndex: 'action',
       key: 'action',
       width: '250px',
       render: (text, record, index) => {
         return (
           <div>
-            <span onClick={() => showRegisterForget(record)}>Forget</span>
-            <Divider type="vertical" />
-            <span onClick={() => handleLateEarly(record.key)}>Late/Early</span>
-            <Divider type="vertical" />
-            <span onClick={() => handleLeave(record.key)}>Leave</span>
-            <Divider type="vertical" />
-            <span onClick={() => handleOverTime(record)}>OT</span>
+            <Link to="#" onClick={(e) => showRegisterForget(record, e)}>
+              Forget
+            </Link>
+            <Divider type="vertical" className="dividerCustom" />
+            <Link to="#" onClick={(e) => handleLateEarly(record.key, e)}>
+              Late/Early
+            </Link>
+            <Divider type="vertical" className="dividerCustom" />
+            <Link to="#" onClick={(e) => handleLeave(record.key, e)}>
+              Leave
+            </Link>
+            <Divider type="vertical" className="dividerCustom" />
+            <Link to="#" onClick={(e) => handleOverTime(record, e)}>
+              OT
+            </Link>
           </div>
         )
       },
@@ -205,37 +267,44 @@ const TableWorksheet = () => {
     })
     setDataLateEarly(res.data)
   }
-
+  // Handle late early
   const getDataLeaveByID = async (id) => {
     const res = await axiosPrivate.get(`/worksheet/${id}`, {
       params: {
-        type: 3,
+        type: 6,
       },
     })
     setDataLeave(res.data)
   }
-  const handleLateEarly = (id) => {
+  const handleLateEarly = (id, e) => {
+    e.stopPropagation()
     getDataByID(id)
     setIsLateEarlyVisible(true)
   }
 
-  const handleLeave = (id) => {
+  const handleLeave = (id, e) => {
+    e.stopPropagation()
     getDataLeaveByID(id)
     setIsLeaveVisible(true)
   }
 
-  const showRegisterForget = (data) => {
+  // Handle forget check-in check-out
+  const showRegisterForget = (data, e) => {
+    setIsRegisterForgetVisible(true)
+    e.stopPropagation()
     const id = data.key
     axiosPrivate
       .get(`worksheet/${id}?type=1`)
-      .then((res) => res.data)
+      .then((res) => {
+        return res.data
+      })
       .then((dataAPI) => {
         if (dataAPI.status === undefined) {
           setDataRegisterForget(data)
-        }
-        if (dataAPI.status === 0) {
+        } else {
           const checkin_original = data.checkin_original
           const checkout_original = data.checkout_original
+
           setDataRegisterForget({
             ...dataAPI,
             checkin_original,
@@ -245,45 +314,42 @@ const TableWorksheet = () => {
       })
       .then(() => setIsRegisterForgetVisible(true))
   }
+  // Handle over time
 
-  const getData = async (id) => {
-    const res = await axiosPrivate.get(`/worksheet/${id}`, {
-      params: {
-        type: 5,
-      },
-    })
-    setDataOverTime(res.data)
-  }
-  const handleOverTime = (id) => {
-    getData(id)
+  const handleOverTime = (row, e) => {
+    e.stopPropagation()
     setIsOverTimeVisible(true)
+    setCurrentRow(row)
   }
-
+  // Handle time log
   const getDate = (date) => {
     setDate(date)
   }
 
   const handleTimeLog = (record, index) => {
     return {
-      onDoubleClick: () => {
+      onClick: () => {
         getDate(record.work_date)
         setIsShowTimeLog(true)
       },
     }
   }
-
+  // Handle highlight
   const handleHighlight = (record, index) => {
     const weekend = record.work_date.slice(11)
     if (weekend.includes('Sat') || weekend.includes('Sun')) {
       return 'bg-color-yellow'
+    } else if (index % 2 === 0) {
+      return 'evenRow'
+    } else {
+      return 'oddRow'
     }
-    return ''
   }
-
+  // Size and pagination
   const onShowSizeChange = (current, page) => {
     setPageSize(page)
     dispatch(
-      getParams({
+      setWorkSheetParams({
         ...paramTimesheetStore,
         per_page: page,
       }),
@@ -310,7 +376,8 @@ const TableWorksheet = () => {
           columns={columns}
           bordered
           onRow={handleTimeLog}
-          scroll={{ y: 240 }}
+          scroll={{ y: tableScrollHeight }}
+          loading={{ indicator: <CustomSpin />, spinning: loadingWorkSheet }}
           pagination={{
             className: 'custom-pagination',
             position: ['bottomCenter', 'topCenter'],
@@ -323,6 +390,7 @@ const TableWorksheet = () => {
             showTotal: (total) => `Totals number of records: ${total}`,
             onChange: handlePagination,
             onShowSizeChange: onShowSizeChange,
+            showTitle: false,
             itemRender: (_, type, element) => {
               if (type === 'prev') {
                 return (
@@ -337,6 +405,7 @@ const TableWorksheet = () => {
                           }),
                         )
                       }}
+                      disabled={currentPageStore === 1}
                     >
                       <DoubleLeftOutlined />
                     </Button>
@@ -362,6 +431,7 @@ const TableWorksheet = () => {
                           }),
                         )
                       }}
+                      disabled={currentPageStore === lastPageStore}
                     >
                       <DoubleRightOutlined />
                     </Button>
@@ -379,23 +449,29 @@ const TableWorksheet = () => {
         isLateEarlyVisible={isLateEarlyVisible}
         setIsLateEarlyVisible={setIsLateEarlyVisible}
       />
-
-      <Leave
-        isLeaveVisible={isLeaveVisible}
-        data={dataLeave}
-        setIsLeaveVisible={setIsLeaveVisible}
-      />
-      <OverTime
-        dataOverTime={dataOverTime}
-        isOverTimeVisible={isOverTimeVisible}
-        setIsOverTimeVisible={setIsOverTimeVisible}
-      />
-      <RegisterForget
-        dataRegisterForget={dataRegisterForget}
-        setDataRegisterForget={setDataRegisterForget}
-        isRegisterForgetVisible={isRegisterForgetVisible}
-        setIsRegisterForgetVisible={setIsRegisterForgetVisible}
-      />
+      {isLeaveVisible && (
+        <Leave
+          isLeaveVisible={isLeaveVisible}
+          data={dataLeave}
+          setData={setDataLeave}
+          setIsLeaveVisible={setIsLeaveVisible}
+        />
+      )}
+      {isOverTimeVisible && (
+        <OverTime
+          currentRow={currentRow}
+          isOverTimeVisible={isOverTimeVisible}
+          setIsOverTimeVisible={setIsOverTimeVisible}
+        />
+      )}
+      {isRegisterForgetVisible && (
+        <RegisterForget
+          dataRegisterForget={dataRegisterForget}
+          setDataRegisterForget={setDataRegisterForget}
+          isRegisterForgetVisible={isRegisterForgetVisible}
+          setIsRegisterForgetVisible={setIsRegisterForgetVisible}
+        />
+      )}
       <TimeLog
         isShowTimeLog={isShowTimeLog}
         setIsShowTimeLog={setIsShowTimeLog}

@@ -1,5 +1,6 @@
 import HomeScreen from '../components/HomeScreen/HomeScreen'
 import LoginScreen from '../components/LoginScreen/LoginScreen'
+import ManagerScreen from '../components/ManagerScreen/ManagerScreen'
 import PageNotFound from '../components/PageNotFound/PageNotFound'
 import Profile from '../components/ProfileScreen/ProfileScreen'
 import WorkSheetScreen from '../components/WorkSheetScreen/WorkSheetScreen'
@@ -15,5 +16,6 @@ const otherRoutes = [
 const privateRoutes = [
   { path: '', component: HomeScreen },
   { path: 'worksheet', component: WorkSheetScreen },
+  { path: 'manager', component: ManagerScreen },
 ]
 export { publicRoutes, privateRoutes, otherRoutes }

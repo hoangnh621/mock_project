@@ -8,9 +8,8 @@ import {
   Row,
   Typography,
 } from 'antd'
-import 'antd/dist/antd.min.css'
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   getSubmitLateEarlyLoading,
@@ -51,12 +50,23 @@ export default function LateEarly({
 
   const { Text } = Typography
   const [form] = Form.useForm()
+  const formRef = useRef(null)
 
   // redux
   const dispatch = useDispatch()
   const axiosPrivate = useAxiosPrivate()
   const loadingSubmit = useSelector(getSubmitLateEarlyLoading)
   const loadingUpdate = useSelector(getUpdateLateEarlyLoading)
+  useEffect(() => {
+    if (formRef.current) {
+      if (data.status === 0 || data.status) {
+        form.setFieldsValue({
+          reason: data?.reason || '',
+          'date-cover-up': moment(data.compensation_date),
+        })
+      }
+    }
+  })
 
   const layout = {
     labelCol: {
@@ -81,9 +91,11 @@ export default function LateEarly({
     }
   }
 
-  const handleChangeDate = (e) => {
-    const date = moment(e).format('YYYY-MM-DD')
-    getDataByDate(date)
+  const handleChangeDate = (datePicker) => {
+    if (datePicker) {
+      const date = moment(datePicker).format('YYYY-MM-DD')
+      getDataByDate(date)
+    }
   }
 
   const handleCancel = () => {
@@ -95,6 +107,7 @@ export default function LateEarly({
   }
 
   const onFinish = (values) => {
+    console.log('values', values)
     const newRequest = {
       request_type: 4,
       request_for_date: changeFormatDate(registerForDate),
@@ -139,7 +152,6 @@ export default function LateEarly({
 
   // format datePicker
   const dateFormat = 'DD/MM/YYYY'
-  // const dateBefore = moment().subtract(1, 'days').format('DD/MM/YYYY')
   let date = moment().day()
 
   useEffect(() => {
@@ -153,7 +165,7 @@ export default function LateEarly({
 
   return (
     <Modal
-      title="Register Late Early"
+      title="Register Late/Early"
       visible={isLateEarlyVisible}
       onCancel={handleCancel}
       width="80%"
@@ -208,12 +220,13 @@ export default function LateEarly({
         <Form
           form={form}
           {...layout}
+          ref={formRef}
           name="nest-messages"
           onFinish={onFinish}
           validateMessages={validateMessages}
           initialValues={{
+            reason: data.reason || '',
             'date-cover-up': moment(dateBefore, dateFormat),
-            reason: data?.reason,
           }}
         >
           <Row>
@@ -224,17 +237,17 @@ export default function LateEarly({
             >
               <Form.Item
                 name={'date-cover-up'}
-                label="Date cover up:"
+                label="Date cover up"
+                colon
                 rules={[
                   {
-                    type: 'object',
                     required: true,
                     message: 'Please select date!',
                   },
                 ]}
               >
                 <DatePicker
-                  format={dateFormat}
+                  format={['DD/MM/YYYY', 'DDMMYYYY', 'DD-MM-YYYY']}
                   className="outlinePrimaryButton"
                   onChange={(e) => handleChangeDate(e)}
                 />
@@ -266,7 +279,7 @@ export default function LateEarly({
           </Row>
           <Row>
             <Form.Item
-              name={'reason'}
+              name="reason"
               label="Reason"
               rules={[
                 {
@@ -276,6 +289,7 @@ export default function LateEarly({
               ]}
             >
               <Input.TextArea
+                value={data.reason}
                 autoSize={{ maxRows: 7, minRows: 4 }}
                 rows={4}
                 maxLength={100}
@@ -296,7 +310,7 @@ export default function LateEarly({
                   </Button>
                   <Button
                     onClick={handleCancel}
-                    className="outline-secondary-button"
+                    className="outline-primary-button"
                   >
                     Close
                   </Button>
@@ -313,7 +327,7 @@ export default function LateEarly({
                   </Button>
                   <Button
                     onClick={handleCancel}
-                    className="outline-secondary-button"
+                    className="outline-primary-button"
                   >
                     Cancel
                   </Button>

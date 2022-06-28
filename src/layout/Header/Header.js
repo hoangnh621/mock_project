@@ -1,15 +1,22 @@
-import { EditOutlined, FormOutlined, LogoutOutlined } from '@ant-design/icons'
+import {
+  EditOutlined,
+  FormOutlined,
+  LogoutOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
+import { Avatar } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import ProfileScreen from '../../components/ProfileScreen/ProfileScreen'
 import { saveUserProfile } from '../../store/reducer/userProfileSlice'
+import { getLocalStorageItem } from '../../utils/helpers/handleLocalStorageItems'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 import ChangePassPopup from './ChangePassPopup/ChangePassPopup'
-import defaultAvatar from './defaultAvatar.png'
 import './Header.scss'
 import logo from './logo.png'
+
 const Header = () => {
   const [showSubMenu, setShowSubMenu] = useState(false)
   const [toggleModal, setToggleModal] = useState(false)
@@ -17,6 +24,8 @@ const Header = () => {
   const navigate = useNavigate()
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
+  const role = getLocalStorageItem('role')
+
   useEffect(() => {
     async function getProfileUser() {
       const res = await axiosPrivate.get('/member/profile')
@@ -72,6 +81,22 @@ const Header = () => {
               <div className="underline-link"></div>
             </NavLink>
           </div>
+          {role === '1' && (
+            <div className="wrap-link">
+              <NavLink className="link" to="/admin">
+                <span>Admin</span>
+                <div className="underline-link"></div>
+              </NavLink>
+            </div>
+          )}
+          {role === '2' && (
+            <div className="wrap-link">
+              <NavLink className="link" to="/manager">
+                <span>Manager</span>
+                <div className="underline-link"></div>
+              </NavLink>
+            </div>
+          )}
         </div>
       </div>
       <div className="navbar-right">
@@ -84,10 +109,21 @@ const Header = () => {
               {localStorage.getItem('full_name')
                 ? localStorage.getItem('full_name')
                 : 'Unknown'}
+              {role === '1' && <span>Admin</span>}
+              {role === '2' && <span>Manager</span>}
             </div>
             <div className="user-avatar">
               {localStorage.getItem('avatar') === 'null' ? (
-                <img className="avatar" alt="avatar" src={defaultAvatar}></img>
+                <Avatar
+                  size={38}
+                  icon={<UserOutlined />}
+                  style={{
+                    color: '#7367f0',
+                    backgroundColor: '#eeedfd',
+                    marginLeft: 7,
+                    marginRight: 7,
+                  }}
+                />
               ) : (
                 <img
                   className="avatar"
@@ -104,7 +140,7 @@ const Header = () => {
             <div className="sub-menu-items">
               <div className="sub-menu-item" onClick={handleClickChangePass}>
                 <FormOutlined className="icon" />
-                Change pass
+                Change password
               </div>
               <div className="sub-menu-item" onClick={handleShowProfileScreen}>
                 <EditOutlined className="icon" />
@@ -113,9 +149,6 @@ const Header = () => {
               <div className="sub-menu-item" onClick={handleLogOut}>
                 <LogoutOutlined className="icon" />
                 Log out
-              </div>
-              <div className="sub-menu-item">
-                <Link to="admin">Admin</Link>
               </div>
             </div>
           </div>
