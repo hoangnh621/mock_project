@@ -41,7 +41,6 @@ function OverTime({ currentRow, isOverTimeVisible, setIsOverTimeVisible }) {
       },
     ],
   }
-  console.log('registerForDate', registerForDate)
   // Get over time data
   useEffect(() => {
     dispatch(getOverTime({ key: currentRow?.key }))
@@ -61,7 +60,6 @@ function OverTime({ currentRow, isOverTimeVisible, setIsOverTimeVisible }) {
     const actualOT = moment(actualOverTime, HOUR_FORMAT)
     const checkTime = requestOT.isBefore(actualOT)
     const reason = form.getFieldValue('reason')
-    console.log('checkTime', checkTime)
     if (!checkTime) {
       message.warning('Request over time must be less than actual over time')
     } else if (!reason) {

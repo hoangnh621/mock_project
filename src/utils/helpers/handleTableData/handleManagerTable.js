@@ -22,13 +22,13 @@ const handleManagerTable = (listRequest) => {
     }
     return {
       key: index,
-
+      id: request.id,
       name: request.member.full_name,
       division: request.member.division[0].division_name,
       requestType,
       createdAt: moment(request.created_at).format('DD/MM/YYYY'),
+      status: request.status,
       reason: request.reason,
-      action: '1',
     }
   })
   return handleData

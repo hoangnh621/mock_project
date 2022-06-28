@@ -1,16 +1,22 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import {
+  CheckCircleTwoTone,
+  CloseCircleTwoTone,
   DoubleLeftOutlined,
   DoubleRightOutlined,
   LeftOutlined,
+  MoreOutlined,
   RightOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import { Avatar, Button, Table } from 'antd'
+import { Avatar, Button, Dropdown, Menu, Table } from 'antd'
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import Badges from '../../common/Badges/Badges'
 import CustomSpin from '../../common/CustomSpin/CustomSpin'
 import {
+  confirmManager,
   getManagerList,
   getManagerListRequest,
   getManagerLoading,
@@ -34,7 +40,8 @@ const ManagerScreen = () => {
   const [pageSize, setPageSize] = useState(10)
   const [tableScrollHeight, setTableScrollHeight] = useState(0)
   const [toggleModal, setToggleModal] = useState(false)
-  const [oder, setOder] = useState('desc')
+  const [oder, setOder] = useState('asc')
+  const [currentRow, setCurrentRow] = useState()
   // Check role
   useEffect(() => {
     const role = getLocalStorageItem('role')
@@ -145,11 +152,54 @@ const ManagerScreen = () => {
     return {
       onClick: () => {
         setToggleModal(true)
+        setCurrentRow(record)
+      },
+      onMouseEnter: () => {
+        setCurrentRow(record)
       },
     }
   }
 
+  const handleClickDropDown = ({ key, keyPath, domEvent }) => {
+    domEvent.stopPropagation()
+    if (key === 'confirm') {
+      dispatch(
+        confirmManager({ id: currentRow.id, comment: 'Confirm', status: 1 }),
+      )
+    }
+    if (key === 'reject') {
+      dispatch(
+        confirmManager({ id: currentRow.id, comment: 'Reject', status: -1 }),
+      )
+    }
+  }
+
+  const menu = (
+    <Menu
+      onClick={handleClickDropDown}
+      items={[
+        {
+          icon: <CheckCircleTwoTone twoToneColor="#2cc770" />,
+          label: 'Confirm',
+          key: 'confirm',
+        },
+        {
+          icon: <CloseCircleTwoTone twoToneColor="#ea5455" />,
+          label: 'Reject',
+          key: 'reject',
+        },
+      ]}
+    />
+  )
+
   const columns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+      align: 'center',
+      width: '5%',
+    },
     {
       title: 'AVATAR',
       dataIndex: 'avatar',
@@ -171,7 +221,7 @@ const ManagerScreen = () => {
       title: 'NAME',
       dataIndex: 'name',
       key: 'name',
-      width: '20%',
+      width: '18%',
       ellipsis: true,
     },
     {
@@ -179,14 +229,14 @@ const ManagerScreen = () => {
       dataIndex: 'division',
       key: 'division',
       align: 'center',
-      width: '10%',
+      width: '8%',
     },
     {
       title: 'REQUEST TYPE',
       dataIndex: 'requestType',
       key: 'requestType',
       align: 'center',
-      width: '15%',
+      width: '12%',
     },
     {
       title: 'CREATED AT',
@@ -201,15 +251,32 @@ const ManagerScreen = () => {
       title: 'REASON',
       dataIndex: 'reason',
       key: 'reason',
-      width: '22%',
+      width: '19%',
       ellipsis: true,
+    },
+    {
+      title: 'STATUS',
+      dataIndex: 'status',
+      key: 'status',
+      width: '8%',
+      align: 'center',
+      render: (record) => {
+        return <Badges status={record} />
+      },
     },
     {
       title: 'ACTION',
       dataIndex: 'action',
       key: 'action',
       align: 'center',
-      width: '10%',
+      width: '7%',
+      render: () => {
+        return (
+          <Dropdown overlay={menu} onClick={(e) => e.preventDefault()}>
+            <MoreOutlined style={{ fontSize: 18 }} />
+          </Dropdown>
+        )
+      },
     },
   ]
 
@@ -295,7 +362,11 @@ const ManagerScreen = () => {
         </div>
       </div>
       {toggleModal && (
-        <ManagerDetailRequest toggle={toggleModal} setToggle={setToggleModal} />
+        <ManagerDetailRequest
+          toggle={toggleModal}
+          setToggle={setToggleModal}
+          currentRow={currentRow}
+        />
       )}
     </div>
   )

@@ -228,6 +228,7 @@ const TableWorksheet = () => {
       title: 'NOTE',
       dataIndex: 'note',
       key: 'note',
+      ellipsis: true,
     },
     {
       title: 'ACTION',
@@ -289,6 +290,7 @@ const TableWorksheet = () => {
 
   // Handle forget check-in check-out
   const showRegisterForget = (data, e) => {
+    setIsRegisterForgetVisible(true)
     e.stopPropagation()
     const id = data.key
     axiosPrivate
@@ -302,6 +304,7 @@ const TableWorksheet = () => {
         } else {
           const checkin_original = data.checkin_original
           const checkout_original = data.checkout_original
+
           setDataRegisterForget({
             ...dataAPI,
             checkin_original,

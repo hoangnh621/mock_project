@@ -48,7 +48,7 @@ const RegisterForget = ({
   }
 
   // Đã gửi request
-  if (status === 0 || status === 1 || status === 2) {
+  if (status === 0 || status === 1 || status === 2 || status === -1) {
     registerForDate = dataRegisterForget.request_for_date
     registerForDate = registerForDate.split('-').reverse().join('-')
     checkinForm = dataRegisterForget.checkin
@@ -253,7 +253,7 @@ const RegisterForget = ({
               <Button
                 htmlType="submit"
                 className={
-                  status === 0 || status === 1 || status === 2
+                  status === 0 || status === 1 || status === 2 || status === -1
                     ? ' primary-button hide'
                     : 'primary-button'
                 }

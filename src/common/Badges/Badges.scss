@@ -1,0 +1,36 @@
+@import '../../styles/color';
+
+.badge-reject {
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 12px;
+  background-color: $bgDanger;
+  box-shadow: 0 0 10px $bgDanger;
+}
+.badge-pending {
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 12px;
+  background-color: $bgWarning;
+  box-shadow: 0 0 10px $bgWarning;
+}
+
+.badge-confirm {
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 12px;
+  background-color: $bgPrimary;
+  box-shadow: 0 0 10px $bgPrimary;
+}
+
+.badge-success {
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 12px;
+  background-color: $bgSuccess;
+  box-shadow: 0 0 10px $bgSuccess;
+}

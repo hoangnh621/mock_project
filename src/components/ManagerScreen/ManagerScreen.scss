@@ -150,6 +150,11 @@
           flex: 1;
         }
       }
+      .custom-dropdown {
+        .ant-dropdown-menu-title-content {
+          color: $bgPrimary;
+        }
+      }
     }
   }
 }

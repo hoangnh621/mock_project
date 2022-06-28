@@ -61,7 +61,7 @@ export default function LateEarly({
     if (formRef.current) {
       if (data.status === 0 || data.status) {
         form.setFieldsValue({
-          reason: data?.reason,
+          reason: data?.reason || '',
           'date-cover-up': moment(data.compensation_date),
         })
       }
@@ -91,9 +91,11 @@ export default function LateEarly({
     }
   }
 
-  const handleChangeDate = (e) => {
-    const date = moment(e).format('YYYY-MM-DD')
-    getDataByDate(date)
+  const handleChangeDate = (datePicker) => {
+    if (datePicker) {
+      const date = moment(datePicker).format('YYYY-MM-DD')
+      getDataByDate(date)
+    }
   }
 
   const handleCancel = () => {
@@ -105,6 +107,7 @@ export default function LateEarly({
   }
 
   const onFinish = (values) => {
+    console.log('values', values)
     const newRequest = {
       request_type: 4,
       request_for_date: changeFormatDate(registerForDate),
@@ -222,7 +225,7 @@ export default function LateEarly({
           onFinish={onFinish}
           validateMessages={validateMessages}
           initialValues={{
-            reason: data.reason,
+            reason: data.reason || '',
             'date-cover-up': moment(dateBefore, dateFormat),
           }}
         >
@@ -238,7 +241,6 @@ export default function LateEarly({
                 colon
                 rules={[
                   {
-                    type: 'object',
                     required: true,
                     message: 'Please select date!',
                   },

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { message } from 'antd'
 import handleManagerTable from '../../utils/helpers/handleTableData/handleManagerTable'
 import useAxiosPrivate from '../../utils/requests/useAxiosPrivate'
 
@@ -8,13 +9,32 @@ export const getManagerListRequest = createAsyncThunk(
     const axiosPrivate = useAxiosPrivate()
     const res = await axiosPrivate.get('/manager', {
       params: {
-        start_date: args.startDate,
-        end_date: args.endDate,
         order_by_created_at: args.orderRequestForDate,
         per_page: args.perPage,
         page: args.page,
       },
     })
+    return res.data
+  },
+)
+
+export const confirmManager = createAsyncThunk(
+  'managerSlice/confirmManager',
+  async (args, thunkAPI) => {
+    const axiosPrivate = useAxiosPrivate()
+    const res = await axiosPrivate.put(`/manager/confirm/${args.id}`, {
+      comment: args.comment,
+      status: args.status,
+    })
+    if (res.data) {
+      thunkAPI.dispatch(
+        getManagerListRequest({
+          orderRequestForDate: 'asc',
+          per_page: 10,
+          page: 1,
+        }),
+      )
+    }
     return res.data
   },
 )
@@ -40,6 +60,16 @@ const managerSlice = createSlice({
     })
     builder.addCase(getManagerListRequest.rejected, (state, action) => {
       state.loading = false
+    })
+    builder.addCase(confirmManager.pending, (state) => {
+      // state.loading = true
+    })
+    builder.addCase(confirmManager.fulfilled, (state, action) => {
+      // state.loading = false
+      message.success(action.payload?.message)
+    })
+    builder.addCase(confirmManager.rejected, (state) => {
+      // state.loading = false
     })
   },
 })
