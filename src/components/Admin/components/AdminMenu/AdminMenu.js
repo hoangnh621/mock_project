@@ -2,11 +2,12 @@ import {
   ControlOutlined,
   NodeIndexOutlined,
   NotificationOutlined,
-  PaperClipOutlined
+  PaperClipOutlined,
 } from '@ant-design/icons'
 import { Link, NavLink } from 'react-router-dom'
 import logo from '../../../../layout/Header/logo.png'
 import './AdminMenu.scss'
+
 const AdminMenu = () => {
   return (
     <div className="admin-menu">
@@ -15,7 +16,7 @@ const AdminMenu = () => {
         <Link to="/">Relipa Portal</Link>
       </div>
       <div className="admin-wrap-link">
-        <NavLink className="admin-link" to="request">
+        <NavLink end className="admin-link" to="">
           <NodeIndexOutlined className="admin-icon" /> Request
         </NavLink>
       </div>
@@ -30,8 +31,9 @@ const AdminMenu = () => {
         </NavLink>
       </div>
       <div className="admin-wrap-link">
-        <NavLink className="admin-link" to="nothing">
-          <ControlOutlined className="admin-icon" /> Request
+        <NavLink className="admin-link" to="manager-user">
+          <ControlOutlined className="admin-icon" />
+          User management
         </NavLink>
       </div>
     </div>

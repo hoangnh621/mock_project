@@ -58,7 +58,7 @@ const Header = () => {
                 color: '#7367f0',
                 backgroundColor: '#eeedfd',
                 marginLeft: 7,
-                marginRight: 7,
+                marginRight: 0,
               }}
             />
           ) : (

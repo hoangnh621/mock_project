@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import App from './App'
 import Admin from './components/Admin/Admin'
+import ManagerUser from './components/Admin/components/ManagerUser/ManagerUser'
 import Import from './components/Admin/pages/Import/Import'
 import Notice from './components/Admin/pages/Notice/Notice'
 import Request from './components/Admin/pages/Request/Request'
@@ -27,9 +28,10 @@ root.render(
         })}
 
         <Route path="admin" element={<Admin />}>
-          <Route path="request" element={<Request />} />
+          <Route index element={<Request />} />
           <Route path="import" element={<Import />} />
           <Route path="notice" element={<Notice />} />
+          <Route path="manager-user" element={<ManagerUser />} />
         </Route>
       </Routes>
     </BrowserRouter>
