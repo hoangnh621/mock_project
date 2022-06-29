@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import loginReducer from '../store/reducer/loginSlice'
+import adminRequestReducer from './reducer/adminRequest'
+import adminDetailReducer from './reducer/adminRequestDetailSlice'
 import changePassReducer from './reducer/changePassSlice'
 import homeReducer from './reducer/homeSlice'
 import leaveReducer from './reducer/leaveSlice'
@@ -24,5 +26,7 @@ export const store = configureStore({
     overTimeReducer,
     managerReducer,
     managerDetailReducer,
+    adminRequestReducer,
+    adminDetailReducer,
   },
 })

@@ -40,7 +40,7 @@ const ManagerScreen = () => {
   const [pageSize, setPageSize] = useState(10)
   const [tableScrollHeight, setTableScrollHeight] = useState(0)
   const [toggleModal, setToggleModal] = useState(false)
-  const [oder, setOder] = useState('asc')
+  const [oder, setOder] = useState('desc')
   const [currentRow, setCurrentRow] = useState()
   // Check role
   useEffect(() => {

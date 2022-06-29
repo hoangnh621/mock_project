@@ -26,7 +26,21 @@ const Admin = () => {
       adminContainerRef.current.style.height =
         windowHeight - headerAdmin - 2 * ADMIN_CONTAINER_MARGIN + 'px'
     }
-  })
+  }, [])
+
+  //Recalculate when resize
+  useEffect(() => {
+    const handleResize = () => {
+      const ADMIN_CONTAINER_MARGIN = 28
+      const headerAdmin = calculateComponentBottom('.admin-header')
+      const windowHeight = window.innerHeight
+      if (adminContainerRef.current) {
+        adminContainerRef.current.style.height =
+          windowHeight - headerAdmin - 2 * ADMIN_CONTAINER_MARGIN + 'px'
+      }
+    }
+    document.addEventListener('resize', handleResize)
+  }, [])
 
   document.title = 'Admin'
   return (

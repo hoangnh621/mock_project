@@ -1,0 +1,27 @@
+@import '../../../../../styles/color';
+
+.modal-request-details {
+  .ant-row {
+    margin-bottom: 12px;
+  }
+  .name-detail {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .reason-detail {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .footer-manager-detail {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    .container {
+      .ant-btn {
+        margin-right: 16px;
+      }
+    }
+  }
+}
