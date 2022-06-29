@@ -171,7 +171,6 @@ const Request = () => {
       width: '8%',
       align: 'center',
       render: (avatar) => {
-        console.log(avatar)
         if (!avatar) {
           return (
             <Avatar
