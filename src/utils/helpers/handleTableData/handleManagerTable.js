@@ -29,6 +29,7 @@ const handleManagerTable = (listRequest) => {
       createdAt: moment(request.created_at).format('DD/MM/YYYY'),
       status: request.status,
       reason: request.reason,
+      avatar: request.member.avatar,
     }
   })
   return handleData

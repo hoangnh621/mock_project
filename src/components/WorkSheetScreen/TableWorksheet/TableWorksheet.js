@@ -203,11 +203,26 @@ const TableWorksheet = () => {
       title: 'WORK TIME',
       dataIndex: 'work_time',
       key: 'work_time',
+      render: (workTime) => {
+        const isLessEightHour = moment(workTime, 'HH:mm').isBefore(
+          moment('08:00', 'HH:mm'),
+        )
+        if (workTime && isLessEightHour) {
+          return <span className="color-red">{workTime}</span>
+        } else return workTime
+      },
     },
     {
       title: 'LACK',
       dataIndex: 'lack',
       key: 'lack',
+      render: (lack) => {
+        if (lack) {
+          return <span className="color-red">{lack}</span>
+        } else {
+          return ''
+        }
+      },
     },
     {
       title: 'COMP',

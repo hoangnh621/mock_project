@@ -32,7 +32,7 @@ const AdminDetailRequest = ({ currentRow, toggle, setToggle }) => {
   const handleSubmit = (type) => {
     if (!textAreaValue) {
       message.warning('Please input your comment!')
-    } else if (type === 'confirm') {
+    } else if (type === 'approved') {
       dispatch(
         approvedAdmin({
           id: currentRow.id,

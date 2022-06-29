@@ -25,6 +25,8 @@ const Header = () => {
   const axiosPrivate = useAxiosPrivate()
   const dispatch = useDispatch()
   const role = getLocalStorageItem('role')
+  const srcAvatar = JSON.parse(localStorage.getItem('avatar'))
+  console.log('srcAvatar', srcAvatar)
 
   useEffect(() => {
     async function getProfileUser() {
@@ -125,11 +127,7 @@ const Header = () => {
                   }}
                 />
               ) : (
-                <img
-                  className="avatar"
-                  alt="avatar"
-                  src={localStorage.getItem('avatar')}
-                ></img>
+                <img className="avatar" alt="avatar" src={srcAvatar}></img>
               )}
             </div>
           </div>

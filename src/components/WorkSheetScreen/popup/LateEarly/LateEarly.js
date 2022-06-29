@@ -312,7 +312,7 @@ export default function LateEarly({
                     onClick={handleCancel}
                     className="outline-primary-button"
                   >
-                    Close
+                    Cancel
                   </Button>
                 </>
               )}

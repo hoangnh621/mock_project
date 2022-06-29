@@ -21,6 +21,7 @@ const RegisterForget = ({
   dataRegisterForget,
   setDataRegisterForget,
 }) => {
+  console.log('dataRegisterForget', dataRegisterForget)
   const format = 'HH:mm'
   const axiosPrivate = useAxiosPrivate()
   const registerForgetForm = useRef()

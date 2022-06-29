@@ -7,7 +7,9 @@ import { Avatar, Tooltip } from 'antd'
 import { useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import './Header.scss'
+
 const Header = () => {
+  const srcAvatar = JSON.parse(localStorage.getItem('avatar'))
   const [showAdminSubMenu, setShowAdminSubMenu] = useState(false)
   return (
     <div className="admin-header">
@@ -62,11 +64,7 @@ const Header = () => {
               }}
             />
           ) : (
-            <img
-              className="avatar"
-              alt="avatar"
-              src={localStorage.getItem('avatar')}
-            ></img>
+            <img className="avatar" alt="avatar" src={srcAvatar}></img>
           )}
         </div>
       </div>

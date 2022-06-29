@@ -170,16 +170,24 @@ const Request = () => {
       key: 'avatar',
       width: '8%',
       align: 'center',
-      render: () => (
-        <Avatar
-          size={38}
-          icon={<UserOutlined />}
-          style={{
-            color: '#7367f0',
-            backgroundColor: '#eeedfd',
-          }}
-        />
-      ),
+      render: (avatar) => {
+        console.log(avatar)
+        if (!avatar) {
+          return (
+            <Avatar
+              size={38}
+              icon={<UserOutlined />}
+              style={{
+                color: '#7367f0',
+                backgroundColor: '#eeedfd',
+              }}
+            />
+          )
+        } else {
+          const avatarPath = JSON.parse(avatar)
+          return <Avatar src={avatarPath} />
+        }
+      },
     },
     {
       title: 'NAME',
