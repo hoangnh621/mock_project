@@ -127,6 +127,7 @@ const RegisterForget = ({
     }
     // Đã gửi request
     if (status === 0) {
+      setDataRegisterForget({})
       axiosPrivate.put('/worksheet/request/forget/update', {
         request_for_date: request_for_date,
         checkin: checkin,
