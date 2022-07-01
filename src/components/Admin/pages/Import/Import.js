@@ -1,5 +1,5 @@
 const Import = () => {
-  return <div>Import</div>
+  return <div></div>
 }
 
 export default Import
