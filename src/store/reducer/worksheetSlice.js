@@ -67,6 +67,7 @@ const worksheetSlice = createSlice({
   },
   reducers: {
     setWorkSheetParams: (state, action) => {
+      console.log('action.payload', action.payload)
       state.paramTimesheet = { ...action.payload }
     },
   },

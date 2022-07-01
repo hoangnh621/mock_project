@@ -39,7 +39,7 @@ const WorkSheetFilter = () => {
           ...newParam,
           start_date: firstDayOfRecentMonth,
           end_date: today,
-          page: 1,
+          // page: 1,
         }
       }
       if (select_filter === 2) {
@@ -48,7 +48,7 @@ const WorkSheetFilter = () => {
           ...newParam,
           start_date: firstDayOfPreviousMonth,
           end_date: lastDayOfPreviousMonth,
-          page: 1,
+          // page: 1,
         }
       }
       if (select_filter === 3) {
@@ -57,7 +57,7 @@ const WorkSheetFilter = () => {
           ...newParam,
           start_date: firstDayOfYear,
           end_date: today,
-          page: 1,
+          // page: 1,
         }
       }
       const { start_date, end_date, work_date, ...workByDateStore } =
@@ -77,7 +77,7 @@ const WorkSheetFilter = () => {
           ...paramTimesheetStore,
           ...newParam,
           start_date: convertMomentToString(value.start_date),
-          page: 1,
+          // page: 1,
         }
       }
       if (!value.start_date) {
@@ -85,7 +85,7 @@ const WorkSheetFilter = () => {
           ...paramTimesheetStore,
           ...newParam,
           end_date: convertMomentToString(value.end_date),
-          page: 1,
+          // page: 1,
         }
       }
       if (!value.end_date && !value.start_date) {
@@ -94,7 +94,16 @@ const WorkSheetFilter = () => {
           ...newParam,
           start_date: '',
           end_date: '',
-          page: 1,
+          // page: 1,
+        }
+      }
+      if (value.end_date && value.start_date) {
+        paramTimesheetStore = {
+          ...paramTimesheetStore,
+          ...newParam,
+          start_date: convertMomentToString(value.start_date),
+          end_date: convertMomentToString(value.end_date),
+          // page: 1,
         }
       }
     }

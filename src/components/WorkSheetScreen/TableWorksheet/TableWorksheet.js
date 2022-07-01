@@ -86,7 +86,6 @@ const TableWorksheet = () => {
   }, [axiosPrivate, today, firstDayOfRecentMonth])
 
   useEffect(() => {
-    if (currentPage !== 1) return
     dispatch(
       worksheetPagination({
         ...paramTimesheetStore,
@@ -373,7 +372,7 @@ const TableWorksheet = () => {
 
   const handlePagination = (page, pageSize) => {
     dispatch(
-      worksheetPagination({
+      setWorkSheetParams({
         ...paramTimesheetStore,
         per_page: pageSize,
         page: page,

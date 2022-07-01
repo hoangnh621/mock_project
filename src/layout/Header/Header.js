@@ -26,7 +26,6 @@ const Header = () => {
   const dispatch = useDispatch()
   const role = getLocalStorageItem('role')
   const srcAvatar = JSON.parse(localStorage.getItem('avatar'))
-  console.log('srcAvatar', srcAvatar)
 
   useEffect(() => {
     async function getProfileUser() {

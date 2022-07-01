@@ -272,13 +272,6 @@ const HomeScreen = () => {
                       <Button
                         onClick={(e) => {
                           e.stopPropagation()
-                          dispatch(
-                            getNotice({
-                              page: notice?.official_notice.last_page || 1,
-                              per_page: pageSize,
-                              order_published_date: oderPublishedDate,
-                            }),
-                          )
                           setCurrentPage(notice?.official_notice.last_page || 1)
                         }}
                         disabled={
